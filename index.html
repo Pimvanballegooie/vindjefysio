@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vind je Fysio — De zoekmachine voor paramedische zorg</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,300;0,600;1,300&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --anthracite: #2D3142;
+    --anthracite2: #1E2235;
+    --white: #ffffff;
+    --offwhite: #F7F7F5;
+    --light: #EFEFEC;
+    --text: #2D3142;
+    --muted: #6B6F82;
+    --border: #E2E2DC;
+    --accent: #F5A623;
+    --accent2: #E8841A;
+    --radius: 12px;
+    /* Categoriekleuren direct uit logo */
+    --c-kinder:      #E05A1A;
+    --c-geriatrie:   #8A3FB0;
+    --c-neuro:       #C42040;
+    --c-psycho:      #1A72E8;
+    --c-chronisch:   #1E9A50;
+    --c-wervelkolom: #D4900A;
+    --c-benen:       #1A68A0;
+    --c-armen:       #2AAFA0;
+    --c-spec:        #5A6080;
+  }
+
+  body { font-family: 'Inter', sans-serif; background: var(--white); color: var(--text); line-height: 1.6; }
+
+  /* NAV */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 0 clamp(1rem, 4vw, 3rem);
+    height: 68px;
+    display: flex; align-items: center; justify-content: space-between;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.06);
+  }
+  .nav-logo img { height: 44px; width: auto; display: block; }
+  .nav-links { display: flex; gap: 1.5rem; list-style: none; align-items: center; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.875rem; font-weight: 500;
+    transition: color .2s;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-cta {
+    background: var(--accent) !important;
+    color: var(--anthracite) !important;
+    padding: 0.45rem 1.1rem !important;
+    border-radius: 20px;
+    font-weight: 600 !important;
+  }
+  .nav-cta:hover { background: var(--accent2) !important; }
+  @media(max-width:620px) { .nav-links { display: none; } }
+
+  /* HERO — licht, logo-vriendelijk */
+  .hero {
+    background: linear-gradient(135deg, #FFF8F0 0%, #F0F4FF 50%, #F5FFF8 100%);
+    padding: clamp(2.5rem, 7vw, 5.5rem) clamp(1rem, 4vw, 3rem) clamp(2rem, 5vw, 4rem);
+    position: relative; overflow: hidden;
+  }
+  .hero-layout {
+    max-width: 1100px; margin: 0 auto;
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 3rem; align-items: center;
+  }
+  @media(max-width:760px) {
+    .hero-layout { grid-template-columns: 1fr; }
+    .hero-visual { display: none; }
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent2);
+    background: rgba(245,166,35,0.1);
+    border: 1px solid rgba(245,166,35,0.25);
+    border-radius: 20px; padding: 4px 12px;
+    margin-bottom: 1.25rem;
+  }
+  .hero h1 {
+    font-family: 'Fraunces', serif;
+    font-size: clamp(2rem, 4.5vw, 3.4rem);
+    font-weight: 300; color: var(--anthracite);
+    line-height: 1.18; margin-bottom: 1rem;
+  }
+  .hero h1 em { font-style: italic; color: var(--accent2); }
+  .hero-sub {
+    color: var(--muted); font-size: clamp(0.9rem, 2vw, 1.05rem);
+    margin-bottom: 2rem; max-width: 480px; line-height: 1.7;
+  }
+  .disciplines {
+    display: flex; flex-wrap: wrap; gap: 0.4rem; margin-bottom: 2rem;
+  }
+  .disc-pill {
+    background: var(--white);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    border-radius: 20px; padding: 0.22rem 0.7rem;
+    font-size: 0.75rem; font-weight: 500;
+  }
+
+  /* Boom illustratie rechts */
+  .hero-visual {
+    display: flex; align-items: center; justify-content: center;
+  }
+  .hero-visual img {
+    width: clamp(220px, 28vw, 360px);
+    filter: drop-shadow(0 8px 32px rgba(0,0,0,0.10));
+    animation: floatUp 3s ease-in-out infinite alternate;
+  }
+  @keyframes floatUp {
+    from { transform: translateY(0); }
+    to   { transform: translateY(-10px); }
+  }
+  @media(prefers-reduced-motion: reduce) { .hero-visual img { animation: none; } }
+
+  /* ZOEKKAART */
+  .search-card {
+    background: var(--white);
+    border-radius: 16px;
+    padding: 1.4rem 1.5rem;
+    box-shadow: 0 4px 32px rgba(45,49,66,0.12), 0 1px 4px rgba(45,49,66,0.06);
+    border: 1px solid var(--border);
+    max-width: 600px;
+  }
+  .search-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr auto;
+    gap: 0.65rem; align-items: end;
+  }
+  @media(max-width:680px) { .search-row { grid-template-columns: 1fr; } }
+  .search-field label {
+    display: block; font-size: 0.68rem; font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.09em;
+    color: var(--muted); margin-bottom: 0.3rem;
+  }
+  .search-field input, .search-field select {
+    width: 100%; border: 1.5px solid var(--border);
+    border-radius: 8px; padding: 0.6rem 0.8rem;
+    font-family: 'Inter', sans-serif; font-size: 0.875rem;
+    color: var(--text); background: var(--offwhite);
+    outline: none; transition: border-color .2s, box-shadow .2s;
+    appearance: none;
+  }
+  .search-field select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6F82' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 10px center; padding-right: 1.8rem; cursor: pointer;
+  }
+  .search-field input:focus, .search-field select:focus {
+    border-color: var(--accent); box-shadow: 0 0 0 3px rgba(245,166,35,0.18);
+    background: var(--white);
+  }
+  .search-btn {
+    background: var(--accent); color: var(--anthracite);
+    border: none; border-radius: 8px;
+    padding: 0.65rem 1.25rem;
+    font-family: 'Inter', sans-serif; font-size: 0.875rem; font-weight: 700;
+    cursor: pointer; white-space: nowrap;
+    transition: background .2s, transform .1s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .search-btn:hover { background: var(--accent2); transform: translateY(-1px); }
+  .search-btn svg { width: 15px; height: 15px; }
+
+  /* Live preview */
+  #live-results { display: none; margin-top: 1rem; border-top: 1px solid var(--border); padding-top: 0.9rem; }
+  #live-results.active { display: block; }
+  .live-item {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0.45rem 0; border-bottom: 1px solid var(--light);
+    font-size: 0.83rem;
+  }
+  .live-item:last-child { border-bottom: none; }
+  .live-name { font-weight: 600; color: var(--text); }
+  .live-loc { color: var(--muted); font-size: 0.75rem; }
+  .live-pct { font-weight: 700; color: var(--anthracite); font-size: 0.85rem; }
+
+  /* STATS STRIP */
+  .stats-strip {
+    background: var(--anthracite);
+    padding: 1.25rem clamp(1rem, 4vw, 3rem);
+    display: flex; flex-wrap: wrap; gap: 0; justify-content: center;
+  }
+  .stat {
+    text-align: center; padding: 0.5rem 2.5rem;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .stat:last-child { border-right: none; }
+  @media(max-width:500px) { .stat { border-right: none; } }
+  .stat-num {
+    font-family: 'Fraunces', serif; font-size: 1.9rem; font-weight: 600;
+    color: var(--accent); line-height: 1;
+  }
+  .stat-label { font-size: 0.72rem; color: rgba(255,255,255,0.5); margin-top: 2px; }
+
+  /* SECTIONS */
+  .section { padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem); max-width: 1100px; margin: 0 auto; }
+  .section-eyebrow { font-size: 0.7rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.12em; color: var(--muted); margin-bottom: 0.4rem; }
+  .section-title { font-family: 'Fraunces', serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 300; line-height: 1.2; margin-bottom: 1.75rem; }
+  .section-title em { font-style: italic; color: var(--accent2); }
+
+  /* CATEGORIEKAARTEN */
+  .cat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(195px, 1fr)); gap: 0.85rem; }
+  .cat-card {
+    border-radius: var(--radius); padding: 1.2rem 1.1rem 1rem;
+    cursor: pointer; text-decoration: none; display: block;
+    transition: transform .2s, box-shadow .2s;
+    border: 1.5px solid;
+    position: relative; overflow: hidden; background: var(--white);
+  }
+  .cat-card:hover { transform: translateY(-3px); box-shadow: 0 8px 28px rgba(0,0,0,0.1); }
+  .cat-emoji { font-size: 1.5rem; margin-bottom: 0.5rem; display: block; }
+  .cat-name { font-weight: 700; font-size: 0.92rem; margin-bottom: 0.2rem; }
+  .cat-sub { font-size: 0.72rem; color: var(--muted); line-height: 1.45; }
+  .cat-count {
+    position: absolute; top: 0.65rem; right: 0.65rem;
+    font-size: 0.62rem; font-weight: 600;
+    background: var(--offwhite); border: 1px solid var(--border);
+    border-radius: 10px; padding: 1px 6px; color: var(--muted);
+  }
+
+  /* HOE WERKT HET */
+  .how-section { background: var(--offwhite); border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem); }
+  .how-inner { max-width: 1100px; margin: 0 auto; }
+  .how-title { font-family: 'Fraunces', serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 300; color: var(--anthracite); margin-bottom: 2rem; text-align: center; }
+  .how-title em { font-style: italic; color: var(--accent2); }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 1.25rem; }
+  .step {
+    text-align: center; padding: 1.5rem 1rem;
+    border-radius: var(--radius);
+    background: var(--white);
+    border: 1px solid var(--border);
+  }
+  .step-num { font-family: 'Fraunces', serif; font-size: 2.4rem; font-weight: 600; color: var(--accent); line-height: 1; margin-bottom: 0.6rem; }
+  .step-title { color: var(--text); font-weight: 600; margin-bottom: 0.35rem; font-size: 0.92rem; }
+  .step-desc { color: var(--muted); font-size: 0.8rem; line-height: 1.55; }
+
+  /* RESULTATENKAARTEN */
+  .results-section { padding: clamp(2.5rem, 6vw, 5rem) clamp(1rem, 4vw, 3rem); max-width: 1100px; margin: 0 auto; }
+  .results-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(275px, 1fr)); gap: 1rem; margin-top: 1.5rem; }
+  .result-card {
+    background: var(--white); border-radius: var(--radius);
+    padding: 1.2rem; border: 1.5px solid var(--border);
+    transition: box-shadow .2s, transform .2s; cursor: pointer;
+  }
+  .result-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); transform: translateY(-2px); }
+  .result-head { display: flex; align-items: center; gap: 0.75rem; margin-bottom: 0.7rem; }
+  .result-avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 0.9rem; color: #fff; flex-shrink: 0;
+  }
+  .result-name { font-weight: 600; font-size: 0.92rem; }
+  .result-praktijk { font-size: 0.75rem; color: var(--muted); }
+  .result-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.75rem; }
+  .tag { font-size: 0.66rem; font-weight: 600; border-radius: 20px; padding: 2px 7px; border: 1px solid currentColor; }
+  .result-footer { display: flex; align-items: center; justify-content: space-between; }
+  .result-location { font-size: 0.73rem; color: var(--muted); display: flex; align-items: center; gap: 3px; }
+  .match-badge { font-size: 0.78rem; font-weight: 700; background: var(--accent); color: var(--anthracite); border-radius: 20px; padding: 3px 10px; }
+
+  /* CTA */
+  .cta-section { background: var(--anthracite); padding: clamp(3rem, 7vw, 5rem) clamp(1rem, 4vw, 3rem); text-align: center; }
+  .cta-inner { max-width: 520px; margin: 0 auto; }
+  .cta-title { font-family: 'Fraunces', serif; font-size: clamp(1.6rem, 3.5vw, 2.4rem); font-weight: 300; color: #fff; margin-bottom: 0.75rem; }
+  .cta-title em { font-style: italic; color: var(--accent); }
+  .cta-sub { color: rgba(255,255,255,0.55); margin-bottom: 2rem; font-size: 0.92rem; }
+  .cta-btns { display: flex; gap: 0.75rem; justify-content: center; flex-wrap: wrap; }
+  .btn-primary { background: var(--accent); color: var(--anthracite); border: none; border-radius: 8px; padding: 0.8rem 1.75rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 700; cursor: pointer; text-decoration: none; transition: background .2s; }
+  .btn-primary:hover { background: var(--accent2); }
+  .btn-outline { background: transparent; color: rgba(255,255,255,0.75); border: 1.5px solid rgba(255,255,255,0.25); border-radius: 8px; padding: 0.8rem 1.75rem; font-family: 'Inter', sans-serif; font-size: 0.9rem; font-weight: 600; cursor: pointer; text-decoration: none; transition: border-color .2s, color .2s; }
+  .btn-outline:hover { border-color: rgba(255,255,255,0.6); color: #fff; }
+
+  /* FOOTER */
+  footer { background: var(--anthracite2); padding: 1.75rem clamp(1rem, 4vw, 3rem); text-align: center; }
+  .footer-logo { font-family: 'Fraunces', serif; font-size: 1.1rem; font-weight: 300; color: rgba(255,255,255,0.5); margin-bottom: 0.75rem; }
+  .footer-logo em { font-style: italic; color: var(--accent); }
+  .footer-links { display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.75rem; }
+  .footer-links a { color: rgba(255,255,255,0.35); font-size: 0.75rem; text-decoration: none; transition: color .2s; }
+  .footer-links a:hover { color: rgba(255,255,255,0.7); }
+  .footer-copy { color: rgba(255,255,255,0.2); font-size: 0.68rem; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <img src="https://pimvanballegooie.github.io/enkelvoet/VindjefysioLOGO.png"
+         onerror="this.style.display='none';document.getElementById('nav-fallback').style.display='block'"
+         alt="Vind je Fysio">
+    <span id="nav-fallback" style="display:none;font-family:'Fraunces',serif;color:var(--anthracite);font-size:1.15rem;font-weight:300;">Vind je <em style="font-style:italic;color:var(--accent2)">fysio</em></span>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#">Zoeken</a></li>
+    <li><a href="#">Categorieën</a></li>
+    <li><a href="#">Voor verwijzers</a></li>
+    <li><a href="#" class="nav-cta">Aanmelden</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-layout">
+    <div class="hero-content">
+      <span class="hero-eyebrow">🔍 Nationaal · Alle paramedici</span>
+      <h1>Vind de juiste<br><em>paramedicus</em><br>bij jou in de buurt</h1>
+      <p class="hero-sub">Zoek op klacht, specialisme of postcode. Ons systeem berekent de beste match — voor patiënten én verwijzers.</p>
+      <div class="disciplines">
+        <span class="disc-pill">Fysiotherapeut</span>
+        <span class="disc-pill">Ergotherapeut</span>
+        <span class="disc-pill">Oefentherapeut</span>
+        <span class="disc-pill">Diëtist</span>
+        <span class="disc-pill">Logopedist</span>
+        <span class="disc-pill">Podotherapeut</span>
+      </div>
+
+      <div class="search-card">
+        <div class="search-row">
+          <div class="search-field">
+            <label>Postcode</label>
+            <input type="text" id="inp-postcode" placeholder="bijv. 4811 AA" oninput="runSearch()">
+          </div>
+          <div class="search-field">
+            <label>Categorie</label>
+            <select id="inp-cat" onchange="runSearch()">
+              <option value="">Alle categorieën</option>
+              <option value="kinder">🧒 Kinder</option>
+              <option value="geriatrie">👴 Geriatrie</option>
+              <option value="neuro">🧠 Neurologie</option>
+              <option value="psycho">💭 Psychosociaal</option>
+              <option value="chronisch">🫀 Chronische Zorg</option>
+              <option value="wervelkolom">🦴 Wervelkolom</option>
+              <option value="benen">🦵 Benen &amp; Voeten</option>
+              <option value="armen">💪 Armen &amp; Handen</option>
+              <option value="spec">⚡ Spec. Behandelingen</option>
+            </select>
+          </div>
+          <div class="search-field">
+            <label>Klacht of specialisme</label>
+            <input type="text" id="inp-sub" placeholder="bijv. kniepijn" oninput="runSearch()">
+          </div>
+          <button class="search-btn" onclick="runSearch()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.35-4.35"/></svg>
+            Zoek
+          </button>
+        </div>
+        <div id="live-results">
+          <div style="font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.09em;color:var(--muted);margin-bottom:.5rem;">Beste matches</div>
+          <div id="live-list"></div>
+          <button onclick="scrollToResults()" style="margin-top:.65rem;font-size:.78rem;font-weight:600;color:var(--accent2);background:none;border:none;cursor:pointer;padding:0;">Alle resultaten bekijken →</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <img src="https://pimvanballegooie.github.io/enkelvoet/VindjefysioLOGO.png"
+           onerror="this.style.display='none'"
+           alt="Vind je Fysio boom logo">
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-strip">
+  <div class="stat"><div class="stat-num">9</div><div class="stat-label">Specialisatiegebieden</div></div>
+  <div class="stat"><div class="stat-num">200+</div><div class="stat-label">Therapeuten</div></div>
+  <div class="stat"><div class="stat-num">12</div><div class="stat-label">Platforms</div></div>
+  <div class="stat"><div class="stat-num">Nationaal</div><div class="stat-label">en groeiend</div></div>
+</div>
+
+<!-- CATEGORIEËN -->
+<section class="section">
+  <p class="section-eyebrow">9 specialisatiegebieden</p>
+  <h2 class="section-title">Kies een categorie om <em>direct te zoeken</em></h2>
+  <div class="cat-grid">
+    <a href="#" class="cat-card" style="color:var(--c-kinder);border-color:rgba(224,90,26,0.2);" onclick="selectCat('kinder');return false;">
+      <span class="cat-count">32 therapeuten</span>
+      <span class="cat-emoji">🧒</span>
+      <div class="cat-name" style="color:var(--c-kinder)">Kinder</div>
+      <div class="cat-sub">Kinderfysio, ontwikkeling, scoliose, SI</div>
+    </a>
+    <a href="#" class="cat-card" style="color:var(--c-geriatrie);border-color:rgba(138,63,176,0.2);" onclick="selectCat('geriatrie');return false;">
+      <span class="cat-count">28 therapeuten</span>
+      <span class="cat-emoji">👴</span>
+      <div class="cat-name" style="color:var(--c-geriatrie)">Geriatrie</div>
+      <div class="cat-sub">Valpreventie, ouderenzorg, mobiliteit</div>
+    </a>
+    <a href="#" class="cat-card" style="color:var(--c-neuro);border-color:rgba(196,32,64,0.2);" onclick="selectCat('neuro');return false;">
+      <span class="cat-count">19 therapeuten</span>
+      <span class="cat-emoji">🧠</span>
+      <div class="cat-name" style="color:var(--c-neuro)">Neurologie</div>
+      <div class="cat-sub">CVA, Parkinson, NAH, revalidatie</div>
+    </a>
+    <a href="#" class="cat-card" style="color:var(--c-psycho);border-color:rgba(26,114,232,0.2);" onclick="selectCat('psycho');return false;">
+      <span class="cat-count">14 therapeuten</span>
+      <span class="cat-emoji">💭</span>
+      <div class="cat-name" style="color:var(--c-psycho)">Psychosociaal</div>
+      <div class="cat-sub">PSF, FNS, hyperventilatie, chronische pijn</div>
+    </a>
+    <a href="#" class="cat-card" style="color:var(--c-chronisch);border-color:rgba(30,154,80,0.2);" onclick="selectCat('chronisch');return false;">
+      <span class="cat-count">41 therapeuten</span>
+      <span class="cat-emoji">🫀</span>
+      <div class="cat-name" style="color:var(--c-chronisch)">Chronische Zorg</div>
+      <div class="cat-sub">COPD, hart, diabetes, oncologie, reuma</div>
+    </a>
+    <a href="#" class="cat-card" style="color:var(--c-wervelkolom);border-color:rgba(212,144,10,0.2);" onclick="selectCat('wervelkolom');return false;">
+      <span class="cat-count">55 therapeuten</span>
+      <span class="cat-emoji">🦴</span>
+      <div class="cat-name" style="color:var(--c-wervelkolom)">Wervelkolom</div>
+      <div class="cat-sub">Nek, rug, thoracaal, SI-gewricht</div>
+    </a>
+    <a href="https://www.enkelvoet.net" class="cat-card" style="color:var(--c-benen);border-color:rgba(26,104,160,0.2);">
+      <span class="cat-count">63 therapeuten</span>
+      <span class="cat-emoji">🦵</span>
+      <div class="cat-name" style="color:var(--c-benen)">Benen &amp; Voeten</div>
+      <div class="cat-sub">Enkel, knie, heup, VKB, GLA:D ↗</div>
+    </a>
+    <a href="#" class="cat-card" style="color:var(--c-armen);border-color:rgba(42,175,160,0.2);" onclick="selectCat('armen');return false;">
+      <span class="cat-count">22 therapeuten</span>
+      <span class="cat-emoji">💪</span>
+      <div class="cat-name" style="color:var(--c-armen)">Armen &amp; Handen</div>
+      <div class="cat-sub">Schouder, elleboog, pols, handtherapie</div>
+    </a>
+    <a href="#" class="cat-card" style="color:var(--c-spec);border-color:rgba(90,96,128,0.2);" onclick="selectCat('spec');return false;">
+      <span class="cat-count">47 therapeuten</span>
+      <span class="cat-emoji">⚡</span>
+      <div class="cat-name" style="color:var(--c-spec)">Spec. Behandelingen</div>
+      <div class="cat-sub">Dry needling, bekkenbodem, shockwave</div>
+    </a>
+  </div>
+</section>
+
+<!-- HOE WERKT HET -->
+<div class="how-section">
+  <div class="how-inner">
+    <h2 class="how-title">Hoe werkt <em>Vind je Fysio?</em></h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-title">Vul je klacht in</div>
+        <div class="step-desc">Typ een klacht, specialisme of postcode. Kies eventueel een categorie.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-title">Zie de beste match</div>
+        <div class="step-desc">We berekenen een matchpercentage op basis van locatie en specialisatie.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-title">Ga naar de specialist</div>
+        <div class="step-desc">Klik door naar het gespecialiseerde platform voor jouw klacht.</div>
+      </div>
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-title">Verwijs direct</div>
+        <div class="step-desc">Voor verwijzers: stuur patiënten direct door naar het juiste platform.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RESULTATEN -->
+<section class="results-section" id="results-anchor">
+  <p class="section-eyebrow">Zoekresultaten</p>
+  <h2 class="section-title">Zo zien de <em>resultaten</em> eruit</h2>
+  <div class="results-grid" id="results-grid"></div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section">
+  <div class="cta-inner">
+    <h2 class="cta-title">Therapeut of praktijk?<br><em>Meld je gratis aan</em></h2>
+    <p class="cta-sub">Eén aanmelding — automatisch zichtbaar op alle relevante platforms.</p>
+    <div class="cta-btns">
+      <a href="#" class="btn-primary">Aanmelden als therapeut</a>
+      <a href="#" class="btn-outline">Meer informatie</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-logo">Vind je <em>Fysio</em></div>
+  <div class="footer-links">
+    <a href="#">Over ons</a><a href="#">Voor verwijzers</a>
+    <a href="#">Aanmelden</a><a href="#">Privacy</a><a href="#">Contact</a>
+  </div>
+  <div class="footer-copy">© 2025 Vind je Fysio · fysiotherapie · ergotherapie · oefentherapie · diëtist · logopedie</div>
+</footer>
+
+<script>
+const therapeuten = [
+  { naam: "Lisa van den Berg",  praktijk: "Fysiotherapie Noord",       postcode: "4811", cat: "kinder",     sub: ["scoliose","kinderfysio","sensorische integratie"], kleur: "#E05A1A", afstand: 0.8 },
+  { naam: "Marco Smits",        praktijk: "Bewegingscentrum Zuid",      postcode: "4812", cat: "wervelkolom",sub: ["lage rug","nek","prehabilitatie"],                  kleur: "#D4900A", afstand: 1.2 },
+  { naam: "Anita Jansen",       praktijk: "Enkelfysio Centrum",         postcode: "4813", cat: "benen",      sub: ["enkel","knie","VKB","GLA:D"],                      kleur: "#1A68A0", afstand: 2.1 },
+  { naam: "Pieter Kool",        praktijk: "Chronische Zorg Plus",       postcode: "4815", cat: "chronisch",  sub: ["COPD","hartrevalidatie","oncologie"],               kleur: "#1E9A50", afstand: 3.4 },
+  { naam: "Sara de Vries",      praktijk: "Neuroherstel",               postcode: "4818", cat: "neuro",      sub: ["CVA","Parkinson","NAH"],                           kleur: "#C42040", afstand: 4.0 },
+  { naam: "Tom Bakker",         praktijk: "Manuele Therapie West",      postcode: "4814", cat: "spec",       sub: ["manueel","dry needling","shockwave"],              kleur: "#5A6080", afstand: 1.8 },
+  { naam: "Femke de Groot",     praktijk: "Psychosomatiek Praktijk",    postcode: "4816", cat: "psycho",     sub: ["PSF","FNS","hyperventilatie"],                     kleur: "#1A72E8", afstand: 2.6 },
+  { naam: "Roel Adriaans",      praktijk: "Geriatrie &amp; Bewegen",    postcode: "4817", cat: "geriatrie",  sub: ["valpreventie","mobiliteit","ouderenzorg"],         kleur: "#8A3FB0", afstand: 3.1 },
+];
+
+function berekenScore(t, cat, sub) {
+  let score = 0;
+  if (cat && t.cat === cat) score += 50;
+  if (sub) { const s = sub.toLowerCase(); t.sub.forEach(x => { if (x.toLowerCase().includes(s)) score += 30; }); }
+  score += Math.max(0, 20 - t.afstand * 4);
+  return Math.min(99, Math.round(score));
+}
+
+function getInitials(naam) {
+  const parts = naam.split(' ');
+  return (parts[0][0] + (parts[parts.length-1][0])).toUpperCase();
+}
+
+function renderCards(lijst) {
+  const grid = document.getElementById('results-grid');
+  if (!lijst.length) { grid.innerHTML = '<p style="color:var(--muted)">Geen resultaten gevonden.</p>'; return; }
+  grid.innerHTML = lijst.map(t => `
+    <div class="result-card">
+      <div class="result-head">
+        <div class="result-avatar" style="background:${t.kleur}">${getInitials(t.naam)}</div>
+        <div>
+          <div class="result-name">${t.naam}</div>
+          <div class="result-praktijk">${t.praktijk}</div>
+        </div>
+      </div>
+      <div class="result-tags">
+        ${t.sub.slice(0,3).map(s=>`<span class="tag" style="color:${t.kleur};border-color:${t.kleur}40">${s}</span>`).join('')}
+      </div>
+      <div class="result-footer">
+        <span class="result-location">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${t.afstand} km · ${t.postcode}
+        </span>
+        <span class="match-badge">${t.score}% match</span>
+      </div>
+    </div>
+  `).join('');
+}
+
+function runSearch() {
+  const cat = document.getElementById('inp-cat').value;
+  const sub = document.getElementById('inp-sub').value.trim();
+  const gescoord = therapeuten.map(t=>({...t, score: berekenScore(t,cat,sub)})).filter(t=>t.score>0).sort((a,b)=>b.score-a.score);
+  const liveDiv = document.getElementById('live-results');
+  const liveList = document.getElementById('live-list');
+  if (gescoord.length && (cat||sub)) {
+    liveDiv.classList.add('active');
+    liveList.innerHTML = gescoord.slice(0,3).map(t=>`
+      <div class="live-item">
+        <div><div class="live-name">${t.naam}</div><div class="live-loc">${t.praktijk} · ${t.afstand} km</div></div>
+        <div class="live-pct">${t.score}%</div>
+      </div>`).join('');
+  } else { liveDiv.classList.remove('active'); }
+  renderCards(gescoord.length ? gescoord : therapeuten.map(t=>({...t,score:85})));
+}
+
+function selectCat(cat) {
+  document.getElementById('inp-cat').value = cat;
+  runSearch();
+  document.querySelector('.search-card').scrollIntoView({behavior:'smooth',block:'center'});
+}
+
+function scrollToResults() {
+  document.getElementById('results-anchor').scrollIntoView({behavior:'smooth'});
+}
+
+renderCards(therapeuten.map(t=>({...t,score:85})));
+</script>
+</body>
+</html>
