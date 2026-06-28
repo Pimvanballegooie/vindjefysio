@@ -62,8 +62,12 @@
 
     /* ── CATEGORIE TEGELS ── */
     .categorieen-sectie { max-width: 1300px; margin: 64px auto; padding: 0 clamp(1rem, 4vw, 3rem); }
+    .categorieen-header { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-bottom: 36px; }
+    .categorieen-header-tekst { flex: 1; }
+    .categorieen-logo { width: 200px; flex-shrink: 0; opacity: 0.9; }
+    @media (max-width: 700px) { .categorieen-logo { display: none; } }
     .sectie-kop { font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
-    .sectie-sub { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 36px; }
+    .sectie-sub { font-size: 0.95rem; color: var(--text-muted); }
     .categorieen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; }
 
     .categorie-tegel { background: var(--white); border: 1px solid var(--grey-border); border-radius: 16px; padding: 26px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: inherit; position: relative; overflow: hidden; }
@@ -202,8 +206,13 @@
 
 <!-- CATEGORIE TEGELS -->
 <div class="categorieen-sectie" id="categorieen">
-  <div class="sectie-kop">Wat is uw vraag?</div>
-  <div class="sectie-sub">Kies een specialisatiegebied om gespecialiseerde therapeuten en informatie te vinden.</div>
+  <div class="categorieen-header">
+    <div class="categorieen-header-tekst">
+      <div class="sectie-kop">Wat is uw vraag?</div>
+      <div class="sectie-sub">Kies een specialisatiegebied om gespecialiseerde therapeuten en informatie te vinden.</div>
+    </div>
+    <img class="categorieen-logo" src="VJF_Logo.png" alt="VindJeFysio" />
+  </div>
   <div class="categorieen-grid" id="categorieen-grid">
     <div class="laden">Laden...</div>
   </div>
