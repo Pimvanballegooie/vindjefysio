@@ -301,7 +301,7 @@ async function laadData() {
   const [r1, r2, r3, r4] = await Promise.all([
     fetch(`${SUPABASE_URL}/rest/v1/categorieen?actief=eq.true&order=id`, { headers: HEADERS }),
     fetch(`${SUPABASE_URL}/rest/v1/subcategorieen?actief=eq.true&order=id`, { headers: HEADERS }),
-    fetch(`${SUPABASE_URL}/rest/v1/therapeuten?actief=eq.true&select=id,voornaam,achternaam,foto_url,bio,disciplines,code,praktijk_id`, { headers: HEADERS }),
+    fetch(`${SUPABASE_URL}/rest/v1/therapeut_praktijken?select=praktijk_id,therapeuten(id,voornaam,achternaam,foto_url,disciplines,code)`, { headers: HEADERS }),
     fetch(`${SUPABASE_URL}/rest/v1/praktijken?actief=eq.true&select=id,naam,straat,huisnummer,postcode,stad,telefoon,email,website,logo_url`, { headers: HEADERS })
   ]);
   alleCategorieen = await r1.json();
@@ -453,7 +453,8 @@ function renderDetailPraktijkLijst(lijst) {
   info.textContent = `${lijst.length} praktijk${lijst.length !== 1 ? 'en' : ''} gevonden`;
 
   container.innerHTML = lijst.map(p => {
-    const therapeuten = alleTherapeutenData.filter(t => t.praktijk_id === p.id);
+    const koppelingen = alleTherapeutenData.filter(k => k.praktijk_id === p.id);
+    const therapeuten = koppelingen.map(k => k.therapeuten).filter(Boolean);
     const logoHtml = p.logo_url
       ? `<img src="${p.logo_url}" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0" onerror="this.style.display='none'" />`
       : `<div style="width:44px;height:44px;border-radius:8px;background:var(--grey-bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🏥</div>`;
@@ -507,7 +508,8 @@ async function voegPraktijkMarkersTo(lijst) {
       const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(zoekadres)}&format=json&limit=1`);
       const d = await r.json();
       if (d && d[0]) {
-        const therapeuten = alleTherapeutenData.filter(t => t.praktijk_id === p.id);
+        const koppelingen = alleTherapeutenData.filter(k => k.praktijk_id === p.id);
+    const therapeuten = koppelingen.map(k => k.therapeuten).filter(Boolean);
         const therapeutenPopup = therapeuten.map(t =>
           `<div style="display:flex;align-items:center;gap:8px;margin-top:6px">
             ${t.foto_url ? `<img src="${t.foto_url}" style="width:28px;height:28px;border-radius:50%;object-fit:cover"/>` : '<span>👤</span>'}
