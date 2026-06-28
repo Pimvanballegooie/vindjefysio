@@ -291,20 +291,23 @@ const CAT_OMSCHRIJVING_KORT = {
 let kaart = null;
 let markers = [];
 let alleTherapeutenData = [];
+let allePraktijkenData = [];
 let alleCategorieen = [];
 let alleSubcategorieen = [];
 let actieveCatId = null;
 let actieveSubcatIds = [];
 
 async function laadData() {
-  const [r1, r2, r3] = await Promise.all([
+  const [r1, r2, r3, r4] = await Promise.all([
     fetch(`${SUPABASE_URL}/rest/v1/categorieen?actief=eq.true&order=id`, { headers: HEADERS }),
     fetch(`${SUPABASE_URL}/rest/v1/subcategorieen?actief=eq.true&order=id`, { headers: HEADERS }),
-    fetch(`${SUPABASE_URL}/rest/v1/therapeuten?actief=eq.true&select=id,voornaam,achternaam,foto_url,bio,disciplines,code,praktijk_id,praktijken(naam,stad,straat,postcode)`, { headers: HEADERS })
+    fetch(`${SUPABASE_URL}/rest/v1/therapeuten?actief=eq.true&select=id,voornaam,achternaam,foto_url,bio,disciplines,code,praktijk_id`, { headers: HEADERS }),
+    fetch(`${SUPABASE_URL}/rest/v1/praktijken?actief=eq.true&select=id,naam,straat,huisnummer,postcode,stad,telefoon,email,website,logo_url`, { headers: HEADERS })
   ]);
   alleCategorieen = await r1.json();
   alleSubcategorieen = await r2.json();
   alleTherapeutenData = await r3.json();
+  allePraktijkenData = await r4.json();
   renderCategorieen();
 }
 
@@ -420,20 +423,20 @@ function zoekInDetail() {
   const locatie = (document.getElementById('detail-locatie')?.value || '').trim().toLowerCase();
   const lok = locatie.replace(/\s/g, '');
 
-  let gefilterd = [...alleTherapeutenData];
+  let gefilterd = [...allePraktijkenData];
 
   if (locatie) {
-    gefilterd = gefilterd.filter(t => {
-      const stad = (t.praktijken?.stad || '').toLowerCase();
-      const postcode = (t.praktijken?.postcode || '').toLowerCase().replace(/\s/g, '');
+    gefilterd = gefilterd.filter(p => {
+      const stad = (p.stad || '').toLowerCase();
+      const postcode = (p.postcode || '').toLowerCase().replace(/\s/g, '');
       return stad.includes(locatie) || postcode.includes(lok);
     });
   }
 
-  renderDetailTherapeutenLijst(gefilterd);
+  renderDetailPraktijkLijst(gefilterd);
 }
 
-function renderDetailTherapeutenLijst(lijst) {
+function renderDetailPraktijkLijst(lijst) {
   const container = document.getElementById('detail-therapeuten-lijst');
   const info = document.getElementById('detail-resultaat-info');
   if (!container) return;
@@ -442,47 +445,84 @@ function renderDetailTherapeutenLijst(lijst) {
   markers = [];
 
   if (!lijst || lijst.length === 0) {
-    container.innerHTML = '<div class="geen-resultaten">Geen therapeuten gevonden voor deze locatie.</div>';
+    container.innerHTML = '<div class="geen-resultaten">Geen praktijken gevonden voor deze locatie.</div>';
     info.textContent = '';
     return;
   }
 
-  info.textContent = `${lijst.length} therapeut${lijst.length !== 1 ? 'en' : ''} gevonden`;
+  info.textContent = `${lijst.length} praktijk${lijst.length !== 1 ? 'en' : ''} gevonden`;
 
-  container.innerHTML = lijst.map((t, i) => {
-    const naam = `${t.voornaam} ${t.achternaam}`;
-    const praktijk = t.praktijken?.naam || '';
-    const stad = t.praktijken?.stad || '';
-    const foto = t.foto_url
-      ? `<img class="therapeut-foto" src="${t.foto_url}" alt="${naam}" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"/><div class="therapeut-avatar" style="display:none">👤</div>`
-      : `<div class="therapeut-avatar">👤</div>`;
-    const tags = (t.disciplines || []).map(d => `<span class="disc-tag">${d}</span>`).join('');
+  container.innerHTML = lijst.map(p => {
+    const therapeuten = alleTherapeutenData.filter(t => t.praktijk_id === p.id);
+    const logoHtml = p.logo_url
+      ? `<img src="${p.logo_url}" style="width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0" onerror="this.style.display='none'" />`
+      : `<div style="width:44px;height:44px;border-radius:8px;background:var(--grey-bg);display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0">🏥</div>`;
+    const therapeutenHTML = therapeuten.length > 0
+      ? `<div style="margin-top:10px;padding-top:10px;border-top:1px solid var(--grey-border)">
+          <div style="font-size:0.72rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:8px">Therapeuten</div>
+          ${therapeuten.map(t => {
+            const foto = t.foto_url
+              ? `<img src="${t.foto_url}" style="width:32px;height:32px;border-radius:50%;object-fit:cover;border:2px solid var(--grey-border)" onerror="this.style.display='none'" />`
+              : `<div style="width:32px;height:32px;border-radius:50%;background:var(--teal-light);display:flex;align-items:center;justify-content:center;font-size:0.9rem">👤</div>`;
+            return `<div style="display:flex;align-items:center;gap:10px;padding:6px 0;border-bottom:1px solid var(--grey-bg)">
+              ${foto}
+              <div>
+                <div style="font-size:0.82rem;font-weight:600;color:var(--navy)">${t.voornaam} ${t.achternaam}</div>
+                <div style="font-size:0.72rem;color:var(--text-muted)">${(t.disciplines||[]).join(', ')}</div>
+              </div>
+            </div>`;
+          }).join('')}
+        </div>`
+      : '';
     return `
-      <div class="therapeut-kaart" onclick="this.classList.toggle('actief')">
-        ${foto}
-        <div class="therapeut-body">
-          <div class="therapeut-naam">${naam}</div>
-          <div class="therapeut-praktijk">${praktijk}</div>
-          <div class="therapeut-stad">📍 ${stad}</div>
-          ${t.bio ? `<div class="therapeut-bio">${t.bio}</div>` : ''}
-          <div class="therapeut-tags">${tags}</div>
+      <div class="therapeut-kaart" style="flex-direction:column;align-items:stretch" onclick="selecteerPraktijkOpKaart(${p.id})">
+        <div style="display:flex;gap:12px;align-items:flex-start">
+          ${logoHtml}
+          <div style="flex:1">
+            <div class="therapeut-naam">${p.naam}</div>
+            <div class="therapeut-praktijk">${p.straat || ''}${p.huisnummer ? ' ' + p.huisnummer : ''}</div>
+            <div class="therapeut-stad">📍 ${p.stad}</div>
+            ${p.website ? `<a href="${p.website}" target="_blank" style="font-size:0.75rem;color:var(--teal);font-weight:600;text-decoration:none">🌐 Website →</a>` : ''}
+          </div>
+          <div style="font-size:0.75rem;font-weight:600;color:var(--teal);white-space:nowrap">${therapeuten.length} therapeut${therapeuten.length !== 1 ? 'en' : ''}</div>
         </div>
+        ${therapeutenHTML}
       </div>`;
   }).join('');
 
-  voegMarkersTo(lijst);
+  voegPraktijkMarkersTo(lijst);
 }
 
-async function voegMarkersTo(lijst) {
-  const steden = [...new Set(lijst.map(t => t.praktijken?.stad).filter(Boolean))];
-  for (const stad of steden) {
+function selecteerPraktijkOpKaart(praktijkId) {
+  document.querySelectorAll('.therapeut-kaart').forEach(k => k.classList.remove('actief'));
+  event.currentTarget.classList.add('actief');
+  const marker = markers.find(m => m.praktijkId === praktijkId);
+  if (marker) { marker.openPopup(); }
+}
+
+async function voegPraktijkMarkersTo(lijst) {
+  for (const p of lijst) {
     try {
-      const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(stad + ', Nederland')}&format=json&limit=1`);
+      const zoekadres = `${p.straat || ''} ${p.huisnummer || ''}, ${p.stad}, Nederland`.trim();
+      const r = await fetch(`https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(zoekadres)}&format=json&limit=1`);
       const d = await r.json();
       if (d && d[0]) {
+        const therapeuten = alleTherapeutenData.filter(t => t.praktijk_id === p.id);
+        const therapeutenPopup = therapeuten.map(t =>
+          `<div style="display:flex;align-items:center;gap:8px;margin-top:6px">
+            ${t.foto_url ? `<img src="${t.foto_url}" style="width:28px;height:28px;border-radius:50%;object-fit:cover"/>` : '<span>👤</span>'}
+            <span style="font-size:0.82rem">${t.voornaam} ${t.achternaam}</span>
+          </div>`
+        ).join('');
         const m = L.marker([parseFloat(d[0].lat), parseFloat(d[0].lon)]).addTo(kaart);
-        const n = lijst.filter(t => t.praktijken?.stad === stad).length;
-        m.bindPopup(`<strong>${stad}</strong><br>${n} therapeut${n !== 1 ? 'en' : ''}`);
+        m.praktijkId = p.id;
+        m.bindPopup(`
+          <div style="min-width:180px">
+            <strong style="font-size:0.9rem">${p.naam}</strong><br>
+            <span style="font-size:0.78rem;color:#666">${p.straat || ''}, ${p.stad}</span>
+            ${therapeutenPopup}
+            ${p.website ? `<br><a href="${p.website}" target="_blank" style="font-size:0.78rem;color:#2A9D8F;font-weight:600">Website →</a>` : ''}
+          </div>`);
         markers.push(m);
       }
     } catch(e) {}
