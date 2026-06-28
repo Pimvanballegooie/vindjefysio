@@ -389,8 +389,9 @@ function openCategorie(catId, el) {
     <div style="font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:12px">Specialisaties binnen ${cat.naam}:</div>
     <div class="subcat-grid">${subcatHTML}</div>
     <div class="therapeuten-zoeker" id="therapeuten-zoeker">
-      <div class="zoeker-titel">🔍 Vind een therapeut</div>
-      <div class="zoeker-sub">Vul uw postcode of stad in om therapeuten bij u in de buurt te vinden.</div>
+      <div class="zoeker-titel">🔍 Vind een praktijk</div>
+      <div class="zoeker-sub">Vul uw postcode of stad in om praktijken bij u in de buurt te vinden.</div>
+      <div id="discipline-filter" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"></div>
       <div class="zoeker-rij">
         <input type="text" class="zoeker-input" id="detail-locatie" placeholder="Postcode of stad, bijv. 4815 HD of Breda" />
         <button class="zoeker-btn" onclick="zoekInDetail()">Zoeken</button>
@@ -414,8 +415,94 @@ function openCategorie(catId, el) {
     } else {
       kaart.invalidateSize();
     }
+    // Toon discipline filters voor deze categorie
+    renderDisciplineFilter(cat);
     detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }, 150);
+}
+
+let actieveDisciplines = [];
+
+function renderDisciplineFilter(cat) {
+  const filterDiv = document.getElementById('discipline-filter');
+  if (!filterDiv) return;
+
+  actieveDisciplines = [];
+
+  // Haal disciplines op van therapeuten gekoppeld aan praktijken van deze subsite
+  const deelsite = cat.deelsite || null;
+  let relevanteTherapeutenIds = new Set();
+
+  if (deelsite) {
+    // Filter praktijken op deelsite
+    const relPraktijken = allePraktijkenData.filter(p =>
+      (p.aangemeld_via || '').toLowerCase().includes(deelsite.toLowerCase())
+    );
+    relPraktijken.forEach(p => {
+      (p.therapeuten || []).forEach(t => relevanteTherapeutenIds.add(t.id));
+    });
+  } else {
+    // Geen deelsite — gebruik alle therapeuten
+    alleTherapeutenData.forEach(t => relevanteTherapeutenIds.add(t.id));
+  }
+
+  // Verzamel unieke disciplines
+  const disciplines = new Set();
+  alleTherapeutenData
+    .filter(t => relevanteTherapeutenIds.has(t.id))
+    .forEach(t => (t.disciplines || []).forEach(d => disciplines.add(d)));
+
+  if (disciplines.size === 0) {
+    filterDiv.style.display = 'none';
+    return;
+  }
+
+  // Discipline iconen
+  const DISC_ICON = {
+    'Fysiotherapeut': 'F',
+    'Ergotherapeut': 'E',
+    'Orthopedisch schoentmaker': 'O',
+    'Orthopedisch schoenmaker': 'O',
+    'Manueel therapeut': 'M',
+    'Kinderfysiotherapeut': 'K',
+    'Bekkenfysiotherapeut': 'B',
+    'Oefentherapeut': 'OT',
+    'Sportfysiotherapeut': 'SF'
+  };
+
+  filterDiv.style.display = 'flex';
+  filterDiv.innerHTML = '<span style="font-size:0.78rem;font-weight:700;color:var(--text-muted);align-self:center;margin-right:4px">Specialisatie:</span>';
+
+  [...disciplines].forEach(d => {
+    const DISC_ICON = {
+      'Fysiotherapeut': 'F', 'Ergotherapeut': 'E',
+      'Orthopedisch schoentmaker': 'O', 'Orthopedisch schoenmaker': 'O',
+      'Manueel therapeut': 'M', 'Kinderfysiotherapeut': 'K',
+      'Bekkenfysiotherapeut': 'B', 'Oefentherapeut': 'OT', 'Sportfysiotherapeut': 'SF'
+    };
+    const icon = DISC_ICON[d] || d.charAt(0).toUpperCase();
+    const btn = document.createElement('button');
+    btn.setAttribute('data-disc', d);
+    btn.style.cssText = 'display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1.5px solid var(--grey-border);background:var(--white);color:var(--text-muted);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;transition:all 0.2s';
+    btn.innerHTML = '<span style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700">' + icon + '</span>' + d;
+    btn.onclick = function() { toggleDiscipline(d, this); };
+    filterDiv.appendChild(btn);
+  });
+}
+
+function toggleDiscipline(disc, btn) {
+  if (actieveDisciplines.includes(disc)) {
+    actieveDisciplines = actieveDisciplines.filter(d => d !== disc);
+    btn.style.background = 'var(--white)';
+    btn.style.color = 'var(--text-muted)';
+    btn.style.borderColor = 'var(--grey-border)';
+  } else {
+    actieveDisciplines.push(disc);
+    btn.style.background = 'var(--navy)';
+    btn.style.color = 'white';
+    btn.style.borderColor = 'var(--navy)';
+  }
+  zoekInDetail();
 }
 
 function toggleSubcat(subcatId, el) {
@@ -435,11 +522,20 @@ function zoekInDetail() {
 
   let gefilterd = [...allePraktijkenData];
 
+  // Filter op locatie
   if (locatie) {
     gefilterd = gefilterd.filter(p => {
       const stad = (p.stad || '').toLowerCase();
       const postcode = (p.postcode || '').toLowerCase().replace(/\s/g, '');
       return stad.includes(locatie) || postcode.includes(lok);
+    });
+  }
+
+  // Filter op actieve disciplines
+  if (actieveDisciplines.length > 0) {
+    gefilterd = gefilterd.filter(p => {
+      const praktijkDiscs = (p.therapeuten || []).flatMap(t => t.disciplines || []);
+      return actieveDisciplines.some(d => praktijkDiscs.includes(d));
     });
   }
 
