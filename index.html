@@ -296,13 +296,6 @@ let alleSubcategorieen = [];
 let actieveCatId = null;
 let actieveSubcatIds = [];
 
-function initKaart() {
-  kaart = L.map('kaart').setView([51.58, 4.8], 9);
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '© OpenStreetMap'
-  }).addTo(kaart);
-}
-
 async function laadData() {
   const [r1, r2, r3] = await Promise.all([
     fetch(`${SUPABASE_URL}/rest/v1/categorieen?actief=eq.true&order=id`, { headers: HEADERS }),
@@ -401,11 +394,15 @@ function openCategorie(catId, el) {
 
   detail.classList.add('zichtbaar');
 
-  // Scroll naar detail
   setTimeout(() => {
+    if (!kaart) {
+      kaart = L.map('kaart').setView([51.58, 4.8], 9);
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap'}).addTo(kaart);
+    } else {
+      kaart.invalidateSize();
+    }
     detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    if (kaart) { kaart.invalidateSize(); }
-  }, 100);
+  }, 150);
 }
 
 function toggleSubcat(subcatId, el) {
@@ -545,7 +542,6 @@ function suggestie(tekst) {
 document.getElementById('zoek-input').addEventListener('keydown', e => { if (e.key === 'Enter') zoeken(); });
 document.getElementById('zoek-locatie').addEventListener('keydown', e => { if (e.key === 'Enter') zoeken(); });
 
-initKaart();
 laadData();
 </script>
 </body>
