@@ -10,7 +10,7 @@
     @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-300.woff2') format('woff2'); font-weight: 300; font-display: swap; }
     @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
     @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
-    @font-face { font-family: 'Inter'); src: url('fonts/inter-v20-latin-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
     @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -23,7 +23,7 @@
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--text); background: var(--white); line-height: 1.6; }
 
-    /* ── HEADER ── */
+    /* HEADER */
     header { background: var(--white); border-bottom: 1px solid var(--grey-border); position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
     .header-inner { max-width: 1300px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); display: flex; align-items: center; justify-content: space-between; height: 72px; }
     .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
@@ -35,7 +35,7 @@
     nav a.cta:hover { background: #2A4A73; }
     @media (max-width: 700px) { nav { display: none; } }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero { background: linear-gradient(135deg, #F5A623 0%, #E8735A 20%, #C0392B 35%, #8E44AD 55%, #2980B9 75%, #2A9D8F 100%); color: var(--white); padding: 80px 24px 72px; text-align: center; position: relative; overflow: hidden; }
     .hero::before { content: ''; position: absolute; inset: 0; background: rgba(0,0,0,0.35); }
     .hero-content { position: relative; z-index: 1; }
@@ -43,7 +43,7 @@
     .hero h1 { font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 700; margin-bottom: 16px; letter-spacing: -0.03em; line-height: 1.15; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     .hero p { opacity: 0.92; max-width: 620px; margin: 0 auto 44px; font-size: 1.05rem; line-height: 1.7; }
 
-    /* ── ZOEKBALK ── */
+    /* ZOEKBALK */
     .zoek-container { max-width: 760px; margin: 0 auto; }
     .zoek-balk { background: var(--white); border-radius: 16px; padding: 8px; display: flex; gap: 8px; box-shadow: 0 12px 48px rgba(0,0,0,0.25); }
     .zoek-input { flex: 1; padding: 14px 20px; border: none; outline: none; font-family: 'Inter', sans-serif; font-size: 1rem; color: var(--text); border-radius: 10px; background: var(--grey-bg); }
@@ -54,13 +54,7 @@
     .zoek-suggestie { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.9); font-size: 0.8rem; font-weight: 500; padding: 5px 14px; border-radius: 999px; cursor: pointer; transition: all 0.2s; }
     .zoek-suggestie:hover { background: rgba(255,255,255,0.28); color: white; }
 
-    /* ── RESULTAAT BANNER ── */
-    .zoek-resultaat-banner { background: var(--grey-bg); border-bottom: 1px solid var(--grey-border); padding: 12px clamp(1rem, 4vw, 3rem); display: none; }
-    .zoek-resultaat-inner { max-width: 1300px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
-    .zoek-resultaat-tekst { font-size: 0.9rem; color: var(--navy); font-weight: 600; }
-    .zoek-wis { font-size: 0.82rem; color: var(--text-muted); cursor: pointer; text-decoration: underline; }
-
-    /* ── CATEGORIE TEGELS ── */
+    /* CATEGORIE TEGELS */
     .categorieen-sectie { max-width: 1300px; margin: 64px auto; padding: 0 clamp(1rem, 4vw, 3rem); }
     .categorieen-header { display: flex; align-items: center; justify-content: space-between; gap: 32px; margin-bottom: 36px; }
     .categorieen-header-tekst { flex: 1; }
@@ -69,53 +63,74 @@
     .sectie-kop { font-size: 1.5rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
     .sectie-sub { font-size: 0.95rem; color: var(--text-muted); }
     .categorieen-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; }
-
-    .categorie-tegel { background: var(--white); border: 1px solid var(--grey-border); border-radius: 16px; padding: 26px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; gap: 10px; text-decoration: none; color: inherit; position: relative; overflow: hidden; }
+    .categorie-tegel { background: var(--white); border: 1px solid var(--grey-border); border-radius: 16px; padding: 26px; cursor: pointer; transition: all 0.2s; display: flex; flex-direction: column; gap: 10px; position: relative; overflow: hidden; }
     .categorie-tegel::after { content: ''; position: absolute; top: 0; left: 0; bottom: 0; width: 4px; background: var(--cat-kleur, #2A9D8F); border-radius: 4px 0 0 4px; }
     .categorie-tegel:hover { box-shadow: 0 8px 32px rgba(0,0,0,0.10); transform: translateY(-2px); border-color: var(--cat-kleur, #2A9D8F); }
     .categorie-tegel.actief { border-color: var(--cat-kleur, #2A9D8F); box-shadow: 0 0 0 2px var(--cat-kleur, #2A9D8F); }
-    .cat-icon-wrap { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; background: color-mix(in srgb, var(--cat-kleur, #2A9D8F) 12%, white); flex-shrink: 0; }
     .cat-header { display: flex; align-items: center; gap: 14px; }
+    .cat-icon-wrap { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.6rem; flex-shrink: 0; }
     .cat-naam { font-size: 1rem; font-weight: 700; color: var(--navy); }
     .cat-omschrijving { font-size: 0.83rem; color: var(--text-muted); line-height: 1.55; }
     .cat-footer { display: flex; align-items: center; justify-content: space-between; margin-top: 4px; }
     .cat-sub-count { font-size: 0.75rem; color: var(--text-muted); }
     .cat-deelsite { font-size: 0.72rem; font-weight: 600; color: var(--cat-kleur, #2A9D8F); }
+    .cat-pijl { font-size: 0.82rem; color: var(--text-muted); margin-left: auto; transition: transform 0.2s; }
+    .categorie-tegel.actief .cat-pijl { transform: rotate(180deg); }
 
-    /* ── RESULTATEN ── */
-    .resultaten-sectie { max-width: 1300px; margin: 0 auto 64px; padding: 0 clamp(1rem, 4vw, 3rem); display: none; }
-    .resultaten-sectie.zichtbaar { display: block; }
-    .resultaten-header { padding: 24px 0 16px; display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
-    .resultaten-layout { display: grid; grid-template-columns: 1fr 440px; gap: 24px; }
-    @media (max-width: 1000px) { .resultaten-layout { grid-template-columns: 1fr; } }
+    /* CATEGORIE DETAIL */
+    .cat-detail { display: none; background: var(--grey-bg); border-radius: 20px; padding: 40px; margin-top: 24px; border: 1px solid var(--grey-border); }
+    .cat-detail.zichtbaar { display: block; }
+    .cat-detail-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; margin-bottom: 32px; flex-wrap: wrap; }
+    .cat-detail-titel { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; display: flex; align-items: center; gap: 12px; }
+    .cat-detail-beschrijving { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; max-width: 680px; }
+    .cat-subsite-link { display: inline-flex; align-items: center; gap: 8px; background: var(--white); border: 1.5px solid var(--grey-border); border-radius: 10px; padding: 12px 20px; text-decoration: none; color: var(--navy); font-size: 0.85rem; font-weight: 600; transition: all 0.2s; white-space: nowrap; flex-shrink: 0; }
+    .cat-subsite-link:hover { border-color: var(--teal); color: var(--teal); }
 
-    .subcat-filter { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
-    .subcat-btn { padding: 6px 16px; border-radius: 999px; border: 1.5px solid var(--grey-border); background: var(--white); color: var(--text-muted); font-size: 0.78rem; font-weight: 600; cursor: pointer; transition: all 0.2s; font-family: 'Inter', sans-serif; }
-    .subcat-btn:hover { border-color: var(--navy); color: var(--navy); }
-    .subcat-btn.actief { background: var(--navy); border-color: var(--navy); color: var(--white); }
+    /* SUBCATEGORIE TEGELS IN DETAIL */
+    .subcat-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; margin-bottom: 36px; }
+    .subcat-tegel { background: var(--white); border: 1px solid var(--grey-border); border-radius: 12px; padding: 18px; cursor: pointer; transition: all 0.2s; }
+    .subcat-tegel:hover { border-color: var(--cat-kleur, #2A9D8F); box-shadow: 0 4px 16px rgba(0,0,0,0.06); }
+    .subcat-tegel.actief { border-color: var(--cat-kleur, #2A9D8F); background: color-mix(in srgb, var(--cat-kleur, #2A9D8F) 6%, white); }
+    .subcat-naam { font-size: 0.88rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .subcat-beschrijving { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+    .subcat-voorbeelden { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
+    .subcat-tag { background: var(--grey-bg); color: var(--text-muted); font-size: 0.68rem; font-weight: 500; padding: 2px 8px; border-radius: 999px; }
 
-    .resultaat-info { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 16px; }
-    .therapeuten-lijst { display: flex; flex-direction: column; gap: 12px; max-height: calc(100vh - 200px); overflow-y: auto; padding-right: 4px; }
+    /* THERAPEUTEN ZOEKER IN DETAIL */
+    .therapeuten-zoeker { background: var(--white); border: 1px solid var(--grey-border); border-radius: 16px; padding: 28px; }
+    .zoeker-titel { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .zoeker-sub { font-size: 0.85rem; color: var(--text-muted); margin-bottom: 20px; }
+    .zoeker-rij { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 20px; }
+    .zoeker-input { flex: 1; min-width: 180px; padding: 12px 16px; border: 1.5px solid var(--grey-border); border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text); outline: none; transition: border-color 0.2s; }
+    .zoeker-input:focus { border-color: var(--teal); }
+    .zoeker-btn { padding: 12px 24px; background: var(--navy); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.9rem; font-family: 'Inter', sans-serif; transition: background 0.2s; }
+    .zoeker-btn:hover { background: #2A4A73; }
+    .postcode-hint { font-size: 0.78rem; color: var(--teal); margin-bottom: 16px; display: flex; align-items: center; gap: 6px; }
 
-    .therapeut-kaart { background: var(--white); border: 1px solid var(--grey-border); border-radius: 14px; padding: 18px 20px; display: flex; gap: 14px; align-items: flex-start; transition: all 0.2s; cursor: pointer; }
-    .therapeut-kaart:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.08); border-color: var(--navy); }
+    /* RESULTATEN LAYOUT */
+    .resultaten-layout { display: grid; grid-template-columns: 1fr 380px; gap: 20px; }
+    @media (max-width: 900px) { .resultaten-layout { grid-template-columns: 1fr; } }
+    .therapeuten-lijst { display: flex; flex-direction: column; gap: 10px; max-height: 520px; overflow-y: auto; }
+    .therapeut-kaart { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 12px; padding: 16px; display: flex; gap: 12px; align-items: flex-start; transition: all 0.2s; cursor: pointer; }
+    .therapeut-kaart:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.08); border-color: var(--navy); }
     .therapeut-kaart.actief { border-color: var(--teal); box-shadow: 0 0 0 2px var(--teal); }
-    .therapeut-foto { width: 52px; height: 52px; border-radius: 50%; object-fit: cover; border: 2px solid var(--grey-border); flex-shrink: 0; }
-    .therapeut-avatar { width: 52px; height: 52px; border-radius: 50%; background: var(--grey-bg); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .therapeut-foto { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; border: 2px solid var(--grey-border); flex-shrink: 0; }
+    .therapeut-avatar { width: 48px; height: 48px; border-radius: 50%; background: var(--white); display: flex; align-items: center; justify-content: center; font-size: 1.2rem; flex-shrink: 0; border: 2px solid var(--grey-border); }
     .therapeut-body { flex: 1; min-width: 0; }
-    .therapeut-naam { font-size: 0.92rem; font-weight: 700; color: var(--navy); }
-    .therapeut-praktijk { font-size: 0.8rem; color: var(--text-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .therapeut-stad { font-size: 0.8rem; color: var(--teal); font-weight: 600; }
-    .therapeut-bio { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-top: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-    .therapeut-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 8px; }
-    .disc-tag { background: var(--grey-bg); color: var(--text-muted); font-size: 0.68rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; }
+    .therapeut-naam { font-size: 0.9rem; font-weight: 700; color: var(--navy); }
+    .therapeut-praktijk { font-size: 0.78rem; color: var(--text-muted); }
+    .therapeut-stad { font-size: 0.78rem; color: var(--teal); font-weight: 600; }
+    .therapeut-bio { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; margin-top: 6px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+    .therapeut-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }
+    .disc-tag { background: var(--white); color: var(--text-muted); font-size: 0.68rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; border: 1px solid var(--grey-border); }
+    .match-tag { background: #E8F5F4; color: var(--teal); font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
     .specialist-badge { background: #FEF9E7; color: #C9940A; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
-
-    /* ── KAART ── */
-    .kaart-container { position: sticky; top: 88px; height: calc(100vh - 110px); border-radius: 16px; overflow: hidden; border: 1px solid var(--grey-border); box-shadow: 0 4px 24px rgba(0,0,0,0.06); }
+    .kaart-container { border-radius: 12px; overflow: hidden; border: 1px solid var(--grey-border); height: 520px; }
     #kaart { width: 100%; height: 100%; }
+    .resultaat-info { font-size: 0.82rem; color: var(--text-muted); margin-bottom: 12px; }
+    .geen-resultaten { text-align: center; padding: 32px; color: var(--text-muted); background: var(--grey-bg); border-radius: 12px; }
 
-    /* ── SUBSITES ── */
+    /* SUBSITES SECTIE */
     .subsites-sectie { background: var(--grey-bg); border-top: 1px solid var(--grey-border); padding: 64px 0; }
     .subsites-inner { max-width: 1300px; margin: 0 auto; padding: 0 clamp(1rem, 4vw, 3rem); }
     .subsites-inner h2 { color: var(--navy); font-size: 1.4rem; font-weight: 700; margin-bottom: 8px; }
@@ -129,10 +144,6 @@
     .subsite-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: var(--teal-light); color: var(--teal); margin-top: 4px; width: fit-content; }
     .subsite-badge.binnenkort { background: var(--grey-bg); color: var(--text-muted); }
 
-    /* ── UTILITIES ── */
-    .laden { text-align: center; padding: 48px; color: var(--text-muted); }
-    .geen-resultaten { text-align: center; padding: 48px; color: var(--text-muted); background: var(--grey-bg); border-radius: 14px; border: 1px solid var(--grey-border); }
-
     footer { background: var(--navy-dark); color: rgba(255,255,255,0.5); text-align: center; padding: 32px 24px; font-size: 0.82rem; }
     footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
     .footer-links { display: flex; justify-content: center; gap: 24px; flex-wrap: wrap; margin-bottom: 12px; }
@@ -140,7 +151,6 @@
 </head>
 <body>
 
-<!-- HEADER -->
 <header>
   <div class="header-inner">
     <a href="index.html" class="logo">
@@ -180,42 +190,20 @@
   </div>
 </div>
 
-<!-- ZOEKRESULTAAT BANNER -->
-<div class="zoek-resultaat-banner" id="zoek-banner">
-  <div class="zoek-resultaat-inner">
-    <div class="zoek-resultaat-tekst" id="zoek-banner-tekst"></div>
-    <span class="zoek-wis" onclick="wisZoeken()">× Zoekopdracht wissen</span>
-  </div>
-</div>
-
-<!-- RESULTATEN -->
-<div class="resultaten-sectie" id="resultaten-sectie">
-  <div class="resultaten-header">
-    <div class="subcat-filter" id="subcat-filter"></div>
-  </div>
-  <div class="resultaat-info" id="resultaat-info"></div>
-  <div class="resultaten-layout">
-    <div class="therapeuten-lijst" id="therapeuten-lijst">
-      <div class="laden">Therapeuten laden...</div>
-    </div>
-    <div class="kaart-container">
-      <div id="kaart"></div>
-    </div>
-  </div>
-</div>
-
 <!-- CATEGORIE TEGELS -->
 <div class="categorieen-sectie" id="categorieen">
   <div class="categorieen-header">
     <div class="categorieen-header-tekst">
       <div class="sectie-kop">Wat is uw vraag?</div>
-      <div class="sectie-sub">Kies een specialisatiegebied om gespecialiseerde therapeuten en informatie te vinden.</div>
+      <div class="sectie-sub">Kies een specialisatiegebied voor meer informatie en gespecialiseerde therapeuten bij u in de buurt.</div>
     </div>
     <img class="categorieen-logo" src="VJF_Logo.png" alt="VindJeFysio" />
   </div>
   <div class="categorieen-grid" id="categorieen-grid">
-    <div class="laden">Laden...</div>
+    <div style="color:var(--text-muted);padding:24px">Laden...</div>
   </div>
+  <!-- CATEGORIE DETAIL (wordt hier ingevoegd) -->
+  <div class="cat-detail" id="cat-detail"></div>
 </div>
 
 <!-- SUBSITES -->
@@ -275,16 +263,29 @@ const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsI
 const HEADERS = { 'apikey': ANON_KEY, 'Authorization': `Bearer ${ANON_KEY}` };
 
 const CAT_ICONS = {1:'👶',2:'🧓',3:'🧠',4:'💭',5:'❤️',6:'🦴',7:'🦵',8:'💪',9:'⚕️'};
-const CAT_OMSCHRIJVING = {
-  1: 'Motorische ontwikkeling, schrijfproblemen, scoliose, ademhaling en meer.',
-  2: 'Valpreventie, dementie, revalidatie en mobiliteit op latere leeftijd.',
-  3: 'CVA, Parkinson, MS, duizeligheid en neuromusculaire aandoeningen.',
-  4: 'Psychosomatische klachten, burn-out, hyperventilatie en functionele klachten.',
-  5: 'COPD, hartrevalidatie, oncologie, chronische pijn en diabetes.',
-  6: 'Lage rugklachten, nekpijn, bekkenklachten en scoliose.',
-  7: 'Heup, knie, enkel en voet — van artrose tot sportblessures.',
-  8: 'Schouder, elleboog, pols en hand — van frozen shoulder tot tenniselleboog.',
-  9: 'Manuele therapie, dry needling, shockwave, echografie en meer.'
+
+const CAT_BESCHRIJVING = {
+  1: 'Kinderfysiotherapeuten begeleiden kinderen van baby tot jongere bij problemen met bewegen, houding en ontwikkeling. Of het nu gaat om een baby die steeds dezelfde kant op kijkt, een kind dat moeite heeft met schrijven of gymmen, of een tiener met rugklachten — een gespecialiseerde kinderfysiotherapeut kijkt naar het hele kind en begeleidt gericht.',
+  2: 'Fysiotherapeuten gespecialiseerd in ouderenzorg helpen bij het behouden van zelfstandigheid, het voorkomen van vallen en het herstellen na ziekte of operatie. Met programma\'s als Otago, In Balans en Vallen Verleden Tijd werken zij aan balans, kracht en conditie — zodat bewegen veilig en prettig blijft.',
+  3: 'Neurologische aandoeningen zoals een beroerte (CVA), Parkinson, MS of duizeligheid vragen om gespecialiseerde fysiotherapeutische begeleiding. Therapeuten in dit netwerk werken met erkende methoden gericht op herstel van beweging, balans en kwaliteit van leven.',
+  4: 'Lichamelijke klachten kunnen een sterke relatie hebben met spanning, stress of emoties. Psychosomatische fysiotherapeuten, ademhalingstherapeuten en therapeuten gespecialiseerd in functionele neurologische stoornissen helpen bij klachten waarbij lichaam en geest samenkomen.',
+  5: 'Bij langdurige aandoeningen zoals COPD, hart- en vaatziekten, kanker, chronische pijn of diabetes speelt fysiotherapie een belangrijke rol. Gespecialiseerde therapeuten begeleiden bij conditieopbouw, energiebeheer en veilig bewegen ondanks de ziekte.',
+  6: 'Rug-, nek- en bekkenklachten behoren tot de meest voorkomende klachten in Nederland. Gespecialiseerde therapeuten behandelen lage rugpijn, hernia, nekpijn, bekkeninstabiliteit en scoliose — met aandacht voor zowel het klachtenpatroon als de onderliggende oorzaak.',
+  7: 'Van heuppijn tot enkelverzwikking, van knieartrose tot achillespeesklachten — de benen dragen ons door het leven. Gespecialiseerde therapeuten begeleiden bij blessures, artrose, revalidatie na operatie en terugkeer naar sport.',
+  8: 'Schouderpijn, tenniselleboog, carpaal tunnelsyndroom of handklachten na een operatie — arm- en handtherapeuten zijn gespecialiseerd in het herstel van de bovenste extremiteit. Van frozen shoulder tot fijne motoriek na letsel.',
+  9: 'Naast reguliere fysiotherapie bieden gespecialiseerde therapeuten aanvullende behandelvormen zoals manuele therapie, dry needling, shockwave en echografie. Hier vindt u ook therapeuten met specifieke expertises zoals bekkenfysiotherapie, kaakfysiotherapie en leefstijlbegeleiding.'
+};
+
+const CAT_OMSCHRIJVING_KORT = {
+  1: 'Motorische ontwikkeling, schrijfproblemen, houding, ademhaling.',
+  2: 'Valpreventie, mobiliteit, dementie en revalidatie.',
+  3: 'CVA, Parkinson, MS, duizeligheid.',
+  4: 'Psychosomatisch, burn-out, hyperventilatie.',
+  5: 'COPD, hartrevalidatie, oncologie, chronische pijn.',
+  6: 'Rugpijn, nekpijn, bekkenklachten, scoliose.',
+  7: 'Heup, knie, enkel en voet.',
+  8: 'Schouder, elleboog, pols en hand.',
+  9: 'Manuele therapie, dry needling, shockwave.'
 };
 
 let kaart = null;
@@ -292,6 +293,8 @@ let markers = [];
 let alleTherapeutenData = [];
 let alleCategorieen = [];
 let alleSubcategorieen = [];
+let actieveCatId = null;
+let actieveSubcatIds = [];
 
 function initKaart() {
   kaart = L.map('kaart').setView([51.58, 4.8], 9);
@@ -300,122 +303,149 @@ function initKaart() {
   }).addTo(kaart);
 }
 
-async function laadCategorieen() {
-  const r1 = await fetch(`${SUPABASE_URL}/rest/v1/categorieen?actief=eq.true&order=id`, { headers: HEADERS });
+async function laadData() {
+  const [r1, r2, r3] = await Promise.all([
+    fetch(`${SUPABASE_URL}/rest/v1/categorieen?actief=eq.true&order=id`, { headers: HEADERS }),
+    fetch(`${SUPABASE_URL}/rest/v1/subcategorieen?actief=eq.true&order=id`, { headers: HEADERS }),
+    fetch(`${SUPABASE_URL}/rest/v1/therapeuten?actief=eq.true&select=id,voornaam,achternaam,foto_url,bio,disciplines,code,praktijk_id,praktijken(naam,stad,straat,postcode)`, { headers: HEADERS })
+  ]);
   alleCategorieen = await r1.json();
-  const r2 = await fetch(`${SUPABASE_URL}/rest/v1/subcategorieen?actief=eq.true&order=id`, { headers: HEADERS });
   alleSubcategorieen = await r2.json();
+  alleTherapeutenData = await r3.json();
   renderCategorieen();
 }
 
 function renderCategorieen() {
   const grid = document.getElementById('categorieen-grid');
   grid.innerHTML = alleCategorieen.map(cat => {
-    const subcats = alleSubcategorieen.filter(s => s.categorie_id === cat.id);
     const kleur = '#' + (cat.kleur || '2A9D8F');
+    const subcats = alleSubcategorieen.filter(s => s.categorie_id === cat.id);
     const deelsite = cat.deelsite ? `<span class="cat-deelsite">→ ${cat.deelsite}</span>` : '';
     return `
-      <div class="categorie-tegel" style="--cat-kleur:${kleur}" onclick="filterOpCategorie(${cat.id}, '${cat.naam}', this)">
+      <div class="categorie-tegel" id="cattegel-${cat.id}" style="--cat-kleur:${kleur}" onclick="openCategorie(${cat.id}, this)">
         <div class="cat-header">
-          <div class="cat-icon-wrap" style="--cat-kleur:${kleur}">${CAT_ICONS[cat.id] || '🏥'}</div>
+          <div class="cat-icon-wrap" style="background:${kleur}22">${CAT_ICONS[cat.id] || '🏥'}</div>
           <div class="cat-naam">${cat.naam}</div>
         </div>
-        <div class="cat-omschrijving">${CAT_OMSCHRIJVING[cat.id] || ''}</div>
+        <div class="cat-omschrijving">${CAT_OMSCHRIJVING_KORT[cat.id] || ''}</div>
         <div class="cat-footer">
           <span class="cat-sub-count">${subcats.length} specialisaties</span>
           ${deelsite}
+          <span class="cat-pijl">▼</span>
         </div>
       </div>`;
   }).join('');
 }
 
-async function laadTherapeutenMetPraktijken() {
-  const resp = await fetch(
-    `${SUPABASE_URL}/rest/v1/therapeuten?actief=eq.true&select=id,voornaam,achternaam,foto_url,bio,disciplines,code,praktijk_id,praktijken(naam,stad,straat,postcode,telefoon,website)`,
-    { headers: HEADERS }
-  );
-  alleTherapeutenData = await resp.json();
-}
+function openCategorie(catId, el) {
+  const detail = document.getElementById('cat-detail');
 
-async function zoeken() {
-  const zoekterm = document.getElementById('zoek-input').value.trim().toLowerCase();
-  const locatie = document.getElementById('zoek-locatie').value.trim().toLowerCase();
-  if (!zoekterm && !locatie) return;
-
-  let gevondenSubcats = [];
-  if (zoekterm) {
-    gevondenSubcats = alleSubcategorieen.filter(s => {
-      const z = (s.zoektermen || '').toLowerCase();
-      const n = (s.naam || '').toLowerCase();
-      const v = (s.voorbeelden || '').toLowerCase();
-      return z.includes(zoekterm) || n.includes(zoekterm) || v.includes(zoekterm)
-        || zoekterm.split(' ').some(w => w.length > 3 && (z.includes(w) || n.includes(w) || v.includes(w)));
-    });
+  // Sluit als dezelfde al open is
+  if (actieveCatId === catId) {
+    actieveCatId = null;
+    detail.classList.remove('zichtbaar');
+    document.querySelectorAll('.categorie-tegel').forEach(t => t.classList.remove('actief'));
+    return;
   }
 
-  let gefilterd = [...alleTherapeutenData];
-  if (locatie) {
-    const lok = locatie.replace(/\s/g, '');
-    gefilterd = gefilterd.filter(t => {
-      const s = (t.praktijken?.stad || '').toLowerCase();
-      const p = (t.praktijken?.postcode || '').toLowerCase().replace(/\s/g, '');
-      return s.includes(locatie) || p.includes(lok);
-    });
-  }
-
-  toonResultaten(gefilterd, gevondenSubcats, zoekterm);
-  document.getElementById('resultaten-sectie').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-function suggestie(tekst) {
-  document.getElementById('zoek-input').value = tekst;
-  zoeken();
-}
-
-function wisZoeken() {
-  document.getElementById('zoek-input').value = '';
-  document.getElementById('zoek-locatie').value = '';
-  document.getElementById('resultaten-sectie').classList.remove('zichtbaar');
-  document.getElementById('zoek-banner').style.display = 'none';
-  document.querySelectorAll('.categorie-tegel').forEach(t => t.classList.remove('actief'));
-}
-
-function filterOpCategorie(catId, catNaam, el) {
+  actieveCatId = catId;
+  actieveSubcatIds = [];
   document.querySelectorAll('.categorie-tegel').forEach(t => t.classList.remove('actief'));
   el.classList.add('actief');
+
+  const cat = alleCategorieen.find(c => c.id === catId);
   const subcats = alleSubcategorieen.filter(s => s.categorie_id === catId);
-  toonResultaten(alleTherapeutenData, subcats, catNaam);
-  document.getElementById('resultaten-sectie').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  const kleur = '#' + (cat.kleur || '2A9D8F');
+
+  const subsiteLink = cat.deelsite
+    ? `<a class="cat-subsite-link" href="https://${cat.deelsite}" target="_blank">🔗 Meer info op ${cat.deelsite} →</a>`
+    : '';
+
+  const subcatHTML = subcats.map(s => {
+    const voorbeelden = (s.voorbeelden || '').split(',').slice(0, 3).map(v =>
+      `<span class="subcat-tag">${v.trim()}</span>`).join('');
+    return `
+      <div class="subcat-tegel" style="--cat-kleur:${kleur}" onclick="toggleSubcat(${s.id}, this)">
+        <div class="subcat-naam">${s.naam}</div>
+        <div class="subcat-beschrijving">${s.voorbeelden || ''}</div>
+        <div class="subcat-voorbeelden">${voorbeelden}</div>
+      </div>`;
+  }).join('');
+
+  detail.innerHTML = `
+    <div class="cat-detail-header">
+      <div>
+        <div class="cat-detail-titel" style="color:${kleur}">${CAT_ICONS[catId] || '🏥'} ${cat.naam}</div>
+        <div class="cat-detail-beschrijving">${CAT_BESCHRIJVING[catId] || ''}</div>
+      </div>
+      ${subsiteLink}
+    </div>
+    <div style="font-size:0.88rem;font-weight:700;color:var(--navy);margin-bottom:12px">Specialisaties binnen ${cat.naam}:</div>
+    <div class="subcat-grid">${subcatHTML}</div>
+    <div class="therapeuten-zoeker" id="therapeuten-zoeker">
+      <div class="zoeker-titel">🔍 Vind een therapeut</div>
+      <div class="zoeker-sub">Vul uw postcode of stad in om therapeuten bij u in de buurt te vinden.</div>
+      <div class="zoeker-rij">
+        <input type="text" class="zoeker-input" id="detail-locatie" placeholder="Postcode of stad, bijv. 4815 HD of Breda" />
+        <button class="zoeker-btn" onclick="zoekInDetail()">Zoeken</button>
+      </div>
+      <div class="postcode-hint">💡 Tip: vul uw postcode in voor de meest accurate resultaten</div>
+      <div class="resultaat-info" id="detail-resultaat-info"></div>
+      <div class="resultaten-layout">
+        <div class="therapeuten-lijst" id="detail-therapeuten-lijst">
+          <div style="color:var(--text-muted);font-size:0.85rem">Vul een locatie in of klik op een specialisatie hierboven om te zoeken.</div>
+        </div>
+        <div class="kaart-container"><div id="kaart"></div></div>
+      </div>
+    </div>`;
+
+  detail.classList.add('zichtbaar');
+
+  // Scroll naar detail
+  setTimeout(() => {
+    detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (kaart) { kaart.invalidateSize(); }
+  }, 100);
 }
 
-function toonResultaten(therapeuten, subcats, zoekterm) {
-  document.getElementById('resultaten-sectie').classList.add('zichtbaar');
-  const banner = document.getElementById('zoek-banner');
-  banner.style.display = 'block';
-
-  const bannerTekst = document.getElementById('zoek-banner-tekst');
-  if (subcats.length > 0) {
-    bannerTekst.textContent = `"${zoekterm}" → ${subcats.map(s => s.naam).slice(0, 3).join(', ')}`;
+function toggleSubcat(subcatId, el) {
+  if (actieveSubcatIds.includes(subcatId)) {
+    actieveSubcatIds = actieveSubcatIds.filter(id => id !== subcatId);
+    el.classList.remove('actief');
   } else {
-    bannerTekst.textContent = zoekterm ? `Zoekresultaten voor "${zoekterm}"` : '';
+    actieveSubcatIds.push(subcatId);
+    el.classList.add('actief');
+  }
+  zoekInDetail();
+}
+
+function zoekInDetail() {
+  const locatie = (document.getElementById('detail-locatie')?.value || '').trim().toLowerCase();
+  const lok = locatie.replace(/\s/g, '');
+
+  let gefilterd = [...alleTherapeutenData];
+
+  if (locatie) {
+    gefilterd = gefilterd.filter(t => {
+      const stad = (t.praktijken?.stad || '').toLowerCase();
+      const postcode = (t.praktijken?.postcode || '').toLowerCase().replace(/\s/g, '');
+      return stad.includes(locatie) || postcode.includes(lok);
+    });
   }
 
-  const subcatFilter = document.getElementById('subcat-filter');
-  subcatFilter.innerHTML = subcats.map(s =>
-    `<button class="subcat-btn" onclick="this.classList.toggle('actief')">${s.naam}</button>`
-  ).join('');
-
-  renderTherapeutenLijst(therapeuten);
+  renderDetailTherapeutenLijst(gefilterd);
 }
 
-function renderTherapeutenLijst(lijst) {
-  const container = document.getElementById('therapeuten-lijst');
-  const info = document.getElementById('resultaat-info');
-  markers.forEach(m => kaart.removeLayer(m));
+function renderDetailTherapeutenLijst(lijst) {
+  const container = document.getElementById('detail-therapeuten-lijst');
+  const info = document.getElementById('detail-resultaat-info');
+  if (!container) return;
+
+  markers.forEach(m => { try { kaart.removeLayer(m); } catch(e) {} });
   markers = [];
 
   if (!lijst || lijst.length === 0) {
-    container.innerHTML = '<div class="geen-resultaten">Geen therapeuten gevonden. Probeer een andere zoekopdracht of locatie.</div>';
+    container.innerHTML = '<div class="geen-resultaten">Geen therapeuten gevonden voor deze locatie.</div>';
     info.textContent = '';
     return;
   }
@@ -431,7 +461,7 @@ function renderTherapeutenLijst(lijst) {
       : `<div class="therapeut-avatar">👤</div>`;
     const tags = (t.disciplines || []).map(d => `<span class="disc-tag">${d}</span>`).join('');
     return `
-      <div class="therapeut-kaart" onclick="selecteerTherapeut(${i})">
+      <div class="therapeut-kaart" onclick="this.classList.toggle('actief')">
         ${foto}
         <div class="therapeut-body">
           <div class="therapeut-naam">${naam}</div>
@@ -461,21 +491,62 @@ async function voegMarkersTo(lijst) {
     } catch(e) {}
   }
   if (markers.length > 0) {
-    kaart.fitBounds(L.featureGroup(markers).getBounds().pad(0.3));
+    try { kaart.fitBounds(L.featureGroup(markers).getBounds().pad(0.3)); } catch(e) {}
   }
 }
 
-function selecteerTherapeut(i) {
-  document.querySelectorAll('.therapeut-kaart').forEach(k => k.classList.remove('actief'));
-  document.querySelectorAll('.therapeut-kaart')[i]?.classList.add('actief');
+// ZOEKEN VANUIT HERO
+async function zoeken() {
+  const zoekterm = document.getElementById('zoek-input').value.trim().toLowerCase();
+  const locatie = document.getElementById('zoek-locatie').value.trim().toLowerCase();
+  if (!zoekterm && !locatie) return;
+
+  // Vind passende categorie
+  if (zoekterm) {
+    const gevondenSubcat = alleSubcategorieen.find(s => {
+      const z = (s.zoektermen || '').toLowerCase();
+      const n = (s.naam || '').toLowerCase();
+      const v = (s.voorbeelden || '').toLowerCase();
+      return z.includes(zoekterm) || n.includes(zoekterm) || v.includes(zoekterm)
+        || zoekterm.split(' ').some(w => w.length > 3 && (z.includes(w) || n.includes(w)));
+    });
+
+    if (gevondenSubcat) {
+      const tegel = document.getElementById(`cattegel-${gevondenSubcat.categorie_id}`);
+      if (tegel) {
+        openCategorie(gevondenSubcat.categorie_id, tegel);
+        // Zet locatie in het detail zoekveld
+        setTimeout(() => {
+          const input = document.getElementById('detail-locatie');
+          if (input && locatie) { input.value = locatie; }
+          actieveSubcatIds = [gevondenSubcat.id];
+          zoekInDetail();
+          // Highlight de gevonden subcat
+          setTimeout(() => {
+            document.querySelectorAll('.subcat-tegel').forEach(t => {
+              if (t.querySelector('.subcat-naam')?.textContent === gevondenSubcat.naam) {
+                t.classList.add('actief');
+              }
+            });
+          }, 200);
+        }, 300);
+      }
+    }
+  }
+
+  document.getElementById('categorieen').scrollIntoView({ behavior: 'smooth' });
+}
+
+function suggestie(tekst) {
+  document.getElementById('zoek-input').value = tekst;
+  zoeken();
 }
 
 document.getElementById('zoek-input').addEventListener('keydown', e => { if (e.key === 'Enter') zoeken(); });
 document.getElementById('zoek-locatie').addEventListener('keydown', e => { if (e.key === 'Enter') zoeken(); });
 
 initKaart();
-laadCategorieen();
-laadTherapeutenMetPraktijken();
+laadData();
 </script>
 </body>
 </html>
