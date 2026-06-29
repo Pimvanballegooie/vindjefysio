@@ -735,7 +735,8 @@ function liveZoekUpdate() {
   if (matches.length > 0) {
     suggestiesDiv.innerHTML = matches.map(s => {
       const cat = alleCategorieen.find(c => c.id === s.categorie_id);
-      return `<span class="zoek-suggestie" onclick="suggestie('${s.naam.toLowerCase()}')">${s.naam}${cat ? ' <span style="opacity:0.6;font-size:0.75rem">· ${cat.naam}</span>' : ''}</span>`;
+      const catNaam = cat ? cat.naam : '';
+      return `<span class="zoek-suggestie" onclick="suggestie('${s.naam.toLowerCase()}')">${s.naam}${catNaam ? ` <span style="opacity:0.6;font-size:0.75rem">· ${catNaam}</span>` : ''}</span>`;
     }).join('');
   } else {
     suggestiesDiv.innerHTML = renderStandaardSuggesties();
