@@ -414,15 +414,65 @@ function openCategorie(catId, el) {
     ? `<a class="cat-subsite-link" href="https://${cat.deelsite}" target="_blank">🔗 Meer info op ${cat.deelsite} →</a>`
     : '';
 
+  // Mapping subcategorie ID naar subsite
+  const SUBCAT_SITES = {
+    43: { site: 'heupbovenbeen.net', label: 'Heup Bovenbeen Netwerk' },
+    44: { site: 'knieonderbeen.net', label: 'Knie Onderbeen Netwerk' },
+    45: { site: 'enkelvoet.net', label: 'Enkel Voet Netwerk' }
+  };
+
+  // Mapping zorgtype subcategorieen naar gewrichtsgebieden (per categorie)
+  const ZORGTYPE_NAAR_GEWRICHT = {
+    // Benen
+    46: [{ site: 'heupbovenbeen.net', label: 'Heup' }, { site: 'knieonderbeen.net', label: 'Knie' }], // Artrose
+    47: [{ site: 'enkelvoet.net', label: 'Enkel & voet' }, { site: 'knieonderbeen.net', label: 'Knie' }, { site: 'heupbovenbeen.net', label: 'Heup' }], // Revalidatie
+    48: [{ site: 'enkelvoet.net', label: 'Enkel & voet' }, { site: 'knieonderbeen.net', label: 'Knie' }, { site: 'heupbovenbeen.net', label: 'Heup' }], // Voorbereiding
+    49: [{ site: 'enkelvoet.net', label: 'Enkel & voet' }, { site: 'knieonderbeen.net', label: 'Knie' }, { site: 'heupbovenbeen.net', label: 'Heup' }], // Sport
+  };
+
   const subcatHTML = subcats.map(s => {
     const voorbeelden = (s.voorbeelden || '').split(',').slice(0, 3).map(v =>
       `<span class="subcat-tag">${v.trim()}</span>`).join('');
-    return `
-      <div class="subcat-tegel" style="--cat-kleur:${kleur}" onclick="toggleSubcat(${s.id}, this)">
-        <div class="subcat-naam">${s.naam}</div>
-        <div class="subcat-beschrijving">${s.voorbeelden || ''}</div>
-        <div class="subcat-voorbeelden">${voorbeelden}</div>
-      </div>`;
+
+    const subsiteInfo = SUBCAT_SITES[s.id];
+    const zorgtypeGewrichten = ZORGTYPE_NAAR_GEWRICHT[s.id];
+
+    if (subsiteInfo) {
+      // TYPE 1: Gewrichtsgebied met eigen subsite — groene gloed, link naar subsite
+      return `
+        <div class="subcat-tegel subcat-subsite" style="--cat-kleur:#27AE60;border-color:#27AE60;background:linear-gradient(135deg,#f0faf5,#fff)" onclick="toggleSubcat(${s.id}, this)">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:8px">
+            <div class="subcat-naam" style="color:#1a6b3a">${s.naam}</div>
+            <a href="https://${subsiteInfo.site}" target="_blank" onclick="event.stopPropagation()" style="font-size:0.7rem;font-weight:700;color:#27AE60;background:#e8f8ef;border:1px solid #27AE60;border-radius:999px;padding:2px 8px;white-space:nowrap;text-decoration:none;flex-shrink:0">🔗 ${subsiteInfo.site}</a>
+          </div>
+          <div class="subcat-beschrijving">${s.voorbeelden || ''}</div>
+          <div class="subcat-voorbeelden">${voorbeelden}</div>
+          <div style="font-size:0.72rem;color:#27AE60;font-weight:600;margin-top:6px">Meer informatie & specialisten → ${subsiteInfo.site}</div>
+        </div>`;
+    } else if (zorgtypeGewrichten) {
+      // TYPE 2: Zorgtype — informatief, verwijst naar gewrichtsgebied subsites
+      const gewrichtLinks = zorgtypeGewrichten.map(g =>
+        `<a href="https://${g.site}" target="_blank" onclick="event.stopPropagation()" style="font-size:0.72rem;font-weight:700;color:${kleur};background:${kleur}15;border:1px solid ${kleur}40;border-radius:999px;padding:2px 8px;text-decoration:none">${g.label}</a>`
+      ).join('');
+      return `
+        <div class="subcat-tegel" style="--cat-kleur:${kleur}" onclick="toggleSubcat(${s.id}, this)">
+          <div class="subcat-naam">${s.naam}</div>
+          <div class="subcat-beschrijving">${s.voorbeelden || ''}</div>
+          <div class="subcat-voorbeelden">${voorbeelden}</div>
+          <div style="margin-top:8px;display:flex;flex-wrap:wrap;gap:4px;align-items:center">
+            <span style="font-size:0.7rem;color:var(--text-muted)">Therapeuten op:</span>
+            ${gewrichtLinks}
+          </div>
+        </div>`;
+    } else {
+      // TYPE 3: Standaard subcat
+      return `
+        <div class="subcat-tegel" style="--cat-kleur:${kleur}" onclick="toggleSubcat(${s.id}, this)">
+          <div class="subcat-naam">${s.naam}</div>
+          <div class="subcat-beschrijving">${s.voorbeelden || ''}</div>
+          <div class="subcat-voorbeelden">${voorbeelden}</div>
+        </div>`;
+    }
   }).join('');
 
   detail.innerHTML = `
