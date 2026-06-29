@@ -529,7 +529,9 @@ async function zoekInDetail() {
       const sc = alleSubcategorieen.find(s => s.id === id);
       return sc ? sc.naam : '';
     }).filter(Boolean);
+    const zoekInput = document.getElementById('zoek-input')?.value.trim();
     let bannerTekst = '';
+    if (zoekInput) bannerTekst += `"${zoekInput}" → `;
     if (cat) bannerTekst += cat.naam;
     if (subcatNamen.length > 0) bannerTekst += ' → ' + subcatNamen.join(', ');
     if (locatie) bannerTekst += ' · ' + locatie;
