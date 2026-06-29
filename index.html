@@ -778,7 +778,8 @@ function liveZoekUpdate() {
     const n = (s.naam || '').toLowerCase();
     const v = (s.voorbeelden || '').toLowerCase();
     return z.includes(zoekterm) || n.includes(zoekterm) || v.includes(zoekterm)
-      || zoekterm.split(' ').some(w => w.length > 2 && (z.includes(w) || n.includes(w) || v.includes(w)));
+      || zoekterm.split(' ').some(w => w.length > 2 && (z.includes(w) || n.includes(w) || v.includes(w)))
+      || zoekterm.split(' ').some(w => w.length > 2 && (z.split(',').some(t => t.trim().startsWith(w)) || n.toLowerCase().startsWith(w)));
   }).slice(0, 5);
 
   // Update zoeksuggesties
@@ -828,7 +829,8 @@ async function zoeken() {
       const n = (s.naam || '').toLowerCase();
       const v = (s.voorbeelden || '').toLowerCase();
       return z.includes(zoekterm) || n.includes(zoekterm) || v.includes(zoekterm)
-        || zoekterm.split(' ').some(w => w.length > 3 && (z.includes(w) || n.includes(w) || v.includes(w)));
+        || zoekterm.split(' ').some(w => w.length > 2 && (z.includes(w) || n.includes(w) || v.includes(w)))
+        || zoekterm.split(' ').some(w => w.length > 2 && (z.split(',').some(t => t.trim().startsWith(w)) || n.toLowerCase().startsWith(w)));
     });
 
     if (gevondenSubcat) {
