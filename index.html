@@ -50,6 +50,11 @@
     .zoek-locatie { padding: 14px 16px; border: none; outline: none; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text); border-radius: 10px; background: var(--grey-bg); width: 170px; }
     .zoek-btn { padding: 14px 28px; background: var(--navy); color: white; border: none; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.95rem; font-family: 'Inter', sans-serif; transition: background 0.2s; white-space: nowrap; }
     .zoek-btn:hover { background: #2A4A73; }
+    .hero-disc-btn { display:flex;align-items:center;gap:6px;padding:7px 16px;border-radius:999px;border:1.5px solid rgba(255,255,255,0.3);background:rgba(255,255,255,0.12);color:rgba(255,255,255,0.85);font-size:0.82rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;transition:all 0.2s; }
+    .hero-disc-btn:hover { background:rgba(255,255,255,0.22);border-color:rgba(255,255,255,0.5); }
+    .hero-disc-btn.actief { background:var(--white);color:var(--navy);border-color:var(--white); }
+    .hero-disc-btn .disc-icon { width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700;flex-shrink:0; }
+    .hero-disc-btn.actief .disc-icon { background:var(--navy);color:white; }
     .zoek-suggesties { margin-top: 18px; display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; }
     .zoek-suggestie { background: rgba(255,255,255,0.15); border: 1px solid rgba(255,255,255,0.25); color: rgba(255,255,255,0.9); font-size: 0.8rem; font-weight: 500; padding: 5px 14px; border-radius: 999px; cursor: pointer; transition: all 0.2s; }
     .zoek-suggestie:hover { background: rgba(255,255,255,0.28); color: white; }
@@ -172,6 +177,9 @@
     <h1>Vind de juiste fysiotherapeut<br>voor uw klacht</h1>
     <p>Beschrijf uw klacht en vind een gespecialiseerde fysiotherapeut bij u in de buurt. Van kinderfysio tot valpreventie, van rugklachten tot sportblessures.</p>
     <div class="zoek-container">
+      <div id="hero-discipline-filter" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px">
+        <!-- Wordt dynamisch gevuld -->
+      </div>
       <div class="zoek-balk">
         <input type="text" id="zoek-input" class="zoek-input" placeholder="Bijv. 'kind loopt laat', 'kniepijn hardlopen', 'valpreventie'..." />
         <input type="text" id="zoek-locatie" class="zoek-locatie" placeholder="Stad of postcode" />
@@ -297,6 +305,43 @@ let alleSubcategorieen = [];
 let actieveCatId = null;
 let actieveSubcatIds = [];
 
+const DISC_ICON_MAP = {
+  'Fysiotherapeut': 'F', 'Ergotherapeut': 'E',
+  'Orthopedisch schoenmaker': 'O', 'Orthopedisch schoentmaker': 'O',
+  'Manueel therapeut': 'M', 'Kinderfysiotherapeut': 'K',
+  'Bekkenfysiotherapeut': 'B', 'Oefentherapeut': 'OT',
+  'Sportfysiotherapeut': 'SF', 'Logopedist': 'L',
+  'Diëtist': 'D', 'Psycholoog': 'P', 'Huidtherapeut': 'H'
+};
+
+let heroDisciplines = ['Fysiotherapeut']; // Standaard actief
+
+function renderHeroDisciplineFilter(disciplinesLijst) {
+  const filterDiv = document.getElementById('hero-discipline-filter');
+  if (!filterDiv) return;
+
+  // Standaard disciplines als geen lijst meegegeven
+  const toonDisciplines = disciplinesLijst || ['Fysiotherapeut', 'Ergotherapeut', 'Diëtist', 'Logopedist'];
+
+  filterDiv.innerHTML = toonDisciplines.map(d => {
+    const icon = DISC_ICON_MAP[d] || d.charAt(0).toUpperCase();
+    const isActief = heroDisciplines.includes(d);
+    return `<button class="hero-disc-btn ${isActief ? 'actief' : ''}" onclick="toggleHeroDiscipline('${d}', this)">
+      <span class="disc-icon">${icon}</span>${d}
+    </button>`;
+  }).join('');
+}
+
+function toggleHeroDiscipline(disc, btn) {
+  if (heroDisciplines.includes(disc)) {
+    heroDisciplines = heroDisciplines.filter(d => d !== disc);
+    btn.classList.remove('actief');
+  } else {
+    heroDisciplines.push(disc);
+    btn.classList.add('actief');
+  }
+}
+
 async function laadData() {
   const [r1, r2, r3, r4, r5] = await Promise.all([
     fetch(`${SUPABASE_URL}/rest/v1/categorieen?actief=eq.true&order=id`, { headers: HEADERS }),
@@ -319,6 +364,7 @@ async function laadData() {
       .filter(Boolean)
   }));
   renderCategorieen();
+  renderHeroDisciplineFilter();
 }
 
 function renderCategorieen() {
@@ -672,6 +718,9 @@ async function zoeken() {
   if (!zoekterm && !locatie) return;
 
   if (zoekterm) {
+    // Update hero discipline filter op basis van zoekterm
+    // (disciplines worden later bijgewerkt na subcategorie match)
+
     const gevondenSubcat = alleSubcategorieen.find(s => {
       const z = (s.zoektermen || '').toLowerCase();
       const n = (s.naam || '').toLowerCase();
@@ -693,6 +742,23 @@ async function zoeken() {
 
           // Activeer subcategorie
           actieveSubcatIds = [gevondenSubcat.id];
+
+          // Update hero discipline filter op basis van therapeuten in deze subcategorie
+          try {
+            const scResp = await fetch(
+              `${SUPABASE_URL}/rest/v1/therapeut_subcategorieen?subcategorie_id=eq.${gevondenSubcat.id}&select=therapeut_id`,
+              { headers: HEADERS }
+            );
+            const scKoppelingen = await scResp.json();
+            const relevanteIds = new Set(scKoppelingen.map(k => k.therapeut_id));
+            const gevondenDiscs = new Set();
+            alleTherapeutenData
+              .filter(t => relevanteIds.has(t.id))
+              .forEach(t => (t.disciplines || []).forEach(d => gevondenDiscs.add(d)));
+            if (gevondenDiscs.size > 0) {
+              renderHeroDisciplineFilter([...gevondenDiscs]);
+            }
+          } catch(e) {}
 
           // Highlight de subcat tegel
           document.querySelectorAll('.subcat-tegel').forEach(t => {
