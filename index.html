@@ -685,39 +685,47 @@ async function voegPraktijkMarkersTo(lijst) {
 
 // ZOEKEN VANUIT HERO
 async function zoeken() {
+async function zoeken() {
   const zoekterm = document.getElementById('zoek-input').value.trim().toLowerCase();
   const locatie = document.getElementById('zoek-locatie').value.trim().toLowerCase();
   if (!zoekterm && !locatie) return;
 
-  // Vind passende categorie
   if (zoekterm) {
     const gevondenSubcat = alleSubcategorieen.find(s => {
       const z = (s.zoektermen || '').toLowerCase();
       const n = (s.naam || '').toLowerCase();
       const v = (s.voorbeelden || '').toLowerCase();
       return z.includes(zoekterm) || n.includes(zoekterm) || v.includes(zoekterm)
-        || zoekterm.split(' ').some(w => w.length > 3 && (z.includes(w) || n.includes(w)));
+        || zoekterm.split(' ').some(w => w.length > 3 && (z.includes(w) || n.includes(w) || v.includes(w)));
     });
 
     if (gevondenSubcat) {
       const tegel = document.getElementById(`cattegel-${gevondenSubcat.categorie_id}`);
       if (tegel) {
+        // Open categorie
         openCategorie(gevondenSubcat.categorie_id, tegel);
-        // Zet locatie in het detail zoekveld
-        setTimeout(() => {
+
+        setTimeout(async () => {
+          // Zet locatie
           const input = document.getElementById('detail-locatie');
-          if (input && locatie) { input.value = locatie; }
+          if (input && locatie) input.value = locatie;
+
+          // Activeer subcategorie
           actieveSubcatIds = [gevondenSubcat.id];
-          zoekInDetail();
-          // Highlight de gevonden subcat
-          setTimeout(() => {
-            document.querySelectorAll('.subcat-tegel').forEach(t => {
-              if (t.querySelector('.subcat-naam')?.textContent === gevondenSubcat.naam) {
-                t.classList.add('actief');
-              }
-            });
-          }, 200);
-        }, 300);
+
+          // Highlight de subcat tegel
+          document.querySelectorAll('.subcat-tegel').forEach(t => {
+            if (t.querySelector('.subcat-naam')?.textContent === gevondenSubcat.naam) {
+              t.classList.add('actief');
+            }
+          });
+
+          // Zoek met subcategorie filter
+          await zoekInDetail();
+
+          // Scroll naar resultaten
+          document.getElementById('therapeuten-zoeker')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 400);
       }
     }
   }
