@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Praktijk aanmelden – VindJeFysio Netwerk</title>
+  <meta name="description" content="Meld uw praktijk aan bij het VindJeFysio Netwerk en word gevonden door patiënten in uw regio." />
+  <style>
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-300.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1B3A5C; --navy-dark: #0F2340;
+      --teal: #2A9D8F; --teal-light: #E8F5F4;
+      --grey-bg: #F5F7FA; --grey-border: #DDE3EC;
+      --text: #1A1A2E; --text-muted: #6B7A99; --white: #FFFFFF;
+      --gold: #C9940A; --gold-light: #FEF9E7;
+      --green: #27AE60; --red: #E74C3C;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--text); background: var(--white); line-height: 1.6; }
+
+    /* HEADER */
+    header { background: var(--white); border-bottom: 1px solid var(--grey-border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1rem,4vw,3rem); display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-img { height: 48px; width: auto; }
+    nav a { color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
+    nav a:hover { background: var(--grey-bg); color: var(--navy); }
+
+    /* HERO */
+    .hero { background: linear-gradient(135deg, #F5A623 0%, #E8735A 20%, #C0392B 35%, #8E44AD 55%, #2980B9 75%, #2A9D8F 100%); color: var(--white); padding: 64px 24px 56px; text-align: center; position: relative; }
+    .hero::before { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.3); }
+    .hero-content { position:relative; z-index:1; }
+    .hero-via { display: inline-block; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.35); color: rgba(255,255,255,0.95); font-size: 0.75rem; font-weight: 700; padding: 4px 16px; border-radius: 999px; margin-bottom: 20px; letter-spacing: 0.08em; text-transform: uppercase; }
+    .hero h1 { font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 700; margin-bottom: 14px; letter-spacing: -0.02em; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .hero p { opacity: 0.92; max-width: 580px; margin: 0 auto; font-size: 1rem; line-height: 1.7; }
+
+    /* UITLEG BLOK */
+    .uitleg-sectie { max-width: 900px; margin: 0 auto; padding: 48px clamp(1rem,4vw,3rem); background: var(--white); }
+    .uitleg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 48px; }
+    .uitleg-stap { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 14px; padding: 24px; text-align: center; }
+    .uitleg-stap .nr { width: 40px; height: 40px; border-radius: 50%; background: var(--navy); color: var(--white); font-size: 1rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+    .uitleg-stap h3 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .uitleg-stap p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
+
+    /* NETWERK KEUZE */
+    .netwerk-sectie { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 16px; padding: 28px; margin-bottom: 24px; }
+    .netwerk-sectie-titel { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--grey-border); }
+    .netwerk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
+    .netwerk-optie { border: 2px solid var(--grey-border); border-radius: 10px; padding: 14px 16px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
+    .netwerk-optie:hover { border-color: var(--teal); }
+    .netwerk-optie.actief { border-color: var(--teal); background: var(--teal-light); }
+    .netwerk-optie.binnenkort { opacity: 0.5; cursor: not-allowed; }
+    .netwerk-optie input { accent-color: var(--teal); }
+    .netwerk-naam { font-size: 0.85rem; font-weight: 700; color: var(--navy); }
+    .netwerk-focus { font-size: 0.75rem; color: var(--text-muted); }
+    .netwerk-badge { font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: var(--teal-light); color: var(--teal); }
+    .netwerk-badge.binnenkort { background: var(--grey-bg); color: var(--text-muted); }
+
+    /* TIERS */
+    .tiers-sectie { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 16px; padding: 28px; margin-bottom: 24px; }
+    .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 16px; }
+    .tier-card { border: 2px solid var(--grey-border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; position: relative; background: var(--white); }
+    .tier-card:hover { border-color: var(--teal); }
+    .tier-card.actief { border-color: var(--teal); background: var(--teal-light); }
+    .tier-card.actief.partner { border-color: var(--gold); background: var(--gold-light); }
+    .tier-badge { font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-bottom: 8px; display: inline-block; }
+    .tier-badge.basis { background: var(--teal-light); color: var(--teal); }
+    .tier-badge.plus { background: #EAF0FB; color: #1A5276; }
+    .tier-badge.partner { background: var(--gold-light); color: var(--gold); }
+    .tier-prijs { font-size: 1.5rem; font-weight: 700; color: var(--navy); }
+    .tier-prijs span { font-size: 0.78rem; font-weight: 400; color: var(--text-muted); }
+    .tier-features { list-style: none; margin-top: 12px; display: flex; flex-direction: column; gap: 6px; }
+    .tier-features li { font-size: 0.8rem; color: var(--text-muted); display: flex; gap: 6px; }
+    .tier-features li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+    .tier-features li.nee { color: #BCC5D3; }
+    .tier-features li.nee::before { content: '–'; color: #BCC5D3; }
+
+    /* FORMULIER */
+    .form-sectie { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 16px; padding: 28px; margin-bottom: 24px; }
+    .form-sectie-titel { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--grey-border); }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group { margin-bottom: 18px; }
+    .form-group:last-child { margin-bottom: 0; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: var(--navy); margin-bottom: 6px; }
+    .form-group label .req { color: var(--teal); }
+    .form-group input, .form-group textarea, .form-group select { width: 100%; padding: 11px 14px; border: 1.5px solid var(--grey-border); border-radius: 8px; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: var(--text); background: var(--white); outline: none; transition: border-color 0.2s; }
+    .form-group input:focus, .form-group textarea:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(42,157,143,0.12); }
+    .form-group textarea { resize: vertical; min-height: 90px; }
+    .form-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 5px; }
+    .form-hint.privé { color: var(--teal); }
+
+    .locatie-blok { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 12px; padding: 20px; margin-bottom: 14px; }
+    .locatie-blok-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+    .locatie-blok-naam { font-size: 0.9rem; font-weight: 700; color: var(--navy); }
+    .btn-verwijder { background: none; border: 1px solid var(--grey-border); border-radius: 6px; padding: 4px 10px; font-size: 0.75rem; color: var(--text-muted); cursor: pointer; }
+    .btn-verwijder:hover { border-color: var(--red); color: var(--red); }
+    .btn-locatie-toevoegen { width: 100%; padding: 12px; border: 2px dashed var(--grey-border); border-radius: 10px; background: none; color: var(--text-muted); font-family: 'Inter', sans-serif; font-size: 0.88rem; font-weight: 600; cursor: pointer; margin-bottom: 24px; transition: all 0.2s; }
+    .btn-locatie-toevoegen:hover { border-color: var(--teal); color: var(--teal); background: var(--teal-light); }
+
+    .checkbox-wrap { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 16px; }
+    .checkbox-wrap input { width: 18px; height: 18px; accent-color: var(--teal); flex-shrink: 0; margin-top: 2px; }
+    .checkbox-wrap label { font-size: 0.85rem; color: var(--text-muted); }
+
+    .btn-submit { width: 100%; padding: 14px; background: var(--teal); color: var(--white); border: none; border-radius: 10px; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 700; cursor: pointer; transition: background 0.2s; }
+    .btn-submit:hover { background: #238a7e; }
+    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .succes-blok { display: none; text-align: center; padding: 48px 24px; background: var(--white); border: 1px solid var(--grey-border); border-radius: 16px; }
+    .succes-blok .icon { font-size: 3rem; margin-bottom: 16px; }
+    .succes-blok h2 { font-size: 1.3rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+    .succes-blok p { color: var(--text-muted); font-size: 0.9rem; }
+
+    .info-blok { background: var(--teal-light); border: 1px solid rgba(42,157,143,0.3); border-radius: 10px; padding: 14px 16px; font-size: 0.83rem; color: #1a6b62; margin-bottom: 20px; display: flex; gap: 10px; align-items: flex-start; }
+
+    footer { background: var(--navy-dark); color: rgba(255,255,255,0.5); text-align: center; padding: 28px 24px; font-size: 0.82rem; margin-top: 64px; }
+    footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img class="logo-img" src="VJF_Logo.png" alt="VindJeFysio" />
+    </a>
+    <nav>
+      <a href="index.html">← Terug naar zoeken</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-content">
+    <div class="hero-via" id="hero-via">VindJeFysio Netwerk</div>
+    <h1>Meld uw praktijk aan</h1>
+    <p>Word gevonden door patiënten die zoeken op klacht, locatie en specialisatie. Aanmelden is eenvoudig en gratis te starten.</p>
+  </div>
+</div>
+
+<div class="uitleg-sectie">
+
+  <!-- UITLEG STAPPEN -->
+  <div class="uitleg-grid">
+    <div class="uitleg-stap">
+      <div class="nr">1</div>
+      <h3>Kies uw netwerk</h3>
+      <p>Selecteer het specialisme dat past bij uw praktijk.</p>
+    </div>
+    <div class="uitleg-stap">
+      <div class="nr">2</div>
+      <h3>Meld uw praktijk aan</h3>
+      <p>Vul het formulier in. Na goedkeuring ontvangt u een praktijkcode.</p>
+    </div>
+    <div class="uitleg-stap">
+      <div class="nr">3</div>
+      <h3>Koppel therapeuten</h3>
+      <p>Deel de code met collega's. Zij melden zich aan via de subsite.</p>
+    </div>
+    <div class="uitleg-stap">
+      <div class="nr">4</div>
+      <h3>Zichtbaar op alle platforms</h3>
+      <p>Uw praktijk verschijnt op vindjefysio.net én de subsite.</p>
+    </div>
+  </div>
+
+  <div id="form-container">
+
+    <!-- NETWERK KEUZE -->
+    <div class="netwerk-sectie">
+      <div class="netwerk-sectie-titel">1. Kies uw netwerk(en)</div>
+      <div class="info-blok">💡 U kunt bij meerdere netwerken aanmelden als uw praktijk meerdere specialisaties biedt. Therapeuten melden zich vervolgens aan via de betreffende subsite.</div>
+      <div class="netwerk-grid" id="netwerk-grid">
+        <label class="netwerk-optie" id="optie-enkelvoet">
+          <input type="checkbox" name="netwerk" value="enkelvoet.net" onchange="updateNetwerk()" />
+          <div>
+            <div class="netwerk-naam">Enkel Voet Netwerk</div>
+            <div class="netwerk-focus">Enkel & voet</div>
+            <span class="netwerk-badge">✓ Actief</span>
+          </div>
+        </label>
+        <label class="netwerk-optie binnenkort">
+          <input type="checkbox" name="netwerk" value="knieonderbeen.net" disabled />
+          <div>
+            <div class="netwerk-naam">Knie Onderbeen</div>
+            <div class="netwerk-focus">Knie & onderbeen</div>
+            <span class="netwerk-badge binnenkort">Binnenkort</span>
+          </div>
+        </label>
+        <label class="netwerk-optie binnenkort">
+          <input type="checkbox" name="netwerk" value="heupbovenbeen.net" disabled />
+          <div>
+            <div class="netwerk-naam">Heup Bovenbeen</div>
+            <div class="netwerk-focus">Heup & bovenbeen</div>
+            <span class="netwerk-badge binnenkort">Binnenkort</span>
+          </div>
+        </label>
+        <label class="netwerk-optie binnenkort">
+          <input type="checkbox" name="netwerk" value="rugnek.net" disabled />
+          <div>
+            <div class="netwerk-naam">Rug Nek Netwerk</div>
+            <div class="netwerk-focus">Rug, nek & bekken</div>
+            <span class="netwerk-badge binnenkort">Binnenkort</span>
+          </div>
+        </label>
+        <label class="netwerk-optie binnenkort">
+          <input type="checkbox" name="netwerk" value="kansrijkopgroeien.net" disabled />
+          <div>
+            <div class="netwerk-naam">Kansrijk Opgroeien</div>
+            <div class="netwerk-focus">Kinderfysiotherapie</div>
+            <span class="netwerk-badge binnenkort">Binnenkort</span>
+          </div>
+        </label>
+      </div>
+    </div>
+
+    <!-- TIERS -->
+    <div class="tiers-sectie">
+      <div class="netwerk-sectie-titel">2. Kies uw pakket</div>
+      <div class="tier-grid">
+        <div class="tier-card" onclick="selecteerTier('basis', this)">
+          <span class="tier-badge basis">Basis</span>
+          <div class="tier-prijs">€5 <span>/ locatie / maand</span></div>
+          <ul class="tier-features">
+            <li>Zichtbaar op de kaart</li>
+            <li>Naam, adres & contact</li>
+            <li>Disciplines via therapeuten</li>
+            <li class="nee">Praktijkbeschrijving</li>
+            <li class="nee">Cursusplatform</li>
+          </ul>
+        </div>
+        <div class="tier-card" onclick="selecteerTier('plus', this)">
+          <span class="tier-badge plus">Plus</span>
+          <div class="tier-prijs">€10 <span>/ locatie / maand</span></div>
+          <ul class="tier-features">
+            <li>Alles uit Basis</li>
+            <li>Praktijkbeschrijving</li>
+            <li>Tot 5 therapeuten cursussen</li>
+            <li>Specialisme aantonen</li>
+            <li class="nee">Partnerpagina</li>
+          </ul>
+        </div>
+        <div class="tier-card partner" onclick="selecteerTier('partner', this)">
+          <span class="tier-badge partner">Partner</span>
+          <div class="tier-prijs">€50 <span>/ locatie / maand</span></div>
+          <ul class="tier-features">
+            <li>Alles uit Plus</li>
+            <li>Onbeperkt cursussen</li>
+            <li>Vermelding partnerpagina</li>
+            <li>Logo & volledig profiel</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTACTGEGEVENS -->
+    <div class="form-sectie">
+      <div class="form-sectie-titel">3. Uw contactgegevens</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Voornaam <span class="req">*</span></label>
+          <input type="text" id="voornaam" placeholder="Jan" />
+        </div>
+        <div class="form-group">
+          <label>Achternaam <span class="req">*</span></label>
+          <input type="text" id="achternaam" placeholder="Jansen" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>E-mailadres beheerder <span class="req">*</span></label>
+        <input type="email" id="email" placeholder="pim@praktijk.nl" />
+        <p class="form-hint privé">🔒 Privé — voor inloggen op Mijn profiel. Niet zichtbaar voor patiënten.</p>
+      </div>
+      <div class="form-group">
+        <label>E-mailadres voor patiënten</label>
+        <input type="email" id="email-publiek" placeholder="info@praktijk.nl" />
+        <p class="form-hint">🌐 Zichtbaar op de site. Mag hetzelfde zijn als uw beheerderadres.</p>
+      </div>
+      <div class="form-group">
+        <label>Telefoonnummer</label>
+        <input type="tel" id="telefoon" placeholder="076-0000000" />
+      </div>
+    </div>
+
+    <!-- LOCATIES -->
+    <div class="form-sectie">
+      <div class="form-sectie-titel">4. Uw locatie(s)</div>
+      <div class="info-blok">📍 De disciplines van uw locatie worden automatisch bepaald op basis van de therapeuten die zich aanmelden. U hoeft ze niet zelf in te vullen.</div>
+      <div id="locaties-container"></div>
+      <button type="button" class="btn-locatie-toevoegen" onclick="voegLocatieToe()">+ Nog een locatie toevoegen</button>
+    </div>
+
+    <!-- BESCHRIJVING (plus/partner) -->
+    <div class="form-sectie" id="beschrijving-sectie" style="display:none">
+      <div class="form-sectie-titel">5. Praktijkbeschrijving</div>
+      <div class="form-group">
+        <label>Beschrijving <span class="req">*</span></label>
+        <textarea id="beschrijving" placeholder="Beschrijf uw praktijk in 2-3 zinnen." maxlength="500" oninput="document.getElementById('tekens').textContent=this.value.length"></textarea>
+        <p class="form-hint"><span id="tekens">0</span>/500 tekens</p>
+      </div>
+    </div>
+
+    <!-- BEVESTIGING -->
+    <div class="form-sectie">
+      <div class="form-sectie-titel">Bevestiging</div>
+      <div class="checkbox-wrap">
+        <input type="checkbox" id="protocol-akkoord" />
+        <label for="protocol-akkoord">Ik bevestig dat onze praktijk werkt volgens de behandelprotocollen van de aangesloten netwerken en deze als leidraad gebruikt bij de behandeling van onze patiënten.</label>
+      </div>
+      <div class="checkbox-wrap">
+        <input type="checkbox" id="privacy-akkoord" />
+        <label for="privacy-akkoord">Ik ga akkoord met de verwerking van mijn gegevens voor zichtbaarheid binnen het VindJeFysio Netwerk, zoals beschreven in de <a href="privacy.html" style="color:var(--teal)">privacyverklaring</a>.</label>
+      </div>
+      <div class="form-group" style="margin-top:8px">
+        <label>Toelichting (optioneel)</label>
+        <textarea id="toelichting" placeholder="Heeft u vragen of wilt u iets toelichten?"></textarea>
+      </div>
+    </div>
+
+    <!-- HONEYPOT -->
+    <input type="text" name="website_url" id="website_url" style="display:none" tabindex="-1" autocomplete="off" />
+
+    <button class="btn-submit" onclick="verstuurFormulier()" id="btn-submit">Aanmelding versturen →</button>
+  </div>
+
+  <!-- SUCCES -->
+  <div class="succes-blok" id="succes-blok">
+    <div class="icon">✅</div>
+    <h2>Aanmelding ontvangen!</h2>
+    <p>Bedankt voor uw aanmelding. We nemen binnen twee werkdagen contact met u op en sturen u dan uw praktijkcode toe.</p>
+    <p style="margin-top:12px"><a href="index.html" style="color:var(--teal);font-weight:600">← Terug naar vindjefysio.net</a></p>
+  </div>
+
+</div>
+
+<footer>
+  <p>© 2025 VindJeFysio.net · <a href="index.html">Home</a> · <a href="privacy.html">Privacyverklaring</a> · <a href="mailto:info@vindjefysio.net">info@vindjefysio.net</a></p>
+</footer>
+
+<script>
+const SUPABASE_URL = 'https://islujznszevdynguhjdc.supabase.co';
+const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzbHVqem5zemV2ZHluZ3VoamRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NDYzMDAsImV4cCI6MjA5NzIyMjMwMH0.wh3RXZRKfpfArr3YBYu8ktE7xv1inwDD72Vq3LJl3QQ';
+const HEADERS = { 'apikey': ANON_KEY, 'Authorization': `Bearer ${ANON_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' };
+
+let geselecteerdeTier = '';
+let locatieCount = 0;
+let viaSubsite = '';
+
+// Detecteer via welke subsite we binnenkomen
+function detecteerSubsite() {
+  const params = new URLSearchParams(window.location.search);
+  viaSubsite = params.get('via') || '';
+
+  if (viaSubsite) {
+    // Toon de subsite naam in de hero
+    const subsiteNamen = {
+      'enkelvoet.net': 'Via Enkel Voet Netwerk',
+      'beenklachten.net': 'Via Beenklachten Netwerk',
+      'knieonderbeen.net': 'Via Knie Onderbeen Netwerk'
+    };
+    document.getElementById('hero-via').textContent = subsiteNamen[viaSubsite] || viaSubsite;
+
+    // Pre-selecteer het bijbehorende netwerk
+    const checkbox = document.querySelector(`input[value="${viaSubsite}"]`);
+    if (checkbox && !checkbox.disabled) {
+      checkbox.checked = true;
+      checkbox.closest('.netwerk-optie').classList.add('actief');
+    }
+  }
+}
+
+function updateNetwerk() {
+  document.querySelectorAll('.netwerk-optie input').forEach(cb => {
+    cb.closest('.netwerk-optie').classList.toggle('actief', cb.checked);
+  });
+}
+
+function selecteerTier(tier, el) {
+  geselecteerdeTier = tier;
+  document.querySelectorAll('.tier-card').forEach(c => c.classList.remove('actief'));
+  el.classList.add('actief');
+  document.getElementById('beschrijving-sectie').style.display =
+    (tier === 'plus' || tier === 'partner') ? 'block' : 'none';
+}
+
+function voegLocatieToe() {
+  locatieCount++;
+  const nr = locatieCount;
+  const div = document.createElement('div');
+  div.className = 'locatie-blok';
+  div.id = `locatie-${nr}`;
+  div.innerHTML = `
+    <div class="locatie-blok-header">
+      <div class="locatie-blok-naam">Locatie ${nr}</div>
+      ${nr > 1 ? `<button type="button" class="btn-verwijder" onclick="verwijderLocatie(${nr})">Verwijderen</button>` : ''}
+    </div>
+    <div class="form-group">
+      <label>Naam praktijk <span class="req">*</span></label>
+      <input type="text" id="naam-${nr}" placeholder="Fysiotherapie De Voet" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Straat + huisnummer <span class="req">*</span></label>
+        <input type="text" id="straat-${nr}" placeholder="Industriekade 10" />
+      </div>
+      <div class="form-group">
+        <label>Postcode <span class="req">*</span></label>
+        <input type="text" id="postcode-${nr}" placeholder="4815 HD" />
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Stad <span class="req">*</span></label>
+      <input type="text" id="stad-${nr}" placeholder="Breda" />
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label>Telefoon locatie</label>
+        <input type="tel" id="tel-${nr}" placeholder="076-0000000" />
+      </div>
+      <div class="form-group">
+        <label>Website</label>
+        <input type="url" id="website-${nr}" placeholder="https://www.praktijk.nl" />
+      </div>
+    </div>`;
+  document.getElementById('locaties-container').appendChild(div);
+}
+
+function verwijderLocatie(nr) {
+  document.getElementById(`locatie-${nr}`).remove();
+}
+
+function fixUrl(url) {
+  url = (url || '').trim();
+  if (!url) return '';
+  if (!url.startsWith('http')) url = 'https://' + url;
+  return url.replace('http://', 'https://');
+}
+
+async function verstuurFormulier() {
+  if (document.getElementById('website_url').value) return; // honeypot
+
+  // Validatie
+  const geselecteerdeNetwerken = [...document.querySelectorAll('input[name="netwerk"]:checked')].map(cb => cb.value);
+  if (geselecteerdeNetwerken.length === 0) { alert('Selecteer minimaal één netwerk.'); return; }
+  if (!geselecteerdeTier) { alert('Selecteer een pakket.'); return; }
+  if (!document.getElementById('voornaam').value.trim()) { alert('Vul uw voornaam in.'); return; }
+  if (!document.getElementById('achternaam').value.trim()) { alert('Vul uw achternaam in.'); return; }
+  if (!document.getElementById('email').value.trim()) { alert('Vul uw e-mailadres in.'); return; }
+  if (!document.getElementById('protocol-akkoord').checked) { alert('Bevestig dat u werkt volgens de protocollen.'); return; }
+  if (!document.getElementById('privacy-akkoord').checked) { alert('Vink het privacyakkoord aan.'); return; }
+
+  const locatieBlokken = document.querySelectorAll('.locatie-blok');
+  if (locatieBlokken.length === 0) { alert('Voeg minimaal één locatie toe.'); return; }
+
+  const btn = document.getElementById('btn-submit');
+  btn.textContent = 'Versturen...'; btn.disabled = true;
+
+  try {
+    for (const blok of locatieBlokken) {
+      const nr = blok.id.replace('locatie-', '');
+      const naam = document.getElementById(`naam-${nr}`)?.value.trim();
+      const straat = document.getElementById(`straat-${nr}`)?.value.trim();
+      const postcode = document.getElementById(`postcode-${nr}`)?.value.trim();
+      const stad = document.getElementById(`stad-${nr}`)?.value.trim();
+      if (!naam || !straat || !stad) { alert('Vul alle verplichte locatiegegevens in.'); btn.textContent = 'Aanmelding versturen →'; btn.disabled = false; return; }
+
+      // Voor elk gekozen netwerk een aparte aanmelding
+      for (const netwerk of geselecteerdeNetwerken) {
+        const data = {
+          naam,
+          straat,
+          postcode: postcode || '',
+          stad,
+          telefoon: document.getElementById(`tel-${nr}`)?.value.trim() || document.getElementById('telefoon').value.trim(),
+          email: document.getElementById('email-publiek').value.trim() || document.getElementById('email').value.trim(),
+          website: fixUrl(document.getElementById(`website-${nr}`)?.value),
+          aangemeld_via: netwerk,
+          tier: geselecteerdeTier,
+          beschrijving: (geselecteerdeTier === 'plus' || geselecteerdeTier === 'partner')
+            ? document.getElementById('beschrijving').value.trim() : '',
+          contact_voornaam: document.getElementById('voornaam').value.trim(),
+          contact_achternaam: document.getElementById('achternaam').value.trim(),
+          contact_email: document.getElementById('email').value.trim(),
+          contact_telefoon: document.getElementById('telefoon').value.trim(),
+          toelichting: document.getElementById('toelichting').value.trim(),
+          disciplines: [],
+          actief: false
+        };
+
+        await fetch(`${SUPABASE_URL}/rest/v1/praktijken`, {
+          method: 'POST', headers: HEADERS, body: JSON.stringify(data)
+        });
+      }
+    }
+
+    document.getElementById('form-container').style.display = 'none';
+    document.getElementById('succes-blok').style.display = 'block';
+  } catch(e) {
+    alert('Er ging iets mis. Probeer het opnieuw of mail naar info@vindjefysio.net.');
+    btn.textContent = 'Aanmelding versturen →'; btn.disabled = false;
+  }
+}
+
+// Start
+detecteerSubsite();
+voegLocatieToe();
+</script>
+</body>
+</html>
