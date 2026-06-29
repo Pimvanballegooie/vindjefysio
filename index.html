@@ -181,11 +181,11 @@
         <!-- Wordt dynamisch gevuld -->
       </div>
       <div class="zoek-balk">
-        <input type="text" id="zoek-input" class="zoek-input" placeholder="Bijv. 'kind loopt laat', 'kniepijn hardlopen', 'valpreventie'..." />
+        <input type="text" id="zoek-input" class="zoek-input" placeholder="Bijv. 'kind loopt laat', 'kniepijn hardlopen', 'valpreventie'..." oninput="liveZoekUpdate()" />
         <input type="text" id="zoek-locatie" class="zoek-locatie" placeholder="Stad of postcode" />
         <button class="zoek-btn" onclick="zoeken()">🔍 Zoeken</button>
       </div>
-      <div class="zoek-suggesties">
+      <div class="zoek-suggesties" id="zoek-suggesties-container">
         <span class="zoek-suggestie" onclick="suggestie('kind loopt laat')">kind loopt laat</span>
         <span class="zoek-suggestie" onclick="suggestie('kniepijn')">kniepijn</span>
         <span class="zoek-suggestie" onclick="suggestie('valpreventie ouderen')">valpreventie ouderen</span>
@@ -712,6 +712,56 @@ async function voegPraktijkMarkersTo(lijst) {
 }
 
 // ZOEKEN VANUIT HERO
+function liveZoekUpdate() {
+  const zoekterm = document.getElementById('zoek-input').value.trim().toLowerCase();
+  if (!zoekterm || zoekterm.length < 2) {
+    // Reset naar standaard
+    renderHeroDisciplineFilter(['Fysiotherapeut', 'Ergotherapeut', 'Diëtist', 'Logopedist']);
+    document.getElementById('zoek-suggesties-container').innerHTML = renderStandaardSuggesties();
+    return;
+  }
+
+  // Vind matchende subcategorieën
+  const matches = alleSubcategorieen.filter(s => {
+    const z = (s.zoektermen || '').toLowerCase();
+    const n = (s.naam || '').toLowerCase();
+    const v = (s.voorbeelden || '').toLowerCase();
+    return z.includes(zoekterm) || n.includes(zoekterm) || v.includes(zoekterm)
+      || zoekterm.split(' ').some(w => w.length > 2 && (z.includes(w) || n.includes(w) || v.includes(w)));
+  }).slice(0, 5);
+
+  // Update zoeksuggesties
+  const suggestiesDiv = document.getElementById('zoek-suggesties-container');
+  if (matches.length > 0) {
+    suggestiesDiv.innerHTML = matches.map(s => {
+      const cat = alleCategorieen.find(c => c.id === s.categorie_id);
+      return `<span class="zoek-suggestie" onclick="suggestie('${s.naam.toLowerCase()}')">${s.naam}${cat ? ' <span style="opacity:0.6;font-size:0.75rem">· ${cat.naam}</span>' : ''}</span>`;
+    }).join('');
+  } else {
+    suggestiesDiv.innerHTML = renderStandaardSuggesties();
+  }
+
+  // Update discipline filter op basis van eerste match
+  if (matches.length > 0) {
+    const eersteMatch = matches[0];
+    const relTherapeutenIds = new Set(
+      alleTherapeutenData
+        .filter(t => (t.disciplines || []).length > 0)
+        .map(t => t.id)
+    );
+    const gevondenDiscs = new Set();
+    alleTherapeutenData.forEach(t => (t.disciplines || []).forEach(d => gevondenDiscs.add(d)));
+    if (gevondenDiscs.size > 0) {
+      renderHeroDisciplineFilter([...gevondenDiscs]);
+    }
+  }
+}
+
+function renderStandaardSuggesties() {
+  const standaard = ['kind loopt laat', 'kniepijn', 'valpreventie ouderen', 'rugpijn', 'enkelverzwikking', 'Parkinson', 'burn-out'];
+  return standaard.map(s => `<span class="zoek-suggestie" onclick="suggestie('${s}')">${s}</span>`).join('');
+}
+
 async function zoeken() {
   const zoekterm = document.getElementById('zoek-input').value.trim().toLowerCase();
   const locatie = document.getElementById('zoek-locatie').value.trim().toLowerCase();
