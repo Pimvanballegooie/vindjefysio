@@ -824,14 +824,29 @@ async function zoeken() {
     // Update hero discipline filter op basis van zoekterm
     // (disciplines worden later bijgewerkt na subcategorie match)
 
-    const gevondenSubcat = alleSubcategorieen.find(s => {
+    // Zoek beste match — naam match heeft prioriteit boven zoekterm match
+    const scoreSubcat = (s) => {
       const z = (s.zoektermen || '').toLowerCase();
       const n = (s.naam || '').toLowerCase();
       const v = (s.voorbeelden || '').toLowerCase();
-      return z.includes(zoekterm) || n.includes(zoekterm) || v.includes(zoekterm)
-        || zoekterm.split(' ').some(w => w.length > 2 && (z.includes(w) || n.includes(w) || v.includes(w)))
-        || zoekterm.split(' ').some(w => w.length > 2 && (z.split(',').some(t => t.trim().startsWith(w)) || n.toLowerCase().startsWith(w)));
-    });
+      const woorden = zoekterm.split(' ').filter(w => w.length > 2);
+      let score = 0;
+      if (n.includes(zoekterm)) score += 100;
+      if (n === zoekterm) score += 200;
+      if (woorden.some(w => n.startsWith(w))) score += 80;
+      if (woorden.some(w => n.includes(w))) score += 50;
+      if (z.includes(zoekterm)) score += 40;
+      if (woorden.some(w => z.split(',').some(t => t.trim() === w))) score += 60;
+      if (woorden.some(w => z.includes(w))) score += 20;
+      if (v.includes(zoekterm)) score += 10;
+      if (woorden.some(w => v.includes(w))) score += 5;
+      return score;
+    };
+    const gescoord = alleSubcategorieen
+      .map(s => ({ s, score: scoreSubcat(s) }))
+      .filter(x => x.score > 0)
+      .sort((a, b) => b.score - a.score);
+    const gevondenSubcat = gescoord.length > 0 ? gescoord[0].s : null;
 
     if (gevondenSubcat) {
       const tegel = document.getElementById(`cattegel-${gevondenSubcat.categorie_id}`);
