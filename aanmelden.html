@@ -136,6 +136,25 @@
   </div>
 </header>
 
+<!-- CONTEXT BALK -->
+<div id="context-balk" style="display:none;background:var(--teal-light);border-bottom:2px solid rgba(42,157,143,0.2);padding:10px clamp(1rem,4vw,3rem)">
+  <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+    <span id="context-tekst" style="font-size:0.85rem;color:var(--navy);font-weight:600"></span>
+    <button onclick="toggleUitleg()" style="display:flex;align-items:center;gap:5px;background:none;border:1.5px solid rgba(42,157,143,0.4);border-radius:999px;padding:3px 10px;cursor:pointer;font-family:Inter,sans-serif;font-size:0.75rem;color:var(--teal);font-weight:600">
+      ❓ Hoe werkt dit?
+    </button>
+  </div>
+  <div id="uitleg-popup" style="display:none;max-width:900px;margin:12px auto 0;background:var(--white);border:1px solid var(--grey-border);border-radius:12px;padding:16px 20px;font-size:0.85rem;color:var(--text-muted);line-height:1.7">
+    <strong style="color:var(--navy);display:block;margin-bottom:8px">Hoe werkt aanmelden via een subsite?</strong>
+    Het VindJeFysio Netwerk bestaat uit meerdere specialistische platforms, zoals <strong>enkelvoet.net</strong> voor enkel- en voetklachten. 
+    Als u zich aanmeldt via een van deze subsites, wordt uw praktijk zichtbaar op <strong>zowel de subsite als vindjefysio.net</strong>.
+    <br><br>
+    Na goedkeuring ontvangt u een <strong>praktijkcode</strong>. Met deze code kunnen uw therapeuten zich aanmelden via de betreffende subsite en worden zij automatisch aan uw praktijk gekoppeld.
+    <br><br>
+    <span style="color:var(--teal);font-weight:600">📋 Samengevat: één aanmelding → zichtbaar op meerdere platforms.</span>
+  </div>
+</div>
+
 <div class="hero">
   <div class="hero-content">
     <div class="hero-via" id="hero-via">VindJeFysio Netwerk</div>
@@ -352,26 +371,45 @@ let geselecteerdeTier = '';
 let locatieCount = 0;
 let viaSubsite = '';
 
+function toggleUitleg() {
+  const popup = document.getElementById('uitleg-popup');
+  popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
+}
+
 // Detecteer via welke subsite we binnenkomen
 function detecteerSubsite() {
   const params = new URLSearchParams(window.location.search);
   viaSubsite = params.get('via') || '';
 
-  if (viaSubsite) {
-    // Toon de subsite naam in de hero
-    const subsiteNamen = {
-      'enkelvoet.net': 'Via Enkel Voet Netwerk',
-      'beenklachten.net': 'Via Beenklachten Netwerk',
-      'knieonderbeen.net': 'Via Knie Onderbeen Netwerk'
-    };
-    document.getElementById('hero-via').textContent = subsiteNamen[viaSubsite] || viaSubsite;
+  const subsiteNamen = {
+    'enkelvoet.net': 'Enkel Voet Netwerk',
+    'beenklachten.net': 'Beenklachten Netwerk',
+    'knieonderbeen.net': 'Knie Onderbeen Netwerk'
+  };
 
-    // Pre-selecteer het bijbehorende netwerk
+  const contextBalk = document.getElementById('context-balk');
+  const contextTekst = document.getElementById('context-tekst');
+
+  if (viaSubsite) {
+    // Toon context balk
+    const naam = subsiteNamen[viaSubsite] || viaSubsite;
+    contextBalk.style.display = 'block';
+    contextTekst.innerHTML = `U meldt zich aan via <strong>${naam}</strong> — uw praktijk wordt zichtbaar op ${viaSubsite} én vindjefysio.net`;
+
+    // Toon in hero
+    document.getElementById('hero-via').textContent = `Via ${naam}`;
+
+    // Pre-selecteer netwerk
     const checkbox = document.querySelector(`input[value="${viaSubsite}"]`);
     if (checkbox && !checkbox.disabled) {
       checkbox.checked = true;
       checkbox.closest('.netwerk-optie').classList.add('actief');
     }
+  } else {
+    // Direct via vindjefysio
+    contextBalk.style.display = 'block';
+    contextTekst.innerHTML = `U meldt zich direct aan via <strong>VindJeFysio.net</strong> — kies hieronder bij welk(e) netwerk(en) u zich aanmeldt`;
+    document.getElementById('hero-via').textContent = 'VindJeFysio Netwerk';
   }
 }
 
