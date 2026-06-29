@@ -393,10 +393,11 @@ function openCategorie(catId, el) {
       <div class="zoeker-sub">Vul uw postcode of stad in om praktijken bij u in de buurt te vinden.</div>
       <div id="discipline-filter" style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px"></div>
       <div class="zoeker-rij">
-        <input type="text" class="zoeker-input" id="detail-locatie" placeholder="Postcode of stad, bijv. 4815 HD of Breda" />
+        <input type="text" class="zoeker-input" id="detail-locatie" placeholder="Postcode of stad, bijv. 4815 HD of Breda" onkeydown="if(event.key==='Enter') zoekInDetail()" />
         <button class="zoeker-btn" onclick="zoekInDetail()">Zoeken</button>
       </div>
       <div class="postcode-hint">💡 Tip: vul uw postcode in voor de meest accurate resultaten</div>
+      <div id="zoek-context-banner" style="display:none;background:var(--teal-light);border:1px solid rgba(42,157,143,0.3);border-radius:8px;padding:10px 16px;font-size:0.85rem;color:var(--teal);font-weight:600;margin-bottom:12px;position:sticky;top:80px;z-index:10"></div>
       <div class="resultaat-info" id="detail-resultaat-info"></div>
       <div class="resultaten-layout">
         <div class="therapeuten-lijst" id="detail-therapeuten-lijst">
@@ -520,6 +521,22 @@ async function zoekInDetail() {
   const locatie = (document.getElementById('detail-locatie')?.value || '').trim().toLowerCase();
   const lok = locatie.replace(/\s/g, '');
 
+  // Update context banner
+  const banner = document.getElementById('zoek-context-banner');
+  if (banner) {
+    const cat = alleCategorieen.find(c => c.id === actieveCatId);
+    const subcatNamen = actieveSubcatIds.map(id => {
+      const sc = alleSubcategorieen.find(s => s.id === id);
+      return sc ? sc.naam : '';
+    }).filter(Boolean);
+    let bannerTekst = '';
+    if (cat) bannerTekst += cat.naam;
+    if (subcatNamen.length > 0) bannerTekst += ' → ' + subcatNamen.join(', ');
+    if (locatie) bannerTekst += ' · ' + locatie;
+    banner.textContent = bannerTekst ? '🔍 ' + bannerTekst : '';
+    banner.style.display = bannerTekst ? 'block' : 'none';
+  }
+
   let gefilterd = [...allePraktijkenData];
 
   // Filter op locatie
@@ -633,6 +650,8 @@ function selecteerPraktijkOpKaart(praktijkId) {
 }
 
 async function voegPraktijkMarkersTo(lijst) {
+  if (!kaart) return;
+  kaart.invalidateSize();
   for (const p of lijst) {
     try {
       const zoekadres = `${p.straat || ''} ${p.huisnummer || ''}, ${p.stad}, Nederland`.trim();
