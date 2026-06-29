@@ -410,12 +410,13 @@ function openCategorie(catId, el) {
   detail.classList.add('zichtbaar');
 
   setTimeout(() => {
-    if (!kaart) {
-      kaart = L.map('kaart').setView([51.58, 4.8], 9);
-      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap'}).addTo(kaart);
-    } else {
-      kaart.invalidateSize();
+    // Vernietig oude kaart als die bestaat (container is opnieuw aangemaakt)
+    if (kaart) {
+      kaart.remove();
+      kaart = null;
     }
+    kaart = L.map('kaart').setView([51.58, 4.8], 9);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {attribution: '© OpenStreetMap'}).addTo(kaart);
     // Toon discipline filters voor deze categorie
     renderDisciplineFilter(cat);
     detail.scrollIntoView({ behavior: 'smooth', block: 'start' });
@@ -424,68 +425,43 @@ function openCategorie(catId, el) {
 
 let actieveDisciplines = [];
 
-function renderDisciplineFilter(cat) {
+function renderDisciplineFilter(cat, subcatIds) {
   const filterDiv = document.getElementById('discipline-filter');
   if (!filterDiv) return;
 
-  actieveDisciplines = [];
+  actieveDisciplines = ['Fysiotherapeut']; // Standaard fysio actief
 
-  // Haal disciplines op van therapeuten gekoppeld aan praktijken van deze subsite
-  const deelsite = cat.deelsite || null;
-  let relevanteTherapeutenIds = new Set();
-
-  if (deelsite) {
-    // Filter praktijken op deelsite
-    const relPraktijken = allePraktijkenData.filter(p =>
-      (p.aangemeld_via || '').toLowerCase().includes(deelsite.toLowerCase())
-    );
-    relPraktijken.forEach(p => {
-      (p.therapeuten || []).forEach(t => relevanteTherapeutenIds.add(t.id));
-    });
-  } else {
-    // Geen deelsite — gebruik alle therapeuten
-    alleTherapeutenData.forEach(t => relevanteTherapeutenIds.add(t.id));
-  }
-
-  // Verzamel unieke disciplines
+  // Verzamel disciplines van alle therapeuten in de database
   const disciplines = new Set();
-  alleTherapeutenData
-    .filter(t => relevanteTherapeutenIds.has(t.id))
-    .forEach(t => (t.disciplines || []).forEach(d => disciplines.add(d)));
+  alleTherapeutenData.forEach(t => (t.disciplines || []).forEach(d => disciplines.add(d)));
 
   if (disciplines.size === 0) {
     filterDiv.style.display = 'none';
     return;
   }
 
-  // Discipline iconen
   const DISC_ICON = {
-    'Fysiotherapeut': 'F',
-    'Ergotherapeut': 'E',
-    'Orthopedisch schoentmaker': 'O',
-    'Orthopedisch schoenmaker': 'O',
-    'Manueel therapeut': 'M',
-    'Kinderfysiotherapeut': 'K',
-    'Bekkenfysiotherapeut': 'B',
-    'Oefentherapeut': 'OT',
-    'Sportfysiotherapeut': 'SF'
+    'Fysiotherapeut': 'F', 'Ergotherapeut': 'E',
+    'Orthopedisch schoenmaker': 'O', 'Orthopedisch schoentmaker': 'O',
+    'Manueel therapeut': 'M', 'Kinderfysiotherapeut': 'K',
+    'Bekkenfysiotherapeut': 'B', 'Oefentherapeut': 'OT',
+    'Sportfysiotherapeut': 'SF', 'Logopedist': 'L',
+    'Diëtist': 'D', 'Psycholoog': 'P'
   };
 
   filterDiv.style.display = 'flex';
-  filterDiv.innerHTML = '<span style="font-size:0.78rem;font-weight:700;color:var(--text-muted);align-self:center;margin-right:4px">Specialisatie:</span>';
+  filterDiv.style.flexWrap = 'wrap';
+  filterDiv.style.gap = '8px';
+  filterDiv.style.alignItems = 'center';
+  filterDiv.innerHTML = '<span style="font-size:0.78rem;font-weight:700;color:var(--text-muted);align-self:center;white-space:nowrap">Discipline:</span>';
 
-  [...disciplines].forEach(d => {
-    const DISC_ICON = {
-      'Fysiotherapeut': 'F', 'Ergotherapeut': 'E',
-      'Orthopedisch schoentmaker': 'O', 'Orthopedisch schoenmaker': 'O',
-      'Manueel therapeut': 'M', 'Kinderfysiotherapeut': 'K',
-      'Bekkenfysiotherapeut': 'B', 'Oefentherapeut': 'OT', 'Sportfysiotherapeut': 'SF'
-    };
+  [...disciplines].sort().forEach(d => {
     const icon = DISC_ICON[d] || d.charAt(0).toUpperCase();
+    const isActief = actieveDisciplines.includes(d);
     const btn = document.createElement('button');
     btn.setAttribute('data-disc', d);
-    btn.style.cssText = 'display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1.5px solid var(--grey-border);background:var(--white);color:var(--text-muted);font-size:0.8rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;transition:all 0.2s';
-    btn.innerHTML = '<span style="width:22px;height:22px;border-radius:50%;background:var(--navy);color:white;display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700">' + icon + '</span>' + d;
+    btn.style.cssText = `display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:999px;border:1.5px solid ${isActief ? 'var(--navy)' : 'var(--grey-border)'};background:${isActief ? 'var(--navy)' : 'var(--white)'};color:${isActief ? 'white' : 'var(--text-muted)'};font-size:0.8rem;font-weight:600;cursor:pointer;font-family:Inter,sans-serif;transition:all 0.2s`;
+    btn.innerHTML = `<span style="width:22px;height:22px;border-radius:50%;background:${isActief ? 'white' : 'var(--navy)'};color:${isActief ? 'var(--navy)' : 'white'};display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:700">${icon}</span>${d}`;
     btn.onclick = function() { toggleDiscipline(d, this); };
     filterDiv.appendChild(btn);
   });
@@ -497,11 +473,15 @@ function toggleDiscipline(disc, btn) {
     btn.style.background = 'var(--white)';
     btn.style.color = 'var(--text-muted)';
     btn.style.borderColor = 'var(--grey-border)';
+    btn.querySelector('span').style.background = 'var(--navy)';
+    btn.querySelector('span').style.color = 'white';
   } else {
     actieveDisciplines.push(disc);
     btn.style.background = 'var(--navy)';
     btn.style.color = 'white';
     btn.style.borderColor = 'var(--navy)';
+    btn.querySelector('span').style.background = 'white';
+    btn.querySelector('span').style.color = 'var(--navy)';
   }
   zoekInDetail();
 }
@@ -721,11 +701,11 @@ async function zoeken() {
             }
           });
 
-          // Zoek met subcategorie filter
-          await zoekInDetail();
-
-          // Scroll naar resultaten
-          document.getElementById('therapeuten-zoeker')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          // Wacht tot kaart geïnitialiseerd is, dan zoek
+          setTimeout(async () => {
+            await zoekInDetail();
+            document.getElementById('therapeuten-zoeker')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          }, 250);
         }, 400);
       }
     }
