@@ -24,7 +24,6 @@
     html { scroll-behavior: smooth; }
     body { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--text); background: var(--white); line-height: 1.6; }
 
-    /* HEADER */
     header { background: var(--white); border-bottom: 1px solid var(--grey-border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
     .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1rem,4vw,3rem); display: flex; align-items: center; justify-content: space-between; height: 72px; }
     .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
@@ -32,7 +31,6 @@
     nav a { color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
     nav a:hover { background: var(--grey-bg); color: var(--navy); }
 
-    /* HERO */
     .hero { background: linear-gradient(135deg, #F5A623 0%, #E8735A 20%, #C0392B 35%, #8E44AD 55%, #2980B9 75%, #2A9D8F 100%); color: var(--white); padding: 64px 24px 56px; text-align: center; position: relative; }
     .hero::before { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.3); }
     .hero-content { position:relative; z-index:1; }
@@ -40,7 +38,6 @@
     .hero h1 { font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 700; margin-bottom: 14px; letter-spacing: -0.02em; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
     .hero p { opacity: 0.92; max-width: 580px; margin: 0 auto; font-size: 1rem; line-height: 1.7; }
 
-    /* UITLEG BLOK */
     .uitleg-sectie { max-width: 900px; margin: 0 auto; padding: 48px clamp(1rem,4vw,3rem); background: var(--white); }
     .uitleg-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 48px; }
     .uitleg-stap { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 14px; padding: 24px; text-align: center; }
@@ -48,7 +45,6 @@
     .uitleg-stap h3 { font-size: 0.9rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
     .uitleg-stap p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.5; }
 
-    /* NETWERK KEUZE */
     .netwerk-sectie { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 16px; padding: 28px; margin-bottom: 24px; }
     .netwerk-sectie-titel { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--grey-border); }
     .netwerk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
@@ -62,7 +58,6 @@
     .netwerk-badge { font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: var(--teal-light); color: var(--teal); }
     .netwerk-badge.binnenkort { background: var(--grey-bg); color: var(--text-muted); }
 
-    /* TIERS */
     .tiers-sectie { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 16px; padding: 28px; margin-bottom: 24px; }
     .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 16px; }
     .tier-card { border: 2px solid var(--grey-border); border-radius: 12px; padding: 20px; cursor: pointer; transition: all 0.2s; position: relative; background: var(--white); }
@@ -81,7 +76,6 @@
     .tier-features li.nee { color: #BCC5D3; }
     .tier-features li.nee::before { content: '–'; color: #BCC5D3; }
 
-    /* FORMULIER */
     .form-sectie { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 16px; padding: 28px; margin-bottom: 24px; }
     .form-sectie-titel { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 20px; padding-bottom: 12px; border-bottom: 1px solid var(--grey-border); }
     .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
@@ -138,7 +132,6 @@
   </div>
 </header>
 
-<!-- CONTEXT BALK -->
 <div id="context-balk" style="display:none;background:var(--teal-light);border-bottom:2px solid rgba(42,157,143,0.2);padding:10px clamp(1rem,4vw,3rem)">
   <div style="max-width:900px;margin:0 auto;display:flex;align-items:center;gap:12px;flex-wrap:wrap">
     <span id="context-tekst" style="font-size:0.85rem;color:var(--navy);font-weight:600"></span>
@@ -148,10 +141,9 @@
   </div>
   <div id="uitleg-popup" style="display:none;max-width:900px;margin:12px auto 0;background:var(--white);border:1px solid var(--grey-border);border-radius:12px;padding:16px 20px;font-size:0.85rem;color:var(--text-muted);line-height:1.7">
     <strong style="color:var(--navy);display:block;margin-bottom:8px">Hoe werkt aanmelden via een subsite?</strong>
-    Het VindJeFysio Netwerk bestaat uit meerdere specialistische platforms, zoals <strong>enkelvoet.net</strong> voor enkel- en voetklachten. 
-    Als u zich aanmeldt via een van deze subsites, wordt uw praktijk zichtbaar op <strong>zowel de subsite als vindjefysio.net</strong>.
+    Het VindJeFysio Netwerk bestaat uit meerdere specialistische platforms. Als u zich aanmeldt via een van deze subsites, wordt uw praktijk zichtbaar op <strong>zowel de subsite als vindjefysio.net</strong>.
     <br><br>
-    Na goedkeuring ontvangt u een <strong>praktijkcode</strong>. Met deze code kunnen uw therapeuten zich aanmelden via de betreffende subsite en worden zij automatisch aan uw praktijk gekoppeld.
+    Na goedkeuring ontvangt u een <strong>praktijkcode</strong>. Met deze code kunnen uw therapeuten zich aanmelden en worden zij automatisch aan uw praktijk gekoppeld.
     <br><br>
     <span style="color:var(--teal);font-weight:600">📋 Samengevat: één aanmelding → zichtbaar op meerdere platforms.</span>
   </div>
@@ -167,81 +159,42 @@
 
 <div class="uitleg-sectie">
 
-  <!-- UITLEG STAPPEN -->
   <div class="uitleg-grid">
-    <div class="uitleg-stap">
-      <div class="nr">1</div>
-      <h3>Kies uw netwerk</h3>
-      <p>Selecteer het specialisme dat past bij uw praktijk.</p>
-    </div>
-    <div class="uitleg-stap">
-      <div class="nr">2</div>
-      <h3>Meld uw praktijk aan</h3>
-      <p>Vul het formulier in. Na goedkeuring ontvangt u een praktijkcode.</p>
-    </div>
-    <div class="uitleg-stap">
-      <div class="nr">3</div>
-      <h3>Koppel therapeuten</h3>
-      <p>Deel de code met collega's. Zij melden zich aan via de subsite.</p>
-    </div>
-    <div class="uitleg-stap">
-      <div class="nr">4</div>
-      <h3>Zichtbaar op alle platforms</h3>
-      <p>Uw praktijk verschijnt op vindjefysio.net én de subsite.</p>
-    </div>
+    <div class="uitleg-stap"><div class="nr">1</div><h3>Kies uw netwerk</h3><p>Selecteer het specialisme dat past bij uw praktijk.</p></div>
+    <div class="uitleg-stap"><div class="nr">2</div><h3>Meld uw praktijk aan</h3><p>Vul het formulier in. Na goedkeuring ontvangt u een praktijkcode.</p></div>
+    <div class="uitleg-stap"><div class="nr">3</div><h3>Koppel therapeuten</h3><p>Deel de code met collega's. Zij melden zich aan via de subsite.</p></div>
+    <div class="uitleg-stap"><div class="nr">4</div><h3>Zichtbaar op alle platforms</h3><p>Uw praktijk verschijnt op vindjefysio.net én de subsite.</p></div>
   </div>
 
   <div id="form-container">
 
-    <!-- NETWERK KEUZE -->
     <div class="netwerk-sectie">
       <div class="netwerk-sectie-titel">1. Kies uw netwerk(en)</div>
-      <div class="info-blok">💡 U kunt bij meerdere netwerken aanmelden als uw praktijk meerdere specialisaties biedt. Therapeuten melden zich vervolgens aan via de betreffende subsite.</div>
+      <div class="info-blok">💡 U kunt bij meerdere netwerken aanmelden als uw praktijk meerdere specialisaties biedt.</div>
       <div class="netwerk-grid" id="netwerk-grid">
         <label class="netwerk-optie" id="optie-enkelvoet">
           <input type="checkbox" name="netwerk" value="enkelvoet.net" onchange="updateNetwerk()" />
-          <div>
-            <div class="netwerk-naam">Enkel Voet Netwerk</div>
-            <div class="netwerk-focus">Enkel & voet</div>
-            <span class="netwerk-badge">✓ Actief</span>
-          </div>
+          <div><div class="netwerk-naam">Enkel Voet Netwerk</div><div class="netwerk-focus">Enkel & voet</div><span class="netwerk-badge">✓ Actief</span></div>
+        </label>
+        <label class="netwerk-optie" id="optie-kansrijkopgroeien">
+          <input type="checkbox" name="netwerk" value="kansrijkopgroeien.net" onchange="updateNetwerk()" />
+          <div><div class="netwerk-naam">Kansrijk Opgroeien</div><div class="netwerk-focus">Kinderfysiotherapie</div><span class="netwerk-badge">✓ Actief</span></div>
         </label>
         <label class="netwerk-optie binnenkort">
           <input type="checkbox" name="netwerk" value="knieonderbeen.net" disabled />
-          <div>
-            <div class="netwerk-naam">Knie Onderbeen</div>
-            <div class="netwerk-focus">Knie & onderbeen</div>
-            <span class="netwerk-badge binnenkort">Binnenkort</span>
-          </div>
+          <div><div class="netwerk-naam">Knie Onderbeen</div><div class="netwerk-focus">Knie & onderbeen</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
         </label>
         <label class="netwerk-optie binnenkort">
           <input type="checkbox" name="netwerk" value="heupbovenbeen.net" disabled />
-          <div>
-            <div class="netwerk-naam">Heup Bovenbeen</div>
-            <div class="netwerk-focus">Heup & bovenbeen</div>
-            <span class="netwerk-badge binnenkort">Binnenkort</span>
-          </div>
+          <div><div class="netwerk-naam">Heup Bovenbeen</div><div class="netwerk-focus">Heup & bovenbeen</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
         </label>
         <label class="netwerk-optie binnenkort">
           <input type="checkbox" name="netwerk" value="rugnek.net" disabled />
-          <div>
-            <div class="netwerk-naam">Rug Nek Netwerk</div>
-            <div class="netwerk-focus">Rug, nek & bekken</div>
-            <span class="netwerk-badge binnenkort">Binnenkort</span>
-          </div>
-        </label>
-        <label class="netwerk-optie binnenkort">
-          <input type="checkbox" name="netwerk" value="kansrijkopgroeien.net" disabled />
-          <div>
-            <div class="netwerk-naam">Kansrijk Opgroeien</div>
-            <div class="netwerk-focus">Kinderfysiotherapie</div>
-            <span class="netwerk-badge binnenkort">Binnenkort</span>
-          </div>
+          <div><div class="netwerk-naam">Rug Nek Netwerk</div><div class="netwerk-focus">Rug, nek & bekken</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
         </label>
       </div>
     </div>
 
-    <!-- TIERS -->
     <div class="tiers-sectie">
       <div class="netwerk-sectie-titel">2. Kies uw pakket</div>
       <div class="tier-grid">
@@ -249,49 +202,33 @@
           <span class="tier-badge basis">Basis</span>
           <div class="tier-prijs">€5 <span>/ locatie / maand</span></div>
           <ul class="tier-features">
-            <li>Zichtbaar op de kaart</li>
-            <li>Naam, adres & contact</li>
-            <li>Disciplines via therapeuten</li>
-            <li class="nee">Praktijkbeschrijving</li>
-            <li class="nee">Cursusplatform</li>
+            <li>Zichtbaar op de kaart</li><li>Naam, adres & contact</li><li>Disciplines via therapeuten</li>
+            <li class="nee">Praktijkbeschrijving</li><li class="nee">Cursusplatform</li>
           </ul>
         </div>
         <div class="tier-card" onclick="selecteerTier('plus', this)">
           <span class="tier-badge plus">Plus</span>
           <div class="tier-prijs">€10 <span>/ locatie / maand</span></div>
           <ul class="tier-features">
-            <li>Alles uit Basis</li>
-            <li>Praktijkbeschrijving</li>
-            <li>Tot 5 therapeuten cursussen</li>
-            <li>Specialisme aantonen</li>
-            <li class="nee">Partnerpagina</li>
+            <li>Alles uit Basis</li><li>Praktijkbeschrijving</li><li>Tot 5 therapeuten cursussen</li>
+            <li>Specialisme aantonen</li><li class="nee">Partnerpagina</li>
           </ul>
         </div>
         <div class="tier-card partner" onclick="selecteerTier('partner', this)">
           <span class="tier-badge partner">Partner</span>
           <div class="tier-prijs">€50 <span>/ locatie / maand</span></div>
           <ul class="tier-features">
-            <li>Alles uit Plus</li>
-            <li>Onbeperkt cursussen</li>
-            <li>Vermelding partnerpagina</li>
-            <li>Logo & volledig profiel</li>
+            <li>Alles uit Plus</li><li>Onbeperkt cursussen</li><li>Vermelding partnerpagina</li><li>Logo & volledig profiel</li>
           </ul>
         </div>
       </div>
     </div>
 
-    <!-- CONTACTGEGEVENS -->
     <div class="form-sectie">
       <div class="form-sectie-titel">3. Uw contactgegevens</div>
       <div class="form-row">
-        <div class="form-group">
-          <label>Voornaam <span class="req">*</span></label>
-          <input type="text" id="voornaam" placeholder="Jan" />
-        </div>
-        <div class="form-group">
-          <label>Achternaam <span class="req">*</span></label>
-          <input type="text" id="achternaam" placeholder="Jansen" />
-        </div>
+        <div class="form-group"><label>Voornaam <span class="req">*</span></label><input type="text" id="voornaam" placeholder="Jan" /></div>
+        <div class="form-group"><label>Achternaam <span class="req">*</span></label><input type="text" id="achternaam" placeholder="Jansen" /></div>
       </div>
       <div class="form-group">
         <label>E-mailadres beheerder <span class="req">*</span></label>
@@ -303,21 +240,16 @@
         <input type="email" id="email-publiek" placeholder="info@praktijk.nl" />
         <p class="form-hint">🌐 Zichtbaar op de site. Mag hetzelfde zijn als uw beheerderadres.</p>
       </div>
-      <div class="form-group">
-        <label>Telefoonnummer</label>
-        <input type="tel" id="telefoon" placeholder="076-0000000" />
-      </div>
+      <div class="form-group"><label>Telefoonnummer</label><input type="tel" id="telefoon" placeholder="076-0000000" /></div>
     </div>
 
-    <!-- LOCATIES -->
     <div class="form-sectie">
       <div class="form-sectie-titel">4. Uw locatie(s)</div>
-      <div class="info-blok">📍 De disciplines van uw locatie worden automatisch bepaald op basis van de therapeuten die zich aanmelden. U hoeft ze niet zelf in te vullen.</div>
+      <div class="info-blok">📍 De disciplines van uw locatie worden automatisch bepaald op basis van de therapeuten die zich aanmelden.</div>
       <div id="locaties-container"></div>
       <button type="button" class="btn-locatie-toevoegen" onclick="voegLocatieToe()">+ Nog een locatie toevoegen</button>
     </div>
 
-    <!-- BESCHRIJVING (plus/partner) -->
     <div class="form-sectie" id="beschrijving-sectie" style="display:none">
       <div class="form-sectie-titel">5. Praktijkbeschrijving</div>
       <div class="form-group">
@@ -327,12 +259,11 @@
       </div>
     </div>
 
-    <!-- BEVESTIGING -->
     <div class="form-sectie">
       <div class="form-sectie-titel">Bevestiging</div>
       <div class="checkbox-wrap">
         <input type="checkbox" id="protocol-akkoord" />
-        <label for="protocol-akkoord">Ik bevestig dat onze praktijk werkt volgens de behandelprotocollen van de aangesloten netwerken en deze als leidraad gebruikt bij de behandeling van onze patiënten.</label>
+        <label for="protocol-akkoord">Ik bevestig dat onze praktijk werkt volgens de behandelprotocollen van de aangesloten netwerken.</label>
       </div>
       <div class="checkbox-wrap">
         <input type="checkbox" id="privacy-akkoord" />
@@ -344,13 +275,10 @@
       </div>
     </div>
 
-    <!-- HONEYPOT -->
     <input type="text" name="website_url" id="website_url" style="display:none" tabindex="-1" autocomplete="off" />
-
     <button class="btn-submit" onclick="verstuurFormulier()" id="btn-submit">Aanmelding versturen →</button>
   </div>
 
-  <!-- SUCCES -->
   <div class="succes-blok" id="succes-blok">
     <div class="icon">✅</div>
     <h2>Aanmelding ontvangen!</h2>
@@ -378,7 +306,7 @@ function toggleUitleg() {
   popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
 }
 
-// Detecteer via welke subsite we binnenkomen
+// ── Detecteer subsite + voorinvullen vanuit URL parameters ──
 function detecteerSubsite() {
   const params = new URLSearchParams(window.location.search);
   viaSubsite = params.get('via') || '';
@@ -386,32 +314,69 @@ function detecteerSubsite() {
   const subsiteNamen = {
     'enkelvoet.net': 'Enkel Voet Netwerk',
     'beenklachten.net': 'Beenklachten Netwerk',
-    'knieonderbeen.net': 'Knie Onderbeen Netwerk'
+    'knieonderbeen.net': 'Knie Onderbeen Netwerk',
+    'kansrijkopgroeien.net': 'Kansrijk Opgroeien Netwerk',
   };
 
   const contextBalk = document.getElementById('context-balk');
   const contextTekst = document.getElementById('context-tekst');
 
   if (viaSubsite) {
-    // Toon context balk
     const naam = subsiteNamen[viaSubsite] || viaSubsite;
     contextBalk.style.display = 'block';
     contextTekst.innerHTML = `U meldt zich aan via <strong>${naam}</strong> — uw praktijk wordt zichtbaar op ${viaSubsite} én vindjefysio.net`;
-
-    // Toon in hero
     document.getElementById('hero-via').textContent = `Via ${naam}`;
-
-    // Pre-selecteer netwerk
     const checkbox = document.querySelector(`input[value="${viaSubsite}"]`);
     if (checkbox && !checkbox.disabled) {
       checkbox.checked = true;
       checkbox.closest('.netwerk-optie').classList.add('actief');
     }
   } else {
-    // Direct via vindjefysio
     contextBalk.style.display = 'block';
     contextTekst.innerHTML = `U meldt zich direct aan via <strong>VindJeFysio.net</strong> — kies hieronder bij welk(e) netwerk(en) u zich aanmeldt`;
     document.getElementById('hero-via').textContent = 'VindJeFysio Netwerk';
+  }
+
+  // ── Voorinvullen vanuit URL parameters (extra locatie flow) ──
+  const voorinvulNaam       = params.get('naam');
+  const voorinvulEmail      = params.get('email');
+  const voorinvulPakket     = params.get('pakket');
+  const voorinvulVoornaam   = params.get('voornaam');
+  const voorinvulAchternaam = params.get('achternaam');
+  const voorinvulTelefoon   = params.get('telefoon');
+  const isExtraLocatie      = params.get('extra_locatie') === '1';
+
+  if (voorinvulEmail) {
+    document.getElementById('email').value = voorinvulEmail;
+    document.getElementById('email-publiek').value = voorinvulEmail;
+  }
+  if (voorinvulVoornaam)   document.getElementById('voornaam').value = voorinvulVoornaam;
+  if (voorinvulAchternaam) document.getElementById('achternaam').value = voorinvulAchternaam;
+  if (voorinvulTelefoon)   document.getElementById('telefoon').value = voorinvulTelefoon;
+
+  // Pakket en locatienaam invullen na voegLocatieToe()
+  if (voorinvulPakket || voorinvulNaam) {
+    setTimeout(() => {
+      if (voorinvulPakket) {
+        document.querySelectorAll('.tier-card').forEach(card => {
+          const badge = card.querySelector('.tier-badge');
+          if (badge && badge.classList.contains(voorinvulPakket)) selecteerTier(voorinvulPakket, card);
+        });
+      }
+      if (voorinvulNaam) {
+        const naamVeld = document.getElementById('naam-1');
+        if (naamVeld) naamVeld.value = voorinvulNaam;
+      }
+    }, 50);
+  }
+
+  // Groene banner bij extra locatie flow
+  if (isExtraLocatie) {
+    const banner = document.createElement('div');
+    banner.style.cssText = 'background:#EDF7EE;border:1.5px solid #27AE60;border-radius:12px;padding:14px 18px;margin-bottom:24px;font-size:0.88rem;color:#1a6b3a;display:flex;gap:10px;align-items:flex-start';
+    banner.innerHTML = `<span style="font-size:1.2rem">📍</span><div><strong>Extra locatie toevoegen</strong><br>Uw contactgegevens en pakket zijn alvast ingevuld. Vul alleen het adres van de nieuwe locatie in — na goedkeuring wordt de locatie actief.</div>`;
+    const uitlegGrid = document.querySelector('.uitleg-grid');
+    if (uitlegGrid) uitlegGrid.before(banner);
   }
 }
 
@@ -445,28 +410,13 @@ function voegLocatieToe() {
       <input type="text" id="naam-${nr}" placeholder="Fysiotherapie De Voet" />
     </div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Straat + huisnummer <span class="req">*</span></label>
-        <input type="text" id="straat-${nr}" placeholder="Industriekade 10" />
-      </div>
-      <div class="form-group">
-        <label>Postcode <span class="req">*</span></label>
-        <input type="text" id="postcode-${nr}" placeholder="4815 HD" />
-      </div>
+      <div class="form-group"><label>Straat + huisnummer <span class="req">*</span></label><input type="text" id="straat-${nr}" placeholder="Industriekade 10" /></div>
+      <div class="form-group"><label>Postcode <span class="req">*</span></label><input type="text" id="postcode-${nr}" placeholder="4815 HD" /></div>
     </div>
-    <div class="form-group">
-      <label>Stad <span class="req">*</span></label>
-      <input type="text" id="stad-${nr}" placeholder="Breda" />
-    </div>
+    <div class="form-group"><label>Stad <span class="req">*</span></label><input type="text" id="stad-${nr}" placeholder="Breda" /></div>
     <div class="form-row">
-      <div class="form-group">
-        <label>Telefoon locatie</label>
-        <input type="tel" id="tel-${nr}" placeholder="076-0000000" />
-      </div>
-      <div class="form-group">
-        <label>Website</label>
-        <input type="url" id="website-${nr}" placeholder="https://www.praktijk.nl" />
-      </div>
+      <div class="form-group"><label>Telefoon locatie</label><input type="tel" id="tel-${nr}" placeholder="076-0000000" /></div>
+      <div class="form-group"><label>Website</label><input type="url" id="website-${nr}" placeholder="https://www.praktijk.nl" /></div>
     </div>`;
   document.getElementById('locaties-container').appendChild(div);
 }
@@ -483,9 +433,7 @@ function fixUrl(url) {
 }
 
 async function verstuurFormulier() {
-  if (document.getElementById('website_url').value) return; // honeypot
-
-  // Validatie
+  if (document.getElementById('website_url').value) return;
   const geselecteerdeNetwerken = [...document.querySelectorAll('input[name="netwerk"]:checked')].map(cb => cb.value);
   if (geselecteerdeNetwerken.length === 0) { alert('Selecteer minimaal één netwerk.'); return; }
   if (!geselecteerdeTier) { alert('Selecteer een pakket.'); return; }
@@ -494,7 +442,6 @@ async function verstuurFormulier() {
   if (!document.getElementById('email').value.trim()) { alert('Vul uw e-mailadres in.'); return; }
   if (!document.getElementById('protocol-akkoord').checked) { alert('Bevestig dat u werkt volgens de protocollen.'); return; }
   if (!document.getElementById('privacy-akkoord').checked) { alert('Vink het privacyakkoord aan.'); return; }
-
   const locatieBlokken = document.querySelectorAll('.locatie-blok');
   if (locatieBlokken.length === 0) { alert('Voeg minimaal één locatie toe.'); return; }
 
@@ -509,36 +456,24 @@ async function verstuurFormulier() {
       const postcode = document.getElementById(`postcode-${nr}`)?.value.trim();
       const stad = document.getElementById(`stad-${nr}`)?.value.trim();
       if (!naam || !straat || !stad) { alert('Vul alle verplichte locatiegegevens in.'); btn.textContent = 'Aanmelding versturen →'; btn.disabled = false; return; }
-
-      // Voor elk gekozen netwerk een aparte aanmelding
       for (const netwerk of geselecteerdeNetwerken) {
         const data = {
-          naam,
-          straat,
-          postcode: postcode || '',
-          stad,
+          naam, straat, postcode: postcode || '', stad,
           telefoon: document.getElementById(`tel-${nr}`)?.value.trim() || document.getElementById('telefoon').value.trim(),
           email: document.getElementById('email-publiek').value.trim() || document.getElementById('email').value.trim(),
           website: fixUrl(document.getElementById(`website-${nr}`)?.value),
-          aangemeld_via: netwerk,
-          tier: geselecteerdeTier,
-          beschrijving: (geselecteerdeTier === 'plus' || geselecteerdeTier === 'partner')
-            ? document.getElementById('beschrijving').value.trim() : '',
+          aangemeld_via: netwerk, tier: geselecteerdeTier,
+          beschrijving: (geselecteerdeTier === 'plus' || geselecteerdeTier === 'partner') ? document.getElementById('beschrijving').value.trim() : '',
           contact_voornaam: document.getElementById('voornaam').value.trim(),
           contact_achternaam: document.getElementById('achternaam').value.trim(),
           contact_email: document.getElementById('email').value.trim(),
           contact_telefoon: document.getElementById('telefoon').value.trim(),
           toelichting: document.getElementById('toelichting').value.trim(),
-          disciplines: [],
-          actief: false
+          disciplines: [], actief: false
         };
-
-        await fetch(`${SUPABASE_URL}/rest/v1/praktijken`, {
-          method: 'POST', headers: HEADERS, body: JSON.stringify(data)
-        });
+        await fetch(`${SUPABASE_URL}/rest/v1/praktijken`, { method: 'POST', headers: HEADERS, body: JSON.stringify(data) });
       }
     }
-
     document.getElementById('form-container').style.display = 'none';
     document.getElementById('succes-blok').style.display = 'block';
   } catch(e) {
@@ -547,7 +482,6 @@ async function verstuurFormulier() {
   }
 }
 
-// Start
 detecteerSubsite();
 voegLocatieToe();
 </script>
