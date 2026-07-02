@@ -180,6 +180,10 @@
           <input type="checkbox" name="netwerk" value="kansrijkopgroeien.net" onchange="updateNetwerk()" />
           <div><div class="netwerk-naam">Kansrijk Opgroeien</div><div class="netwerk-focus">Kinderfysiotherapie</div><span class="netwerk-badge">✓ Actief</span></div>
         </label>
+        <label class="netwerk-optie" id="optie-mentaalgezond">
+          <input type="checkbox" name="netwerk" value="mentaalgezond.net" onchange="updateNetwerk()" />
+          <div><div class="netwerk-naam">Mentaal Gezond</div><div class="netwerk-focus">Psychosomatiek & FNS</div><span class="netwerk-badge">✓ Actief</span></div>
+        </label>
         <label class="netwerk-optie binnenkort">
           <input type="checkbox" name="netwerk" value="knieonderbeen.net" disabled />
           <div><div class="netwerk-naam">Knie Onderbeen</div><div class="netwerk-focus">Knie & onderbeen</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
@@ -316,6 +320,7 @@ function detecteerSubsite() {
     'beenklachten.net': 'Beenklachten Netwerk',
     'knieonderbeen.net': 'Knie Onderbeen Netwerk',
     'kansrijkopgroeien.net': 'Kansrijk Opgroeien Netwerk',
+    'mentaalgezond.net': 'Mentaal Gezond Netwerk',
   };
 
   const contextBalk = document.getElementById('context-balk');
