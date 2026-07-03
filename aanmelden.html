@@ -416,7 +416,26 @@ function fixUrl(url) {
   if (!url.startsWith('http')) url = 'https://' + url;
   return url.replace('http://', 'https://');
 }
-
+// ── Duplicaatcheck: bestaat er al een praktijk op dit adres? ──
+async function checkBestaandePraktijk(postcode, straat) {
+  try {
+    const pc = (postcode || '').replace(/\s/g, '').toUpperCase();
+    const huisnr = (straat || '').match(/\d+/)?.[0] || '';
+    if (!pc || !huisnr) return null;
+    const resp = await fetch(
+      `${SUPABASE_URL}/rest/v1/praktijken?select=id,naam,stad,straat,postcode,actief&postcode=ilike.${pc.slice(0,4)}*`,
+      { headers: { 'apikey': ANON_KEY, 'Authorization': `Bearer ${ANON_KEY}` } }
+    );
+    const lijst = await resp.json();
+    if (!Array.isArray(lijst)) return null;
+    return lijst.find(p => {
+      const pPc = (p.postcode || '').replace(/\s/g, '').toUpperCase();
+      const pHuisnr = (p.straat || '').match(/\d+/)?.[0] || '';
+      return pPc === pc && pHuisnr === huisnr;
+    }) || null;
+  } catch(e) { return null; }
+}
+  
 async function verstuurFormulier() {
   if (document.getElementById('website_url').value) return;
   if (!geselecteerdeTier) { alert('Selecteer een pakket.'); return; }
@@ -440,6 +459,18 @@ async function verstuurFormulier() {
       const postcode = document.getElementById(`postcode-${nr}`)?.value.trim();
       const stad = document.getElementById(`stad-${nr}`)?.value.trim();
       if (!naam || !straat || !stad) { alert('Vul alle verplichte locatiegegevens in.'); btn.textContent = 'Aanmelding versturen →'; btn.disabled = false; return; }
+      
+      // Duplicaatcheck
+      const bestaand = await checkBestaandePraktijk(postcode, straat);
+      if (bestaand) {
+        const doorgaan = confirm(
+          `Let op: op dit adres staat al een praktijk geregistreerd:\n\n` +
+          `"${bestaand.naam}" in ${bestaand.stad}${bestaand.actief ? ' (actief)' : ' (aanmelding in behandeling)'}\n\n` +
+          `Is dit uw praktijk? Vraag dan uw collega naar de bestaande praktijkcode in plaats van opnieuw aan te melden.\n\n` +
+          `Klik OK om tóch een nieuwe aanmelding te doen, of Annuleren om te stoppen.`
+        );
+        if (!doorgaan) { btn.textContent = 'Aanmelding versturen →'; btn.disabled = false; return; }
+      }
       const data = {
         naam, straat, postcode: postcode || '', stad,
         telefoon: document.getElementById(`tel-${nr}`)?.value.trim() || document.getElementById('telefoon').value.trim(),
