@@ -48,11 +48,8 @@
     .netwerk-sectie { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 16px; padding: 28px; margin-bottom: 24px; }
     .netwerk-sectie-titel { font-size: 1rem; font-weight: 700; color: var(--navy); margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--grey-border); }
     .netwerk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; }
-    .netwerk-optie { border: 2px solid var(--grey-border); border-radius: 10px; padding: 14px 16px; cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 10px; }
-    .netwerk-optie:hover { border-color: var(--teal); }
-    .netwerk-optie.actief { border-color: var(--teal); background: var(--teal-light); }
-    .netwerk-optie.binnenkort { opacity: 0.5; cursor: not-allowed; }
-    .netwerk-optie input { accent-color: var(--teal); }
+    .netwerk-info { border: 1px solid var(--grey-border); border-radius: 10px; padding: 14px 16px; background: var(--white); display: flex; align-items: center; gap: 10px; }
+    .netwerk-info.binnenkort { opacity: 0.55; }
     .netwerk-naam { font-size: 0.85rem; font-weight: 700; color: var(--navy); }
     .netwerk-focus { font-size: 0.75rem; color: var(--text-muted); }
     .netwerk-badge { font-size: 0.65rem; font-weight: 700; padding: 1px 6px; border-radius: 999px; background: var(--teal-light); color: var(--teal); }
@@ -140,12 +137,12 @@
     </button>
   </div>
   <div id="uitleg-popup" style="display:none;max-width:900px;margin:12px auto 0;background:var(--white);border:1px solid var(--grey-border);border-radius:12px;padding:16px 20px;font-size:0.85rem;color:var(--text-muted);line-height:1.7">
-    <strong style="color:var(--navy);display:block;margin-bottom:8px">Hoe werkt aanmelden via een subsite?</strong>
-    Het VindJeFysio Netwerk bestaat uit meerdere specialistische platforms. Als u zich aanmeldt via een van deze subsites, wordt uw praktijk zichtbaar op <strong>zowel de subsite als vindjefysio.net</strong>.
+    <strong style="color:var(--navy);display:block;margin-bottom:8px">Hoe werkt de aanmelding?</strong>
+    U meldt uw praktijk <strong>één keer</strong> aan bij het VindJeFysio Netwerk. Na goedkeuring ontvangt u een <strong>praktijkcode</strong>.
     <br><br>
-    Na goedkeuring ontvangt u een <strong>praktijkcode</strong>. Met deze code kunnen uw therapeuten zich aanmelden en worden zij automatisch aan uw praktijk gekoppeld.
+    Uw therapeuten melden zich met deze code aan bij de specialistische netwerken waarin zij geschoold zijn — bijvoorbeeld Enkel Voet, Kansrijk Opgroeien of Mentaal Gezond. Uw praktijk wordt daarmee automatisch zichtbaar op de platforms waar uw therapeuten actief zijn.
     <br><br>
-    <span style="color:var(--teal);font-weight:600">📋 Samengevat: één aanmelding → zichtbaar op meerdere platforms.</span>
+    <span style="color:var(--teal);font-weight:600">📋 Samengevat: één aanmelding, één praktijkcode → zichtbaar op alle netwerken waar uw therapeuten actief zijn.</span>
   </div>
 </div>
 
@@ -160,53 +157,47 @@
 <div class="uitleg-sectie">
 
   <div class="uitleg-grid">
-    <div class="uitleg-stap"><div class="nr">1</div><h3>Kies uw netwerk</h3><p>Selecteer het specialisme dat past bij uw praktijk.</p></div>
-    <div class="uitleg-stap"><div class="nr">2</div><h3>Meld uw praktijk aan</h3><p>Vul het formulier in. Na goedkeuring ontvangt u een praktijkcode.</p></div>
-    <div class="uitleg-stap"><div class="nr">3</div><h3>Koppel therapeuten</h3><p>Deel de code met collega's. Zij melden zich aan via de subsite.</p></div>
-    <div class="uitleg-stap"><div class="nr">4</div><h3>Zichtbaar op alle platforms</h3><p>Uw praktijk verschijnt op vindjefysio.net én de subsite.</p></div>
+    <div class="uitleg-stap"><div class="nr">1</div><h3>Meld uw praktijk aan</h3><p>Vul het formulier in. Na goedkeuring ontvangt u een praktijkcode.</p></div>
+    <div class="uitleg-stap"><div class="nr">2</div><h3>Deel de code</h3><p>Geef uw praktijkcode aan de therapeuten van uw praktijk.</p></div>
+    <div class="uitleg-stap"><div class="nr">3</div><h3>Therapeuten melden zich aan</h3><p>Zij kiezen de netwerken waarin zij geschoold zijn.</p></div>
+    <div class="uitleg-stap"><div class="nr">4</div><h3>Automatisch zichtbaar</h3><p>Uw praktijk verschijnt op de platforms waar uw therapeuten actief zijn.</p></div>
   </div>
 
   <div id="form-container">
 
     <div class="netwerk-sectie">
-      <div class="netwerk-sectie-titel">1. Kies uw netwerk(en)</div>
-      <div class="info-blok">💡 U kunt bij meerdere netwerken aanmelden als uw praktijk meerdere specialisaties biedt.</div>
-      <div class="netwerk-grid" id="netwerk-grid">
-        <label class="netwerk-optie" id="optie-enkelvoet">
-          <input type="checkbox" name="netwerk" value="enkelvoet.net" onchange="updateNetwerk()" />
-          <div><div class="netwerk-naam">Enkel Voet Netwerk</div><div class="netwerk-focus">Enkel & voet</div><span class="netwerk-badge">✓ Actief</span></div>
-        </label>
-        <label class="netwerk-optie" id="optie-kansrijkopgroeien">
-          <input type="checkbox" name="netwerk" value="kansrijkopgroeien.net" onchange="updateNetwerk()" />
+      <div class="netwerk-sectie-titel">De specialistische netwerken</div>
+      <div class="info-blok">💡 U hoeft geen netwerk te kiezen — uw therapeuten melden zich straks aan bij de netwerken waarin zij geschoold zijn. Daarmee wordt uw praktijk daar automatisch zichtbaar.</div>
+      <div class="netwerk-grid">
+        <div class="netwerk-info">
+          <div><div class="netwerk-naam">Enkel Voet Netwerk</div><div class="netwerk-focus">Enkel &amp; voet</div><span class="netwerk-badge">✓ Actief</span></div>
+        </div>
+        <div class="netwerk-info">
           <div><div class="netwerk-naam">Kansrijk Opgroeien</div><div class="netwerk-focus">Kinderfysiotherapie</div><span class="netwerk-badge">✓ Actief</span></div>
-        </label>
-        <label class="netwerk-optie" id="optie-mentaalgezond">
-          <input type="checkbox" name="netwerk" value="mentaalgezond.net" onchange="updateNetwerk()" />
-          <div><div class="netwerk-naam">Mentaal Gezond</div><div class="netwerk-focus">Psychosomatiek & FNS</div><span class="netwerk-badge">✓ Actief</span></div>
-        </label>
-        <label class="netwerk-optie binnenkort">
-          <input type="checkbox" name="netwerk" value="knieonderbeen.net" disabled />
-          <div><div class="netwerk-naam">Knie Onderbeen</div><div class="netwerk-focus">Knie & onderbeen</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
-        </label>
-        <label class="netwerk-optie binnenkort">
-          <input type="checkbox" name="netwerk" value="heupbovenbeen.net" disabled />
-          <div><div class="netwerk-naam">Heup Bovenbeen</div><div class="netwerk-focus">Heup & bovenbeen</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
-        </label>
-        <label class="netwerk-optie binnenkort">
-          <input type="checkbox" name="netwerk" value="rugnek.net" disabled />
-          <div><div class="netwerk-naam">Rug Nek Netwerk</div><div class="netwerk-focus">Rug, nek & bekken</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
-        </label>
+        </div>
+        <div class="netwerk-info">
+          <div><div class="netwerk-naam">Mentaal Gezond</div><div class="netwerk-focus">Psychosomatiek &amp; FNS</div><span class="netwerk-badge">✓ Actief</span></div>
+        </div>
+        <div class="netwerk-info binnenkort">
+          <div><div class="netwerk-naam">Knie Onderbeen</div><div class="netwerk-focus">Knie &amp; onderbeen</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
+        </div>
+        <div class="netwerk-info binnenkort">
+          <div><div class="netwerk-naam">Heup Bovenbeen</div><div class="netwerk-focus">Heup &amp; bovenbeen</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
+        </div>
+        <div class="netwerk-info binnenkort">
+          <div><div class="netwerk-naam">Rug Nek Netwerk</div><div class="netwerk-focus">Rug, nek &amp; bekken</div><span class="netwerk-badge binnenkort">Binnenkort</span></div>
+        </div>
       </div>
     </div>
 
     <div class="tiers-sectie">
-      <div class="netwerk-sectie-titel">2. Kies uw pakket</div>
+      <div class="netwerk-sectie-titel">1. Kies uw pakket</div>
       <div class="tier-grid">
         <div class="tier-card" onclick="selecteerTier('basis', this)">
           <span class="tier-badge basis">Basis</span>
           <div class="tier-prijs">€5 <span>/ locatie / maand</span></div>
           <ul class="tier-features">
-            <li>Zichtbaar op de kaart</li><li>Naam, adres & contact</li><li>Disciplines via therapeuten</li>
+            <li>Zichtbaar op de kaart</li><li>Naam, adres &amp; contact</li><li>Disciplines via therapeuten</li>
             <li class="nee">Praktijkbeschrijving</li><li class="nee">Cursusplatform</li>
           </ul>
         </div>
@@ -222,14 +213,14 @@
           <span class="tier-badge partner">Partner</span>
           <div class="tier-prijs">€50 <span>/ locatie / maand</span></div>
           <ul class="tier-features">
-            <li>Alles uit Plus</li><li>Onbeperkt cursussen</li><li>Vermelding partnerpagina</li><li>Logo & volledig profiel</li>
+            <li>Alles uit Plus</li><li>Onbeperkt cursussen</li><li>Vermelding partnerpagina</li><li>Logo &amp; volledig profiel</li>
           </ul>
         </div>
       </div>
     </div>
 
     <div class="form-sectie">
-      <div class="form-sectie-titel">3. Uw contactgegevens</div>
+      <div class="form-sectie-titel">2. Uw contactgegevens</div>
       <div class="form-row">
         <div class="form-group"><label>Voornaam <span class="req">*</span></label><input type="text" id="voornaam" placeholder="Jan" /></div>
         <div class="form-group"><label>Achternaam <span class="req">*</span></label><input type="text" id="achternaam" placeholder="Jansen" /></div>
@@ -248,14 +239,14 @@
     </div>
 
     <div class="form-sectie">
-      <div class="form-sectie-titel">4. Uw locatie(s)</div>
+      <div class="form-sectie-titel">3. Uw locatie(s)</div>
       <div class="info-blok">📍 De disciplines van uw locatie worden automatisch bepaald op basis van de therapeuten die zich aanmelden.</div>
       <div id="locaties-container"></div>
       <button type="button" class="btn-locatie-toevoegen" onclick="voegLocatieToe()">+ Nog een locatie toevoegen</button>
     </div>
 
     <div class="form-sectie" id="beschrijving-sectie" style="display:none">
-      <div class="form-sectie-titel">5. Praktijkbeschrijving</div>
+      <div class="form-sectie-titel">4. Praktijkbeschrijving</div>
       <div class="form-group">
         <label>Beschrijving <span class="req">*</span></label>
         <textarea id="beschrijving" placeholder="Beschrijf uw praktijk in 2-3 zinnen." maxlength="500" oninput="document.getElementById('tekens').textContent=this.value.length"></textarea>
@@ -267,7 +258,7 @@
       <div class="form-sectie-titel">Bevestiging</div>
       <div class="checkbox-wrap">
         <input type="checkbox" id="protocol-akkoord" />
-        <label for="protocol-akkoord">Ik bevestig dat onze praktijk werkt volgens de behandelprotocollen van de aangesloten netwerken.</label>
+        <label for="protocol-akkoord">Ik bevestig dat onze praktijk werkt volgens de behandelprotocollen van de netwerken waarin onze therapeuten actief zijn.</label>
       </div>
       <div class="checkbox-wrap">
         <input type="checkbox" id="privacy-akkoord" />
@@ -310,7 +301,7 @@ function toggleUitleg() {
   popup.style.display = popup.style.display === 'none' ? 'block' : 'none';
 }
 
-// ── Detecteer subsite + voorinvullen vanuit URL parameters ──
+// ── Detecteer herkomst-subsite + voorinvullen vanuit URL parameters ──
 function detecteerSubsite() {
   const params = new URLSearchParams(window.location.search);
   viaSubsite = params.get('via') || '';
@@ -329,16 +320,11 @@ function detecteerSubsite() {
   if (viaSubsite) {
     const naam = subsiteNamen[viaSubsite] || viaSubsite;
     contextBalk.style.display = 'block';
-    contextTekst.innerHTML = `U meldt zich aan via <strong>${naam}</strong> — uw praktijk wordt zichtbaar op ${viaSubsite} én vindjefysio.net`;
+    contextTekst.innerHTML = `U meldt zich aan via <strong>${naam}</strong> — uw praktijk wordt onderdeel van het VindJeFysio Netwerk`;
     document.getElementById('hero-via').textContent = `Via ${naam}`;
-    const checkbox = document.querySelector(`input[value="${viaSubsite}"]`);
-    if (checkbox && !checkbox.disabled) {
-      checkbox.checked = true;
-      checkbox.closest('.netwerk-optie').classList.add('actief');
-    }
   } else {
     contextBalk.style.display = 'block';
-    contextTekst.innerHTML = `U meldt zich direct aan via <strong>VindJeFysio.net</strong> — kies hieronder bij welk(e) netwerk(en) u zich aanmeldt`;
+    contextTekst.innerHTML = `Eén aanmelding — uw praktijk wordt zichtbaar op alle netwerken waar uw therapeuten actief zijn`;
     document.getElementById('hero-via').textContent = 'VindJeFysio Netwerk';
   }
 
@@ -383,12 +369,6 @@ function detecteerSubsite() {
     const uitlegGrid = document.querySelector('.uitleg-grid');
     if (uitlegGrid) uitlegGrid.before(banner);
   }
-}
-
-function updateNetwerk() {
-  document.querySelectorAll('.netwerk-optie input').forEach(cb => {
-    cb.closest('.netwerk-optie').classList.toggle('actief', cb.checked);
-  });
 }
 
 function selecteerTier(tier, el) {
@@ -439,8 +419,6 @@ function fixUrl(url) {
 
 async function verstuurFormulier() {
   if (document.getElementById('website_url').value) return;
-  const geselecteerdeNetwerken = [...document.querySelectorAll('input[name="netwerk"]:checked')].map(cb => cb.value);
-  if (geselecteerdeNetwerken.length === 0) { alert('Selecteer minimaal één netwerk.'); return; }
   if (!geselecteerdeTier) { alert('Selecteer een pakket.'); return; }
   if (!document.getElementById('voornaam').value.trim()) { alert('Vul uw voornaam in.'); return; }
   if (!document.getElementById('achternaam').value.trim()) { alert('Vul uw achternaam in.'); return; }
@@ -454,6 +432,7 @@ async function verstuurFormulier() {
   btn.textContent = 'Versturen...'; btn.disabled = true;
 
   try {
+    // Eén praktijkrecord per locatie — netwerklidmaatschap volgt uit therapeut-aanmeldingen
     for (const blok of locatieBlokken) {
       const nr = blok.id.replace('locatie-', '');
       const naam = document.getElementById(`naam-${nr}`)?.value.trim();
@@ -461,23 +440,21 @@ async function verstuurFormulier() {
       const postcode = document.getElementById(`postcode-${nr}`)?.value.trim();
       const stad = document.getElementById(`stad-${nr}`)?.value.trim();
       if (!naam || !straat || !stad) { alert('Vul alle verplichte locatiegegevens in.'); btn.textContent = 'Aanmelding versturen →'; btn.disabled = false; return; }
-      for (const netwerk of geselecteerdeNetwerken) {
-        const data = {
-          naam, straat, postcode: postcode || '', stad,
-          telefoon: document.getElementById(`tel-${nr}`)?.value.trim() || document.getElementById('telefoon').value.trim(),
-          email: document.getElementById('email-publiek').value.trim() || document.getElementById('email').value.trim(),
-          website: fixUrl(document.getElementById(`website-${nr}`)?.value),
-          aangemeld_via: netwerk, tier: geselecteerdeTier,
-          beschrijving: (geselecteerdeTier === 'plus' || geselecteerdeTier === 'partner') ? document.getElementById('beschrijving').value.trim() : '',
-          contact_voornaam: document.getElementById('voornaam').value.trim(),
-          contact_achternaam: document.getElementById('achternaam').value.trim(),
-          contact_email: document.getElementById('email').value.trim(),
-          contact_telefoon: document.getElementById('telefoon').value.trim(),
-          toelichting: document.getElementById('toelichting').value.trim(),
-          disciplines: [], actief: false
-        };
-        await fetch(`${SUPABASE_URL}/rest/v1/praktijken`, { method: 'POST', headers: HEADERS, body: JSON.stringify(data) });
-      }
+      const data = {
+        naam, straat, postcode: postcode || '', stad,
+        telefoon: document.getElementById(`tel-${nr}`)?.value.trim() || document.getElementById('telefoon').value.trim(),
+        email: document.getElementById('email-publiek').value.trim() || document.getElementById('email').value.trim(),
+        website: fixUrl(document.getElementById(`website-${nr}`)?.value),
+        aangemeld_via: viaSubsite || 'vindjefysio.net', tier: geselecteerdeTier,
+        beschrijving: (geselecteerdeTier === 'plus' || geselecteerdeTier === 'partner') ? document.getElementById('beschrijving').value.trim() : '',
+        contact_voornaam: document.getElementById('voornaam').value.trim(),
+        contact_achternaam: document.getElementById('achternaam').value.trim(),
+        contact_email: document.getElementById('email').value.trim(),
+        contact_telefoon: document.getElementById('telefoon').value.trim(),
+        toelichting: document.getElementById('toelichting').value.trim(),
+        disciplines: [], actief: false
+      };
+      await fetch(`${SUPABASE_URL}/rest/v1/praktijken`, { method: 'POST', headers: HEADERS, body: JSON.stringify(data) });
     }
     document.getElementById('form-container').style.display = 'none';
     document.getElementById('succes-blok').style.display = 'block';
