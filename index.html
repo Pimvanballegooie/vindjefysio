@@ -33,8 +33,21 @@
     nav a:hover { background: var(--grey-bg); color: var(--navy); }
     nav a.cta { background: var(--teal); color: var(--white); margin-left: 8px; }
     nav a.cta:hover { background: #238a7e; }
-    nav a.cta:hover { background: #2A4A73; }
-    @media (max-width: 700px) { nav { display: none; } }
+
+    /* HAMBURGER */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 1001; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); border-radius: 2px; transition: transform 0.25s, opacity 0.2s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 700px) {
+      .hamburger { display: flex; }
+      nav { display: none; position: absolute; top: 72px; left: 0; right: 0; background: var(--white); flex-direction: column; align-items: stretch; padding: 12px 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-top: 1px solid var(--grey-border); }
+      nav.open { display: flex; }
+      nav a { padding: 12px 14px; }
+      nav a.cta { margin-left: 0; margin-top: 8px; text-align: center; }
+    }
 
     /* HERO */
     .hero { background: linear-gradient(135deg, #F5A623 0%, #E8735A 20%, #C0392B 35%, #8E44AD 55%, #2980B9 75%, #2A9D8F 100%); color: var(--white); padding: 80px 24px 72px; text-align: center; position: relative; overflow: hidden; }
@@ -162,9 +175,12 @@
     <a href="index.html" class="logo">
       <img class="logo-img" src="VJF_Logo.png" alt="VindJeFysio" />
     </a>
-    <nav>
-      <a href="#categorieen">Specialisaties</a>
-      <a href="#therapeuten">Therapeuten</a>
+    <div class="hamburger" onclick="this.classList.toggle('open'); document.getElementById('main-nav').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+    <nav id="main-nav">
+      <a href="#categorieen" onclick="sluitMenu()">Specialisaties</a>
+      <a href="#therapeuten" onclick="sluitMenu()">Therapeuten</a>
       <a href="therapeut-aanmelden.html">Aanmelden als therapeut</a>
       <a href="aanmelden.html" class="cta">Praktijk aanmelden</a>
     </nav>
@@ -275,6 +291,12 @@
 const SUPABASE_URL = 'https://islujznszevdynguhjdc.supabase.co';
 const ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlzbHVqem5zemV2ZHluZ3VoamRjIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODE2NDYzMDAsImV4cCI6MjA5NzIyMjMwMH0.wh3RXZRKfpfArr3YBYu8ktE7xv1inwDD72Vq3LJl3QQ';
 const HEADERS = { 'apikey': ANON_KEY, 'Authorization': `Bearer ${ANON_KEY}` };
+
+// Sluit mobiel menu
+function sluitMenu() {
+  document.getElementById('main-nav')?.classList.remove('open');
+  document.querySelector('.hamburger')?.classList.remove('open');
+}
 
 const CAT_ICONS = {1:'👶',2:'🧓',3:'🧠',4:'💭',5:'❤️',6:'🦴',7:'🦵',8:'💪',9:'⚕️'};
 
