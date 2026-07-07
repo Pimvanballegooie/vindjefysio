@@ -24,11 +24,29 @@
 
     /* HEADER */
     header { background: var(--white); border-bottom: 1px solid var(--grey-border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
-    .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1rem,4vw,3rem); display: flex; align-items: center; justify-content: space-between; height: 72px; }
-    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1rem,4vw,3rem); display: flex; align-items: center; justify-content: space-between; height: 72px; gap: 16px; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; flex-shrink: 0; }
     .logo-img { height: 48px; width: auto; }
-    nav a { color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
+    nav { display: flex; gap: 4px; align-items: center; }
+    nav a { color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; white-space: nowrap; }
     nav a:hover { background: var(--grey-bg); color: var(--navy); }
+    nav a.cta { background: var(--teal); color: var(--white); font-weight: 700; }
+    nav a.cta:hover { background: #238a7e; }
+
+    /* HAMBURGER */
+    .hamburger { display: none; flex-direction: column; gap: 5px; cursor: pointer; padding: 8px; z-index: 1001; }
+    .hamburger span { display: block; width: 24px; height: 2px; background: var(--navy); border-radius: 2px; transition: transform 0.25s, opacity 0.2s; }
+    .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2) { opacity: 0; }
+    .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    @media (max-width: 700px) {
+      .hamburger { display: flex; }
+      nav { display: none; position: absolute; top: 72px; left: 0; right: 0; background: var(--white); flex-direction: column; align-items: stretch; padding: 12px 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-top: 1px solid var(--grey-border); }
+      nav.open { display: flex; }
+      nav a { padding: 12px 14px; white-space: normal; }
+      nav a.cta { margin-top: 8px; text-align: center; }
+    }
 
     /* HERO */
     .hero { background: linear-gradient(135deg, #F5A623 0%, #E8735A 20%, #C0392B 35%, #8E44AD 55%, #2980B9 75%, #2A9D8F 100%); color: var(--white); padding: 72px 24px 64px; text-align: center; position: relative; }
@@ -86,10 +104,13 @@
     <a href="index.html" class="logo">
       <img class="logo-img" src="VJF_Logo.png" alt="VindJeFysio" />
     </a>
-    <nav>
+    <div class="hamburger" onclick="this.classList.toggle('open'); document.getElementById('main-nav').classList.toggle('open')">
+      <span></span><span></span><span></span>
+    </div>
+    <nav id="main-nav">
       <a href="index.html">← Terug naar zoeken</a>
       <a href="therapeut-aanmelden.html">Aanmelden als therapeut</a>
-      <a href="aanmelden.html" style="background:var(--teal);color:white;border-radius:8px;padding:8px 16px">Praktijk aanmelden</a>
+      <a href="aanmelden.html" class="cta">Praktijk aanmelden</a>
     </nav>
   </div>
 </header>
@@ -152,6 +173,24 @@
       <div class="subsite-link">Aanmelden als therapeut →</div>
     </a>
 
+    <a class="subsite-tegel" href="https://kansrijkopgroeien.net/therapeut-aanmelden.html" style="--tegel-kleur:#E8735A">
+      <div class="subsite-icon">👶</div>
+      <div class="subsite-naam">Kansrijk Opgroeien</div>
+      <div class="subsite-focus">Kinderfysiotherapie</div>
+      <div class="subsite-omschrijving">Motorische ontwikkeling, schrijfproblemen, houding en ademhaling bij kinderen.</div>
+      <span class="subsite-badge actief">✓ Actief — meld u nu aan</span>
+      <div class="subsite-link">Aanmelden als therapeut →</div>
+    </a>
+
+    <a class="subsite-tegel" href="https://mentaalgezond.net/therapeut-aanmelden.html" style="--tegel-kleur:#264653">
+      <div class="subsite-icon">🧠</div>
+      <div class="subsite-naam">Mentaal Gezond</div>
+      <div class="subsite-focus">Psychosomatiek · Stress · Burn-out</div>
+      <div class="subsite-omschrijving">Psychosomatische klachten, ademhaling, spanning en functionele neurologische stoornissen.</div>
+      <span class="subsite-badge actief">✓ Actief — meld u nu aan</span>
+      <div class="subsite-link">Aanmelden als therapeut →</div>
+    </a>
+
     <div class="subsite-tegel binnenkort" style="--tegel-kleur:#1A237E">
       <div class="subsite-icon">🦿</div>
       <div class="subsite-naam">Knie Onderbeen Netwerk</div>
@@ -173,14 +212,6 @@
       <div class="subsite-naam">Neurologie Netwerk</div>
       <div class="subsite-focus">CVA · Parkinson · MS</div>
       <div class="subsite-omschrijving">Neurologische aandoeningen, duizeligheid en neuromusculaire klachten.</div>
-      <span class="subsite-badge binnenkort">Binnenkort beschikbaar</span>
-    </div>
-
-    <div class="subsite-tegel binnenkort" style="--tegel-kleur:#2E7D32">
-      <div class="subsite-icon">👶</div>
-      <div class="subsite-naam">Kansrijk Opgroeien</div>
-      <div class="subsite-focus">Kinderfysiotherapie</div>
-      <div class="subsite-omschrijving">Motorische ontwikkeling, schrijfproblemen, houding en ademhaling bij kinderen.</div>
       <span class="subsite-badge binnenkort">Binnenkort beschikbaar</span>
     </div>
 
