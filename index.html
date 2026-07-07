@@ -42,11 +42,16 @@
     .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
     @media (max-width: 700px) {
-      .hamburger { display: flex; }
-      nav { display: none; position: absolute; top: 72px; left: 0; right: 0; background: var(--white); flex-direction: column; align-items: stretch; padding: 12px 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-top: 1px solid var(--grey-border); }
-      nav.open { display: flex; }
-      nav a { padding: 12px 14px; }
-      nav a.cta { margin-left: 0; margin-top: 8px; text-align: center; }
+  .hamburger { display: flex; }
+  nav { display: none; position: absolute; top: 72px; left: 0; right: 0; background: var(--white); flex-direction: column; align-items: stretch; padding: 12px 16px 20px; box-shadow: 0 8px 24px rgba(0,0,0,0.1); border-top: 1px solid var(--grey-border); }
+  nav.open { display: flex; }
+  nav a { padding: 12px 14px; }
+  nav a.cta { margin-left: 0; margin-top: 8px; text-align: center; }
+  .zoek-input { min-width: 0; }
+  .zoek-balk { flex-direction: column; }
+  .zoek-locatie { width: 100%; }
+  .zoek-btn { width: 100%; }
+}
     }
 
     /* HERO */
