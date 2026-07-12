@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prijzen – VindJeFysio Netwerk</title>
+  <meta name="description" content="Wat kost het om aangesloten te zijn bij het VindJeFysio Netwerk? Uitleg voor praktijken, therapeuten en samenwerkingspartners." />
+  <style>
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-300.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+    @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --navy: #1B3A5C; --navy-dark: #0F2340;
+      --teal: #2A9D8F; --teal-light: #E8F5F4;
+      --grey-bg: #F5F7FA; --grey-border: #DDE3EC;
+      --text: #1A1A2E; --text-muted: #6B7A99; --white: #FFFFFF;
+      --gold: #C9940A; --gold-light: #FEF9E7;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Inter', sans-serif; font-size: 16px; color: var(--text); background: var(--white); line-height: 1.6; }
+
+    header { background: var(--white); border-bottom: 1px solid var(--grey-border); position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.06); }
+    .header-inner { max-width: 1200px; margin: 0 auto; padding: 0 clamp(1rem,4vw,3rem); display: flex; align-items: center; justify-content: space-between; height: 72px; }
+    .logo { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+    .logo-img { height: 48px; width: auto; }
+    nav a { color: var(--text-muted); text-decoration: none; font-size: 0.875rem; font-weight: 500; padding: 8px 14px; border-radius: 8px; transition: all 0.2s; }
+    nav a:hover { background: var(--grey-bg); color: var(--navy); }
+
+    .hero { background: linear-gradient(135deg, #F5A623 0%, #E8735A 20%, #C0392B 35%, #8E44AD 55%, #2980B9 75%, #2A9D8F 100%); color: var(--white); padding: 64px 24px 56px; text-align: center; position: relative; }
+    .hero::before { content:''; position:absolute; inset:0; background:rgba(0,0,0,0.3); }
+    .hero-content { position:relative; z-index:1; }
+    .hero h1 { font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 700; margin-bottom: 14px; letter-spacing: -0.02em; text-shadow: 0 2px 8px rgba(0,0,0,0.2); }
+    .hero p { opacity: 0.92; max-width: 620px; margin: 0 auto; font-size: 1rem; line-height: 1.7; }
+
+    .sectie { max-width: 1000px; margin: 0 auto; padding: 56px clamp(1rem,4vw,3rem); }
+    .sectie-titel { font-size: 1.4rem; font-weight: 700; color: var(--navy); margin-bottom: 8px; }
+    .sectie-sub { font-size: 0.92rem; color: var(--text-muted); max-width: 640px; margin-bottom: 32px; line-height: 1.7; }
+
+    /* THERAPEUT-PRIJS */
+    .therapeut-blok { background: var(--teal-light); border: 1.5px solid var(--teal); border-radius: 16px; padding: 32px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; }
+    .therapeut-blok .bedrag { font-size: 2.2rem; font-weight: 700; color: var(--teal); white-space: nowrap; }
+    .therapeut-blok .bedrag span { font-size: 0.85rem; font-weight: 500; color: var(--text-muted); display: block; }
+    .therapeut-blok .uitleg { flex: 1; min-width: 240px; font-size: 0.92rem; color: var(--navy); line-height: 1.7; }
+    .therapeut-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+    .therapeut-links a { font-size: 0.78rem; font-weight: 600; color: var(--teal); background: var(--white); border: 1px solid var(--teal); border-radius: 999px; padding: 4px 12px; text-decoration: none; }
+    .therapeut-links a:hover { background: var(--teal); color: var(--white); }
+
+    /* PRAKTIJK TIERS */
+    .tier-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; margin-top: 8px; }
+    .tier-card { border: 2px solid var(--grey-border); border-radius: 12px; padding: 22px; background: var(--white); }
+    .tier-card.partner { border-color: var(--gold); background: var(--gold-light); }
+    .tier-badge { font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; margin-bottom: 10px; display: inline-block; }
+    .tier-badge.basis { background: var(--teal-light); color: var(--teal); }
+    .tier-badge.plus { background: #EAF0FB; color: #1A5276; }
+    .tier-badge.partner { background: var(--gold-light); color: var(--gold); border: 1px solid var(--gold); }
+    .tier-prijs { font-size: 1.6rem; font-weight: 700; color: var(--navy); margin-bottom: 4px; }
+    .tier-prijs span { font-size: 0.78rem; font-weight: 400; color: var(--text-muted); }
+    .tier-features { list-style: none; margin-top: 14px; display: flex; flex-direction: column; gap: 7px; }
+    .tier-features li { font-size: 0.82rem; color: var(--text-muted); display: flex; gap: 6px; }
+    .tier-features li::before { content: '✓'; color: var(--teal); font-weight: 700; flex-shrink: 0; }
+    .tier-features li.nee { color: #BCC5D3; }
+    .tier-features li.nee::before { content: '–'; color: #BCC5D3; }
+    .tier-note { font-size: 0.8rem; color: var(--text-muted); margin-top: 16px; background: var(--grey-bg); border-radius: 8px; padding: 12px 16px; }
+
+    /* SAMENWERKINGSPARTNERS */
+    .sw-blok { background: var(--grey-bg); border: 1px solid var(--grey-border); border-radius: 16px; padding: 32px; }
+    .sw-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; margin-top: 20px; }
+    .sw-card { background: var(--white); border: 1.5px dashed #BCC5D3; border-radius: 12px; padding: 20px; }
+    .sw-card .icoon { font-size: 1.6rem; margin-bottom: 8px; }
+    .sw-card h3 { font-size: 0.92rem; font-weight: 700; color: var(--navy); margin-bottom: 6px; }
+    .sw-card p { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+    .gratis-badge { display: inline-block; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 999px; background: #EDF7EE; color: #1E8449; margin-left: 8px; vertical-align: middle; }
+    .voorbeeld-link { display: inline-flex; align-items: center; gap: 6px; margin-top: 20px; font-size: 0.85rem; font-weight: 600; color: var(--teal); text-decoration: none; }
+    .voorbeeld-link:hover { text-decoration: underline; }
+
+    .btn-cta { display: inline-block; margin-top: 20px; padding: 12px 26px; background: var(--navy); color: var(--white); border-radius: 8px; font-weight: 700; font-size: 0.88rem; text-decoration: none; transition: background 0.2s; }
+    .btn-cta:hover { background: var(--navy-dark); }
+
+    footer { background: var(--navy-dark); color: rgba(255,255,255,0.5); text-align: center; padding: 28px 24px; font-size: 0.82rem; margin-top: 32px; }
+    footer a { color: rgba(255,255,255,0.7); text-decoration: none; }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <a href="index.html" class="logo">
+      <img class="logo-img" src="VJF_Logo.png" alt="VindJeFysio" />
+    </a>
+    <nav>
+      <a href="index.html">← Terug naar zoeken</a>
+      <a href="therapeut-aanmelden.html">Aanmelden als therapeut</a>
+      <a href="aanmelden.html" style="background:var(--teal);color:white;border-radius:8px;padding:8px 16px">Praktijk aanmelden</a>
+    </nav>
+  </div>
+</header>
+
+<div class="hero">
+  <div class="hero-content">
+    <h1>Wat kost het?</h1>
+    <p>Praktijken melden zich één keer centraal aan bij VindJeFysio. Therapeuten melden zich per specialisatie aan bij het gespecialiseerde netwerk waarin zij geschoold zijn. Hieronder de opbouw.</p>
+  </div>
+</div>
+
+<div class="sectie">
+  <div class="sectie-titel">👤 Voor therapeuten</div>
+  <p class="sectie-sub">Elke therapeut meldt zich aan op het/de netwerk(en) waarin hij of zij gespecialiseerd is — bijvoorbeeld Enkel Voet, Kansrijk Opgroeien of Rug Nek. De prijs geldt per netwerk, niet per specialisatie binnen dat netwerk.</p>
+  <div class="therapeut-blok">
+    <div class="bedrag">€12<span>per maand, per netwerk</span></div>
+    <div class="uitleg">
+      Meld je je aan op meerdere gespecialiseerde netwerken, dan telt elk netwerk apart mee. Selecteer je binnen één netwerk meerdere specialisaties (bijv. zowel Nekklachten als Lage rugklachten binnen het Rug Nek Netwerk), dan betaal je daarvoor niet extra.
+      <div class="therapeut-links">
+        <a href="https://enkelvoet.net/therapeut-worden.html" target="_blank">Enkel Voet Netwerk →</a>
+        <a href="https://rugnek.net/therapeut-aanmelden.html" target="_blank">Rug Nek Netwerk →</a>
+        <a href="https://kansrijkopgroeien.net/therapeut-aanmelden.html" target="_blank">Kansrijk Opgroeien →</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="sectie" style="padding-top:0">
+  <div class="sectie-titel">🏥 Voor praktijken</div>
+  <p class="sectie-sub">Eén praktijkaanmelding (per locatie) dekt zichtbaarheid op vindjefysio.net én op elk gespecialiseerd netwerk waar uw therapeuten actief zijn. Er zijn drie pakketten — de precieze verschillen tussen de pakketten worden nog verder uitgewerkt, onderstaand is een eerste opzet.</p>
+  <div class="tier-grid">
+    <div class="tier-card">
+      <span class="tier-badge basis">Basis</span>
+      <div class="tier-prijs">€5 <span>/ locatie / maand</span></div>
+      <ul class="tier-features">
+        <li>Zichtbaar op de kaart</li><li>Naam, adres &amp; contact</li><li>Disciplines via therapeuten</li>
+        <li class="nee">Praktijkbeschrijving</li><li class="nee">Cursusplatform</li>
+      </ul>
+    </div>
+    <div class="tier-card">
+      <span class="tier-badge plus">Plus</span>
+      <div class="tier-prijs">€10 <span>/ locatie / maand</span></div>
+      <ul class="tier-features">
+        <li>Alles uit Basis</li><li>Praktijkbeschrijving</li><li>Tot 5 therapeuten cursussen</li>
+        <li>Specialisme aantonen</li><li class="nee">Partnerpagina</li>
+      </ul>
+    </div>
+    <div class="tier-card partner">
+      <span class="tier-badge partner">Partner</span>
+      <div class="tier-prijs">€50 <span>/ locatie / maand</span></div>
+      <ul class="tier-features">
+        <li>Alles uit Plus</li><li>Onbeperkt cursussen</li><li>Vermelding partnerpagina</li><li>Logo &amp; volledig profiel</li>
+      </ul>
+    </div>
+  </div>
+  <p class="tier-note">💡 Dit bedrag betaalt u maar één keer per locatie, ongeacht op hoeveel gespecialiseerde netwerken uw therapeuten actief zijn.</p>
+</div>
+
+<div class="sectie" style="padding-top:0">
+  <div class="sw-blok">
+    <div class="sectie-titel" style="margin-bottom:8px">🤝 Samenwerkingspartners <span class="gratis-badge">Onbetaald</span></div>
+    <p class="sectie-sub" style="margin-bottom:0">
+      Niet elke waardevolle verbinding is een therapeut of praktijk. Denk aan een verwijzende specialist — bijvoorbeeld een orthopeed die patiënten doorstuurt naar therapeuten binnen een netwerk. Zulke samenwerkingspartners worden gratis vermeld: zij dragen bij aan de zorgketen, zonder dat daar een maandelijkse bijdrage tegenover staat.
+    </p>
+    <div class="sw-grid">
+      <div class="sw-card">
+        <div class="icoon">🏥</div>
+        <h3>Zorgorganisaties</h3>
+        <p>Multidisciplinaire samenwerkingsverbanden en zorggroepen die met een netwerk samenwerken aan geïntegreerde zorg.</p>
+      </div>
+      <div class="sw-card">
+        <div class="icoon">🩺</div>
+        <h3>Verwijzers &amp; specialisten</h3>
+        <p>Bijvoorbeeld een orthopeed die patiënten doorverwijst naar aangesloten therapeuten — waardevol voor het netwerk, geen betalende partij.</p>
+      </div>
+      <div class="sw-card">
+        <div class="icoon">🎓</div>
+        <h3>Opleiders &amp; kennispartners</h3>
+        <p>Organisaties die scholing, protocollen of vakkennis bijdragen aan een specialistisch netwerk.</p>
+      </div>
+    </div>
+    <a class="voorbeeld-link" href="https://enkelvoet.net/partners.html" target="_blank">👀 Bekijk een werkend voorbeeld op enkelvoet.net/partners.html →</a>
+    <br>
+    <a class="btn-cta" href="mailto:info@vindjefysio.net">✉ Interesse om samenwerkingspartner te worden?</a>
+  </div>
+</div>
+
+<footer>
+  <p><strong style="color:white">VindJeFysio Netwerk</strong> · <a href="index.html">Home</a> · <a href="aanmelden.html">Praktijk aanmelden</a> · <a href="privacy.html">Privacyverklaring</a></p>
+</footer>
+
+</body>
+</html>
