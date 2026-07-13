@@ -472,7 +472,7 @@ async function laadTherapeutenBeheer() {
         </div>
         ${t.bio?`<div class="beschrijving">"${t.bio}"</div>`:''}
         <div class="kaart-acties">
-          <button class="btn btn-goedkeuren" onclick="goedkeurenTherapeut(${t.id},'${t.email}')">✓ Goedkeuren</button>
+          <button class="btn btn-goedkeuren" onclick="goedkeurenTherapeut(${t.id},'${t.email}','${t.aangemeld_via || ''}')">✓ Goedkeuren</button>
           <button class="btn btn-afwijzen" onclick="afwijzenTherapeut(${t.id})">✕ Afwijzen</button>
         </div>
       </div>`;
@@ -543,16 +543,17 @@ async function toggleDiscCheck(therapeutId, discipline, checkbox) {
   if (melding) { melding.style.display = 'block'; setTimeout(()=>melding.style.display='none', 2000); }
 }
 
-async function goedkeurenTherapeut(id, email) {
+async function goedkeurenTherapeut(id, email, aangemeldVia) {
   if (!confirm(`Therapeut goedkeuren en uitnodigingsmail sturen naar ${email}?`)) return;
   const kaart = document.getElementById(`kaart-t-${id}`);
   kaart.querySelectorAll('.btn').forEach(b => b.disabled = true);
   await fetch(`${SUPABASE_URL}/rest/v1/therapeuten?id=eq.${id}`, { method: 'PATCH', headers: getHeaders(), body: JSON.stringify({ actief: true }) });
+  const redirectDomein = aangemeldVia || 'enkelvoet.net';
   try {
     const inviteResp = await fetch(WORKER_URL, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${toegangsToken}` },
-      body: JSON.stringify({ email, redirect_to: 'https://enkelvoet.net/mijn-profiel.html' })
+      body: JSON.stringify({ email, redirect_to: `https://${redirectDomein}/mijn-profiel.html` })
     });
     if (inviteResp.ok) {
       alert(`✓ Therapeut goedgekeurd. Uitnodiging verstuurd naar ${email}.`);
