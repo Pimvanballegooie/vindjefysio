@@ -584,10 +584,28 @@ async function deactiverenTherapeut(id) {
 }
 
 async function verwijderenTherapeut(id) {
-  if (!confirm('Therapeut permanent verwijderen?')) return;
+  if (!confirm('Therapeut permanent verwijderen (inclusief het bijbehorende inlogaccount)?')) return;
   const kaart = document.getElementById(`kaart-ta-${id}`);
   kaart.querySelectorAll('.btn').forEach(b => b.disabled = true);
-  await fetch(`${SUPABASE_URL}/rest/v1/therapeuten?id=eq.${id}`, { method: 'DELETE', headers: getHeaders() });
+  try {
+    const resp = await fetch(WORKER_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${toegangsToken}` },
+      body: JSON.stringify({ action: 'delete_therapeut', therapeut_id: id })
+    });
+    if (!resp.ok) {
+      const foutTekst = await resp.text();
+      console.error('Verwijderen mislukt:', resp.status, foutTekst);
+      alert(`Verwijderen mislukt (${resp.status}): ${foutTekst}`);
+      kaart.querySelectorAll('.btn').forEach(b => b.disabled = false);
+      return;
+    }
+  } catch(e) {
+    console.error('Verwijderen mislukt (netwerkfout):', e);
+    alert(`Verwijderen mislukt: ${e.message}`);
+    kaart.querySelectorAll('.btn').forEach(b => b.disabled = false);
+    return;
+  }
   kaart.style.opacity = '0'; kaart.style.transition = 'opacity 0.3s';
   setTimeout(() => { kaart.remove(); laadTherapeutenBeheer(); }, 400);
 }
