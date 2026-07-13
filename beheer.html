@@ -215,6 +215,10 @@ async function inloggen() {
     fout.style.display = 'block'; fout.textContent = 'Ongeldig e-mailadres of wachtwoord.';
     knop.textContent = 'Inloggen →'; knop.disabled = false; return;
   }
+  if (data.user?.app_metadata?.role !== 'admin') {
+    fout.style.display = 'block'; fout.textContent = 'Dit account heeft geen adminrechten voor dit paneel.';
+    knop.textContent = 'Inloggen →'; knop.disabled = false; return;
+  }
   toegangsToken = data.access_token;
   document.getElementById('header-email').textContent = data.user.email;
   document.getElementById('login-scherm').style.display = 'none';
@@ -608,6 +612,18 @@ async function verwijderenTherapeut(id) {
   }
   kaart.style.opacity = '0'; kaart.style.transition = 'opacity 0.3s';
   setTimeout(() => { kaart.remove(); laadTherapeutenBeheer(); }, 400);
+}
+
+// Eenmalige opruimhulp: roep dit aan vanuit de browserconsole (F12) na inloggen: lijstWeesAuthUsers()
+async function lijstWeesAuthUsers() {
+  const resp = await fetch(WORKER_URL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${toegangsToken}` },
+    body: JSON.stringify({ action: 'list_orphaned_auth_users' })
+  });
+  const data = await resp.json();
+  console.log(data);
+  return data;
 }
 
 async function laadProfielWijzigingen() {
