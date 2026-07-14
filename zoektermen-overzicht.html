@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Zoektermen-overzicht (intern) – VindJeFysio Netwerk</title>
+<style>
+  @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-300.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+  @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+  @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+  @font-face { font-family: 'Inter'; src: url('fonts/inter-v20-latin-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #1B3A5C; --navy-dark: #0F2340;
+    --teal: #2A9D8F; --teal-light: #E8F5F4;
+    --grey-bg: #F5F7FA; --grey-border: #DDE3EC;
+    --text: #1A1A2E; --text-muted: #6B7A99; --white: #FFFFFF;
+    --gold: #C9940A; --gold-light: #FEF9E7;
+    --clay: #A0562F; --clay-light: #F5E9DF;
+  }
+  body { font-family: 'Inter', sans-serif; font-size: 15px; color: var(--text); background: var(--white); line-height: 1.6; }
+
+  .layout { display: grid; grid-template-columns: 260px 1fr; min-height: 100vh; max-width: 1280px; margin: 0 auto; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+  .sidebar { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; padding: 28px 20px; border-right: 1px solid var(--grey-border); display: flex; flex-direction: column; gap: 20px; background: var(--grey-bg); }
+  @media (max-width: 860px) { .sidebar { position: static; height: auto; } }
+  .brand { font-weight: 700; color: var(--navy); font-size: 0.95rem; }
+  .brand small { display: block; font-weight: 500; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .tag-intern { display: inline-block; margin-top: 8px; font-size: 0.68rem; font-weight: 700; color: var(--gold); background: var(--gold-light); border: 1px solid var(--gold); border-radius: 999px; padding: 2px 9px; }
+
+  .filter-box input { width: 100%; padding: 9px 11px; border-radius: 8px; border: 1px solid var(--grey-border); background: var(--white); color: var(--text); font-size: 0.85rem; font-family: 'Inter', sans-serif; }
+  .filter-box input:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .filter-count { font-size: 0.72rem; color: var(--text-muted); margin-top: 6px; }
+
+  .cat-nav { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+  .cat-nav a { display: flex; justify-content: space-between; gap: 8px; padding: 7px 9px; border-radius: 8px; text-decoration: none; font-size: 0.83rem; color: var(--text-muted); }
+  .cat-nav a:hover { background: var(--teal-light); color: var(--navy); }
+  .cat-nav .n { color: #BCC5D3; font-size: 0.75rem; }
+
+  .legend { border-top: 1px solid var(--grey-border); padding-top: 16px; display: flex; flex-direction: column; gap: 8px; }
+  .legend-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 700; }
+  .legend-item { display: flex; align-items: baseline; gap: 8px; font-size: 0.78rem; color: var(--text-muted); }
+  .dot { width: 8px; height: 8px; border-radius: 2px; position: relative; top: 1px; }
+  .dot.vak { background: var(--navy); }
+  .dot.pat { background: var(--clay); }
+  .dot.zoek { background: var(--gold); }
+
+  .main { padding: 36px 40px 80px; }
+  @media (max-width: 860px) { .main { padding: 24px 20px 60px; } }
+  .page-head { max-width: 640px; margin-bottom: 36px; }
+  .page-head h1 { font-size: 1.7rem; font-weight: 700; color: var(--navy); margin-bottom: 10px; }
+  .page-head p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 14px; }
+  .stat-row { display: flex; gap: 22px; flex-wrap: wrap; }
+  .stat { font-size: 0.78rem; color: var(--text-muted); }
+  .stat b { font-size: 1.1rem; color: var(--navy); font-weight: 700; display: block; }
+
+  .cat-section { margin-bottom: 48px; scroll-margin-top: 20px; }
+  .cat-head { display: flex; align-items: baseline; gap: 12px; border-bottom: 2px solid var(--teal-light); padding-bottom: 10px; margin-bottom: 18px; }
+  .cat-head .idx { font-size: 0.85rem; color: var(--teal); font-weight: 700; }
+  .cat-head h2 { font-size: 1.2rem; font-weight: 700; color: var(--navy); }
+  .cat-head .count { margin-left: auto; font-size: 0.75rem; color: var(--text-muted); }
+
+  .subcards { display: flex; flex-direction: column; gap: 12px; }
+  .subcard { background: var(--white); border: 1px solid var(--grey-border); border-radius: 12px; padding: 16px 18px; }
+  .subcard-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 3px; }
+  .subcard-head .sid { font-size: 0.7rem; color: var(--text-muted); }
+  .subcard-head h3 { font-size: 1rem; font-weight: 700; color: var(--navy); }
+  .vb { font-size: 0.8rem; color: var(--text-muted); font-style: italic; margin-bottom: 10px; }
+
+  .termrow { display: flex; gap: 10px; margin-top: 8px; align-items: flex-start; }
+  .termrow .label { flex: none; width: 92px; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; padding-top: 4px; color: var(--text-muted); }
+  .termrow.vak .label { color: var(--navy); }
+  .termrow.pat .label { color: var(--clay); }
+  .termrow.zoek .label { color: var(--gold); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+  .chip { font-size: 0.77rem; padding: 3px 9px; border-radius: 999px; background: var(--grey-bg); color: var(--text-muted); white-space: nowrap; }
+  .termrow.vak .chip { background: #EAF0F7; color: var(--navy); }
+  .termrow.pat .chip { background: var(--clay-light); color: var(--clay); }
+  .termrow.zoek .chip { background: var(--gold-light); color: var(--gold); }
+
+  .no-match { display: none; padding: 60px 0; text-align: center; color: var(--text-muted); font-size: 0.88rem; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="brand">Zoektermen-overzicht<small>VindJeFysio Netwerk</small><span class="tag-intern">Intern — niet gelinkt</span></div>
+
+    <div class="filter-box">
+      <input id="filterInput" type="text" placeholder="Zoek op term, subcategorie…" autocomplete="off">
+      <div class="filter-count" id="filterCount"></div>
+    </div>
+
+    <ul class="cat-nav" id="catNav"></ul>
+
+    <div class="legend">
+      <div class="legend-title">Kolommen</div>
+      <div class="legend-item"><span class="dot vak"></span>Vaktaal</div>
+      <div class="legend-item"><span class="dot pat"></span>Patiëntentaal</div>
+      <div class="legend-item"><span class="dot zoek"></span>Veelgezocht</div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="page-head">
+      <h1>Zoektermen per categorie en subcategorie</h1>
+      <p>Werkoverzicht naast de <code>zoektermen</code>-kolom in Supabase: per subcategorie vaktaal, patiëntentaal (incl. bredere context als oorzaken en tijdstip) en veelgezochte zoekopdrachten. Deze pagina is niet vanuit de site gelinkt.</p>
+      <div class="stat-row">
+        <div class="stat"><b id="statCat">9</b>categorieën</div>
+        <div class="stat"><b id="statSub">66</b>subcategorieën</div>
+        <div class="stat"><b id="statTerms">—</b>termen</div>
+      </div>
+    </div>
+
+    <div id="content"></div>
+    <div class="no-match" id="noMatch">Geen subcategorieën gevonden voor deze zoekterm.</div>
+  </main>
+</div>
+
+<script>
+const DATA = [
+{catId:1, catNaam:"Kansrijk opgroeien", subs:[
+  {id:1, naam:"Motorische ontwikkeling", vb:"Leren lopen, houterig bewegen, achterstand motoriek, DCD",
+   huidig:["kind loopt laat","kind valt vaak","motorische achterstand","DCD"],
+   vak:["DCD (Developmental Coordination Disorder)","motorische ontwikkelingsachterstand","hypotonie","dyspraxie","coördinatiestoornis","grove-motoriekachterstand"],
+   pat:["mijn kind is onhandig","kind leert laat lopen","kind kan niet goed fietsen","houterig bewegen","kind botst overal tegenaan","kind is bang om te klimmen","kind doet niet mee met gym","kind struikelt vaak"],
+   zoek:["kind leert laat lopen fysiotherapie","kind is onhandig wat kan ik doen","DCD kind behandeling","kinderfysiotherapeut bij mij in de buurt","kind valt vaak wat doen","motorische achterstand peuter"]},
+  {id:2, naam:"Schrijven en fijne motoriek", vb:"Schrijfproblemen, pengreep, knippen, fijne motoriek",
+   huidig:["schrijfproblemen kind","slechte pengreep","moeite met schrijven"],
+   vak:["fijne motoriek","grafomotoriek","pengreep","dyspraxie","oog-handcoördinatie","schrijfmotoriek"],
+   pat:["kind schrijft slecht","onleesbaar handschrift","moeite met knippen","houdt potlood raar vast","moe van schrijven","langzaam schrijven op school"],
+   zoek:["kind heeft moeite met schrijven hulp","schrijfproblemen kind kinderfysiotherapeut","pengreep verbeteren oefeningen","kind moe van schrijven op school"]},
+  {id:3, naam:"Sport, groei en blessures", vb:"Groeipijn, overbelasting, sportblessures, loopproblemen",
+   huidig:["groeipijn","hielpijn kind","knieklachten kind","sportblessure kind"],
+   vak:["apofysitis","ziekte van Osgood-Schlatter","ziekte van Sever","groeischijfirritatie","overbelastingsblessure jeugd"],
+   pat:["kind heeft pijn in de knie na sporten","pijn onder de knieschijf kind","hiel doet pijn na voetballen","kind klaagt 's avonds over pijn in de benen","pijn na training","kind wil niet meer sporten door pijn"],
+   zoek:["groeipijnen kind wat helpt","Osgood Schlatter behandeling kind","kind pijn knie na voetbal","kind pijn hiel na sporten","groeipijn 's nachts kind"]},
+  {id:4, naam:"Houding en wervelkolom", vb:"Scoliose, kyfose, houding, Schroth",
+   huidig:["scoliose kind","kromme rug kind","houding kind"],
+   vak:["scoliose","hyperkyfose","Schroth-methode","wervelrotatie","houdingsafwijking jeugd"],
+   pat:["scheve rug kind","bochel kind","slechte houding kind","kind hangt op school","ongelijke schouderhoogte kind"],
+   zoek:["scoliose kind behandeling zonder operatie","Schroth therapie bij mij in de buurt","kromme rug kind fysiotherapie","scheve rug kind wat doen"]},
+  {id:5, naam:"Ademhaling", vb:"Dysfunctionele ademhaling, hyperventilatie, benauwdheid",
+   huidig:["kind ademt verkeerd","hyperventilatie kind"],
+   vak:["dysfunctionele ademhaling","ademhalingstherapie kinderen","hyperventilatiesyndroom jeugd"],
+   pat:["kind is vaak buiten adem","kind ademt snel","benauwd gevoel kind","kind zucht veel","kind ademt hoog in de borst"],
+   zoek:["hyperventilatie kind behandeling","kind ademt verkeerd fysiotherapie","ademhalingsoefeningen kind","kind snel buiten adem bij sporten"]},
+  {id:6, naam:"Zuigeling en jong kind", vb:"Voorkeurshouding, afplatting schedel, asymmetrie, motoriek baby",
+   huidig:["voorkeurshouding baby","afgeplat hoofdje"],
+   vak:["plagiocefalie","torticollis","asymmetrische zuigelingenhouding","voorkeurshouding"],
+   pat:["baby kijkt altijd 1 kant op","scheve nek baby","plat hoofdje baby","baby ligt altijd op dezelfde kant","baby draait hoofd niet naar beide kanten"],
+   zoek:["voorkeurshouding baby fysiotherapie","plat hoofdje baby behandeling","baby scheve nek wat doen","torticollis baby oefeningen"]},
+  {id:7, naam:"Sensorische prikkelverwerking", vb:"Sensorische integratie, overprikkeling, onderprikkeling",
+   huidig:["sensorische integratie","snel overprikkeld kind"],
+   vak:["sensorische informatieverwerking","SI-therapie","prikkelverwerkingsproblemen","sensomotorische integratie"],
+   pat:["kind zoekt veel beweging","kind schrikt snel van geluid","kind vindt kleding vervelend","kind is snel overprikkeld","kind vermijdt drukte","kind houdt niet van aanraking"],
+   zoek:["sensorische integratie therapie kind","overprikkeld kind hulp","kind overgevoelig voor prikkels","kind schrikt van geluiden behandeling"]},
+  {id:8, naam:"Revalidatie en operatie", vb:"Orthopedische revalidatie, herstel na operatie, prehabilitatie",
+   huidig:["revalidatie kind","herstel na operatie kind"],
+   vak:["postoperatieve kinderrevalidatie","prehabilitatie kind","functioneel herstel jeugd"],
+   pat:["kind moet geopereerd worden aan been","herstel na gips kind","kind moet weer leren lopen na operatie"],
+   zoek:["kinderfysiotherapie na operatie","revalidatie kind na gips","herstel na beenoperatie kind","kind revalideren na operatie"]},
+  {id:9, naam:"Complexe ontwikkeling en meervoudige beperking", vb:"EMB, cerebrale parese, verstandelijke beperking",
+   huidig:["EMB","ernstig meervoudig beperkt","cerebrale parese","CP"],
+   vak:["spasticiteit","ernstig meervoudige beperking","cerebrale parese","verstandelijke beperking en motoriek"],
+   pat:["kind met meerdere beperkingen","kind kan niet goed bewegen door hersenbeschadiging","kind zit in rolstoel","spastisch kind"],
+   zoek:["fysiotherapie cerebrale parese kind","EMB fysiotherapeut","spasticiteit kind behandeling","kind met beperking fysiotherapie aan huis"]},
+  {id:10, naam:"Manuele therapie bij kinderen", vb:"Nekklachten, hoofdpijn, voorkeurshouding baby",
+   huidig:["manuele therapie kind","nekpijn kind"],
+   vak:["manuele therapie kinderen","craniosacraaltherapie","gewrichtsmobilisatie kind"],
+   pat:["nekpijn baby","hoofdpijn kind","stijve nek kind","baby huilt bij aanraken nek"],
+   zoek:["manuele therapie baby nek","nekklachten kind behandeling","stijve nek baby wat doen"]}
+]},
+{catId:2, catNaam:"Gezond oud worden", subs:[
+  {id:11, naam:"Kwetsbaarheid en mobiliteit", vb:"Moeite met lopen, opstaan, traplopen, conditieverlies",
+   huidig:["slecht lopen ouderen","moeite met opstaan","kwetsbare oudere"],
+   vak:["sarcopenie","frailty (kwetsbaarheid)","functionele achteruitgang","geriatrische fysiotherapie","spierkrachtverlies ouderdom"],
+   pat:["moeilijk lopen op leeftijd","minder conditie ouder worden","moeite met traplopen","snel moe bij lopen","opa loopt onzeker","oma komt moeilijk uit stoel"],
+   zoek:["fysiotherapie voor ouderen aan huis","moeite met traplopen ouderen","kwetsbare ouderen fysiotherapeut","oudere komt niet meer uit stoel"]},
+  {id:12, naam:"Valpreventie en balans", vb:"Vallen, valangst, evenwichtsproblemen, Otago",
+   huidig:["valpreventie","vallen ouderen","valangst","evenwicht ouderen"],
+   vak:["Otago-oefenprogramma","evenwichtstraining","valrisico-analyse","propriocepsis ouderen"],
+   pat:["vaak vallen","bang om te vallen","wankel op de benen","onzeker ter been","evenwicht kwijt op leeftijd"],
+   zoek:["valpreventie cursus ouderen","evenwicht trainen ouderen","valangst behandeling fysiotherapie","oudere valt vaak wat doen"]},
+  {id:13, naam:"Dementie en bewegen", vb:"Bewegen bij dementie, veilig lopen, cognitieve achteruitgang",
+   huidig:["fysiotherapie dementie","bewegen bij dementie"],
+   vak:["cognitieve achteruitgang en mobiliteit","geriatrie","dementie en mobiliteit"],
+   pat:["vader met dementie beweegt weinig","moeder loopt onveilig door dementie","dementerende ouder valt vaak","minder actief door dementie"],
+   zoek:["fysiotherapie bij dementie aan huis","veilig lopen dementie","bewegen met dementie","dementie en vallen"]},
+  {id:14, naam:"Herstel na ziekenhuisopname", vb:"Conditieverlies, spierverlies, revalidatie na opname",
+   huidig:["revalidatie na ziekenhuisopname","conditie opbouwen ouderen"],
+   vak:["post-hospitalisatie deconditionering","functieherstel","ziekenhuisgerelateerd functieverlies"],
+   pat:["veel spierkracht verloren na ziekenhuis","herstellen na opname","na lange opname weer op krachten komen"],
+   zoek:["conditie opbouwen na ziekenhuisopname","fysiotherapie na opname ziekenhuis","spierkracht terug na ziekenhuis"]},
+  {id:15, naam:"Voorbereiding op operatie", vb:"Prehabilitatie, sterker worden voor operatie",
+   huidig:["prehabilitatie ouderen","trainen voor operatie"],
+   vak:["prehabilitatie","functionele conditietest"],
+   pat:["fitter worden voor operatie","klaarmaken voor operatie","sterker worden voor ingreep"],
+   zoek:["prehabilitatie voor operatie ouderen","fitter worden voor operatie fysiotherapie","trainen voor operatie oudere"]},
+  {id:16, naam:"Revalidatie na operatie", vb:"Heupoperatie, knieoperatie, fractuur",
+   huidig:["revalidatie heupoperatie","revalidatie knieoperatie"],
+   vak:["postoperatieve revalidatie","THP/TKP-revalidatie","fractuurrevalidatie"],
+   pat:["herstellen na nieuwe heup","herstel na gebroken heup","weer leren lopen na operatie","revalideren na val"],
+   zoek:["revalidatie na heupoperatie fysiotherapie","fysiotherapie na knieprothese","herstel na gebroken heup","revalidatie na botbreuk oudere"]},
+  {id:17, naam:"Sport, bewegen en overbelasting", vb:"Wandelen, fietsen, tennis, golf, padel",
+   huidig:["sportblessure ouderen","overbelasting ouderen"],
+   vak:["overbelastingsklachten oudere sporter","degeneratieve overbelasting"],
+   pat:["pijn na wandelen","tennisblessure oudere","golfblessure","pijn na fietsen op leeftijd"],
+   zoek:["sportblessure 60plus fysiotherapie","padel blessure oudere","wandelen met pijn fysiotherapie","golfblessure fysiotherapeut"]},
+  {id:18, naam:"Ouderen met levenslange beperking", vb:"Verstandelijke beperking, autisme, EMB, neurodiversiteit",
+   huidig:["ouderen verstandelijke beperking","autisme ouderen"],
+   vak:["verouderende mensen met verstandelijke beperking","neurodiversiteit en veroudering"],
+   pat:["ouder wordende cliënt met beperking","oudere met autisme beweegt minder","ouder wordende cliënt in zorginstelling"],
+   zoek:["fysiotherapie verstandelijke beperking oudere","zorgboerderij fysiotherapeut","fysiotherapie zorginstelling ouderen"]}
+]},
+{catId:3, catNaam:"Neurologie", subs:[
+  {id:19, naam:"CVA en NAH", vb:"Beroerte, hersenletsel, halfzijdige uitval",
+   huidig:["CVA fysiotherapie","beroerte revalidatie","NAH fysiotherapie"],
+   vak:["cerebrovasculair accident","niet-aangeboren hersenletsel","hemiparese","spasticiteit na CVA","loopre-educatie"],
+   pat:["beroerte","herseninfarct","hersenbloeding","verlamd na beroerte","arm doet het niet meer na beroerte","scheve mond na beroerte"],
+   zoek:["fysiotherapie na beroerte","CVA revalidatie fysiotherapeut","herseninfarct herstel lopen","verlamming arm na beroerte behandeling"]},
+  {id:20, naam:"Parkinson", vb:"Bewegen, balans, freezing, lopen",
+   huidig:["Parkinson fysiotherapie","ParkinsonNet","freezing"],
+   vak:["bradykinesie","hypokinesie","freezing of gait","rigiditeit","ParkinsonNet-fysiotherapeut"],
+   pat:["Parkinson en bewegen","vastlopen bij lopen","trillende handen","stijf 's ochtends","kleine pasjes lopen"],
+   zoek:["ParkinsonNet fysiotherapeut bij mij in de buurt","Parkinson freezing behandeling","Parkinson stijfheid oefeningen"]},
+  {id:21, naam:"MS", vb:"Vermoeidheid, balans, kracht, conditie",
+   huidig:["MS fysiotherapie","vermoeidheid MS","balans MS"],
+   vak:["multiple sclerose","spasticiteit bij MS","MS-gerelateerde vermoeidheid"],
+   pat:["MS en moe","MS en lopen","MS balansproblemen","tintelingen door MS","benen voelen zwaar MS"],
+   zoek:["fysiotherapie multiple sclerose","MS vermoeidheid behandeling","MS fysiotherapeut ervaring","MS benen zwaar oefeningen"]},
+  {id:22, naam:"Neuromusculaire aandoeningen", vb:"Spierziekten, ALS, spierzwakte",
+   huidig:["spierziekte fysiotherapie","ALS fysiotherapie"],
+   vak:["neuromusculaire aandoening","spierdystrofie","polyneuropathie","ALS"],
+   pat:["spierziekte","steeds zwakkere spieren","ALS begeleiding","tintelende voeten door zenuwaandoening"],
+   zoek:["fysiotherapie ALS bij mij in de buurt","spierziekte fysiotherapeut","spierdystrofie behandeling","polyneuropathie fysiotherapie"]},
+  {id:23, naam:"Duizeligheid en evenwicht", vb:"BPPD, vestibulaire klachten, draaiduizeligheid",
+   huidig:["duizeligheid fysio","BPPD","draaiduizeligheid"],
+   vak:["vestibulaire revalidatie","vestibulaire hypofunctie","Epley-manoeuvre","BPPD"],
+   pat:["duizelig bij opstaan","evenwicht kwijt","draaiduizeligheid bij omdraaien in bed","wereld draait"],
+   zoek:["duizeligheid fysiotherapie behandeling","BPPD Epley manoeuvre","vestibulaire training duizeligheid","duizelig bij hoofdbewegingen"]}
+]},
+{catId:4, catNaam:"Mentale gezondheid", subs:[
+  {id:24, naam:"Psychosomatische klachten", vb:"Spanning, stress, pijn, vermoeidheid, burn-out",
+   huidig:["psychosomatische fysiotherapie","stressklachten","burn-out"],
+   vak:["psychosomatische fysiotherapie","somatisch onvoldoende verklaarde klachten (SOLK)","spanningsklachten","chronische spierspanning","stressgerelateerde pijnklachten"],
+   pat:["stressklachten in het lijf","lichamelijke klachten door stress","burn-out lichamelijk","overwerkt","opgebrand","gespannen spieren van stress","piekeren en pijn","altijd aan staan","nooit ontspannen","spanningshoofdpijn","vastzittende nek en schouders van stress","maagklachten van stress","vermoeid en gespannen tegelijk"],
+   zoek:["psychosomatische fysiotherapie burn-out","SOLK behandeling fysiotherapeut","stressklachten lichaam fysio","overspannen lichamelijke klachten","spanning in schouders door stress","burn-out herstel fysiotherapie","opgebrand lichamelijke klachten wat helpt"]},
+  {id:25, naam:"Ademhaling en hyperventilatie", vb:"Dysfunctionele ademhaling, paniek, benauwdheid",
+   huidig:["hyperventilatie","ademhalingstherapie"],
+   vak:["dysfunctionele ademhaling","hyperventilatiesyndroom","ademhalingstherapie","ademspanning"],
+   pat:["benauwd door stress","snel ademen bij paniek","hartkloppingen van stress","ademhaling zit vast","kortademig van spanning","paniekaanval ademhaling"],
+   zoek:["hyperventilatie behandeling fysiotherapie","ademhalingsoefeningen bij paniek","ademtherapie stress","benauwd gevoel van spanning wat helpt"]},
+  {id:26, naam:"Functionele neurologische stoornis", vb:"FNS, functionele klachten, uitval zonder structurele schade",
+   huidig:["FNS fysiotherapie","functionele neurologische stoornis"],
+   vak:["FNS","conversiestoornis","functionele bewegingsstoornis"],
+   pat:["onverklaarde uitval","lichaam doet het niet zonder duidelijke oorzaak","trillen zonder oorzaak","kracht kwijt zonder verklaring"],
+   zoek:["FNS fysiotherapie behandeling","functionele neurologische stoornis fysiotherapeut","onverklaarde spierzwakte behandeling"]}
+]},
+{catId:5, catNaam:"Chronische zorg", subs:[
+  {id:27, naam:"Longklachten", vb:"COPD, astma, conditieverlies, benauwdheid",
+   huidig:["COPD fysiotherapie","longfysiotherapie","astma en bewegen"],
+   vak:["COPD","longrevalidatie","ademarbeid","longfunctiebeperking","chronische bronchitis"],
+   pat:["benauwd bij inspanning","kortademig","slijm opgeven","snel buiten adem bij traplopen","piepende ademhaling","hoesten bij inspanning"],
+   zoek:["COPD fysiotherapeut bij mij in de buurt","longfysiotherapie astma","benauwdheid behandeling fysio","kortademig bij lopen wat doen"]},
+  {id:28, naam:"Etalagebenen", vb:"Claudicatio intermittens, PAV, looptraining",
+   huidig:["etalagebenen","claudicatio","looptraining"],
+   vak:["claudicatio intermittens","perifeer arterieel vaatlijden (PAV)","vaatlijden benen"],
+   pat:["pijn in benen bij lopen","moet steeds stoppen met lopen","kramp in kuiten bij lopen","benen worden moe bij korte afstand"],
+   zoek:["etalagebenen looptraining fysiotherapie","claudicatio intermittens behandeling","PAV fysiotherapeut","kramp in benen bij lopen wat doen"]},
+  {id:29, naam:"Hartrevalidatie", vb:"Herstel na hartinfarct, conditie, bewegen met hartklachten",
+   huidig:["hartrevalidatie","fysiotherapie na hartinfarct"],
+   vak:["cardiale revalidatie","hartfalen en bewegen","inspanningstolerantie na hartinfarct"],
+   pat:["herstel na hartinfarct","bewegen na hartoperatie","herstel na dotteren","bang om te bewegen na hartinfarct","conditie opbouwen na hartklachten"],
+   zoek:["hartrevalidatie fysiotherapie","bewegen na hartinfarct","fysiotherapie na dotteren","hartfalen bewegen begeleiding"]},
+  {id:30, naam:"Oncologische revalidatie", vb:"Kanker, vermoeidheid, conditie, krachtverlies",
+   huidig:["oncologie fysiotherapie","revalidatie na kanker"],
+   vak:["oncologische fysiotherapie","kankergerelateerde vermoeidheid","conditieherstel na chemotherapie"],
+   pat:["moe na chemo","herstellen na kanker","conditie opbouwen na behandeling","krachtverlies na bestraling","vermoeidheid na kankerbehandeling"],
+   zoek:["fysiotherapie na kanker bij mij in de buurt","oncologische revalidatie","vermoeidheid na chemotherapie behandeling","herstel na borstkankeroperatie fysiotherapie"]},
+  {id:31, naam:"Chronische pijn", vb:"Langdurige pijn, fibromyalgie, pijneducatie",
+   huidig:["chronische pijn fysiotherapie","fibromyalgie"],
+   vak:["chronisch pijnsyndroom","pijneducatie","centrale sensitisatie","fibromyalgie"],
+   pat:["al jaren pijn","pijn die niet overgaat","overal pijn in het lijf","pijn zonder duidelijke oorzaak","moe van de pijn","pijn en somberheid"],
+   zoek:["fibromyalgie fysiotherapie","chronische pijn behandeling zonder medicatie","pijneducatie fysiotherapeut","altijd pijn wat kan ik doen"]},
+  {id:32, naam:"Chronische vermoeidheid", vb:"Energieverdeling, postviraal, post-COVID",
+   huidig:["chronische vermoeidheid","post-covid fysio"],
+   vak:["ME/CVS","postvirale vermoeidheid","energiemanagement","pacing"],
+   pat:["altijd moe","long covid moe","energie verdelen over de dag","uitgeput na kleine inspanning","moe wakker worden"],
+   zoek:["long covid fysiotherapie","ME CVS behandeling","post covid vermoeidheid fysiotherapeut","energie verdelen chronisch vermoeid"]},
+  {id:33, naam:"Diabetes en bewegen", vb:"Diabetes type 1 en 2, conditie, kracht, neuropathie",
+   huidig:["diabetes fysiotherapie","diabetes en bewegen"],
+   vak:["diabetes mellitus type 1/2","diabetische neuropathie","insulineresistentie en bewegen"],
+   pat:["suikerziekte en bewegen","diabetes voeten","bloedsuiker onder controle met bewegen","tintelende voeten diabetes"],
+   zoek:["diabetes fysiotherapie beweegprogramma","diabetische voet behandeling","suikerziekte bewegen fysiotherapeut","bloedsuiker verlagen met bewegen"]},
+  {id:34, naam:"Reuma, artrose en botgezondheid", vb:"Reumatoide artritis, artrose, osteoporose",
+   huidig:["reuma fysiotherapie","artrose fysiotherapie","osteoporose"],
+   vak:["reumatoïde artritis","artrose","osteoporose","botdichtheid","gewrichtsontsteking"],
+   pat:["reuma pijn gewrichten","slijtage gewrichten","botontkalking","stijve gewrichten 's ochtends","gezwollen gewrichten"],
+   zoek:["reuma fysiotherapie behandeling","artrose oefeningen fysiotherapeut","osteoporose bewegen","stijve handen 's ochtends reuma"]},
+  {id:35, naam:"Voorbereiding op operatie", vb:"Prehabilitatie bij oncologie, hart/long, orthopedie",
+   huidig:["prehabilitatie","voorbereiding operatie"],
+   vak:["prehabilitatie oncologie/hart/long/orthopedie","functionele conditietest"],
+   pat:["fitter worden voor zware operatie","conditie opbouwen voor ingreep","sterker het ziekenhuis in"],
+   zoek:["prehabilitatie fysiotherapie","voorbereiden op operatie fitter worden","fit worden voor grote operatie"]}
+]},
+{catId:6, catNaam:"Rug, nek en bekken", subs:[
+  {id:36, naam:"Lage rugklachten", vb:"Spit, hernia, uitstraling, chronische rugpijn",
+   huidig:["rugpijn","lage rugpijn","spit","hernia"],
+   vak:["lumbago","hernia nuclei pulposi (HNP)","radiculopathie","aspecifieke lage rugpijn","ischias"],
+   pat:["uitstralende pijn in het been","doof gevoel been vanuit rug","tintelend been","rug op slot","pijn bij bukken","pijn bij lang zitten"],
+   zoek:["lage rugpijn fysiotherapie","hernia behandeling zonder operatie","spit in de rug wat te doen","ischias pijn been behandeling"]},
+  {id:37, naam:"Nekklachten", vb:"Nekpijn, hoofdpijn, stijfheid, uitstraling arm",
+   huidig:["nekpijn","stijve nek","hoofdpijn vanuit nek"],
+   vak:["cervicale radiculopathie","whiplash","cervicogene hoofdpijn","nekhernia"],
+   pat:["nekpijn met hoofdpijn","whiplash na aanrijding","tintelende arm vanuit nek","stijve nek na slapen","nek vast na lang beeldschermwerk"],
+   zoek:["nekpijn fysiotherapie behandeling","whiplash fysiotherapeut","hoofdpijn vanuit nek behandelen","stijve nek beeldschermwerk"]},
+  {id:38, naam:"Bekkenklachten", vb:"Bekkenpijn, SI-klachten, zwangerschap, instabiliteit",
+   huidig:["bekkenpijn","bekkeninstabiliteit","SI-gewricht"],
+   vak:["SI-gewrichtsklachten","symfysiolyse","bekkeninstabiliteit"],
+   pat:["bekkenpijn zwangerschap","pijn onderin rug bij lopen","bekken voelt instabiel","pijn bij omdraaien in bed zwangerschap","pijn bij traplopen bekken"],
+   zoek:["bekkenpijn zwangerschap fysiotherapie","SI gewricht klachten behandeling","bekkeninstabiliteit fysiotherapeut","bekkenpijn zwanger traplopen"]},
+  {id:39, naam:"Houding en scoliose", vb:"Houdingsklachten, scoliose, kyfose",
+   huidig:["houding verbeteren","scoliose fysio","kromme rug"],
+   vak:["scoliose","hyperkyfose","houdingscorrectie","houdingsafwijking volwassenen"],
+   pat:["scheve rug","slechte houding","rug moe van rechtop zitten","ongelijke schouders"],
+   zoek:["scoliose behandeling volwassenen","houding verbeteren fysiotherapie","kromme rug fysiotherapeut","scheve schouders behandeling"]},
+  {id:40, naam:"Revalidatie na operatie", vb:"Rugoperatie, nekoperatie",
+   huidig:["revalidatie rugoperatie","fysio na hernia operatie"],
+   vak:["postoperatieve revalidatie wervelkolom","na spondylodese","na discectomie"],
+   pat:["herstel na rugoperatie","herstel na nekoperatie","weer bewegen na rugoperatie"],
+   zoek:["fysiotherapie na rugoperatie","herstel na hernia operatie","revalidatie na spondylodese","herstel na discectomie fysiotherapie"]},
+  {id:41, naam:"Sport, bewegen en overbelasting", vb:"Rugpijn bij sporten, nekklachten door belasting",
+   huidig:["rugpijn sporten","nekpijn sporten","overbelasting rug"],
+   vak:["overbelastingsklachten wervelkolom","mechanische rugklachten door sport"],
+   pat:["rugklachten door tillen","nekpijn na fitness","rugpijn na golfen","nekklachten na fietsen"],
+   zoek:["rugpijn sporten fysiotherapie","nekklachten sport behandeling","rugpijn na tillen werk"]},
+  {id:42, naam:"Voorbereiding op operatie", vb:"Prehabilitatie voor rugoperatie, hernia-operatie",
+   huidig:["prehabilitatie rug","voorbereiding rugoperatie"],
+   vak:["prehabilitatie wervelkolomchirurgie"],
+   pat:["fit worden voor rugoperatie","sterker worden voor nekoperatie"],
+   zoek:["prehabilitatie rugoperatie","voorbereiding hernia operatie fysiotherapie","fit worden voor rugoperatie"]}
+]},
+{catId:7, catNaam:"Benen", subs:[
+  {id:43, naam:"Heup, lies en bovenbeen", vb:"Heuppijn, artrose, liesklachten, peesklachten",
+   huidig:["heuppijn","liespijn","heupartrose"],
+   vak:["coxartrose","femoroacetabulair impingement (FAI)","adductorenklachten","bursitis trochanterica"],
+   pat:["stijve heup","pijn bovenbeen","liesblessure","pijn bij opstaan uit stoel heup","pijn zijkant heup bij liggen"],
+   zoek:["heuppijn fysiotherapie behandeling","liesklachten fysiotherapeut","heupartrose oefeningen","pijn zijkant heup 's nachts"]},
+  {id:44, naam:"Knie en onderbeen", vb:"Kniepijn, meniscus, kruisband, artrose",
+   huidig:["kniepijn","meniscus","kruisband","knie artrose","knie","knieklacht","knieproblemen","kniebehandeling"],
+   vak:["gonartrose","meniscusletsel","voorste kruisbandletsel (VKB)","patellofemorale pijn","band-instabiliteit knie"],
+   pat:["knie op slot","water in de knie","knie door de hoeven","pijn bij traplopen knie","knakkende knie","onstabiel gevoel knie"],
+   zoek:["kniepijn fysiotherapie","meniscus behandeling zonder operatie","kruisband revalidatie fysiotherapeut","knie op slot wat doen","water in de knie behandeling"]},
+  {id:45, naam:"Enkel en voet", vb:"Enkelverzwikking, hielspoor, achillespees, voetklachten",
+   huidig:["enkelpijn","enkel verzwikt","hielspoor","achillespees"],
+   vak:["lateraal enkelbandletsel","achillestendinopathie","fasciitis plantaris","hallux valgus","voetklachten"],
+   pat:["enkel omgeslagen","voetpijn","pijn onder de hiel","gezwollen enkel","pijn bij eerste stappen 's ochtends","dikke teen"],
+   zoek:["enkel verzwikt fysiotherapie","hielspoor behandeling","achillespees ontsteking fysiotherapeut","pijn onder voet 's ochtends"]},
+  {id:46, naam:"Artroseprogrammas", vb:"GLA:D heup/knie, knieartrose, heupartrose",
+   huidig:["GLA:D","artrose knie","artrose heup"],
+   vak:["GLA:D-programma","gestructureerd oefenprogramma artrose"],
+   pat:["artrose knie oefenprogramma","heupartrose zonder operatie behandelen","stijve knie 's ochtends artrose"],
+   zoek:["GLA:D programma fysiotherapie","artrose knie oefeningen programma","artrose heup behandeling zonder operatie"]},
+  {id:47, naam:"Revalidatie na operatie", vb:"Nieuwe heup, nieuwe knie, kruisbandoperatie",
+   huidig:["revalidatie nieuwe knie","revalidatie nieuwe heup"],
+   vak:["postoperatieve revalidatie TKP/THP","VKB-reconstructie revalidatie"],
+   pat:["herstel na nieuwe knie","herstel na nieuwe heup","weer leren lopen na knieoperatie","revalidatie kruisband"],
+   zoek:["revalidatie nieuwe knie fysiotherapie","herstel na heupprothese","kruisband operatie revalidatie schema"]},
+  {id:48, naam:"Voorbereiding op operatie", vb:"Prehabilitatie voor nieuwe heup, nieuwe knie",
+   huidig:["prehabilitatie knie","voorbereiding knieoperatie"],
+   vak:["prehabilitatie heup/knie"],
+   pat:["fit worden voor nieuwe heup","spierkracht opbouwen voor knieoperatie"],
+   zoek:["prehabilitatie knieoperatie","voorbereiding heupoperatie fysiotherapie"]},
+  {id:49, naam:"Sport, bewegen en overbelasting", vb:"Hardloopblessures, knieklachten, achillespees",
+   huidig:["hardloopblessure","knieklachten hardlopen","achillespeesklachten"],
+   vak:["overbelastingsblessure onderste extremiteit","shin splints","periostitis"],
+   pat:["scheenbeenpijn hardlopen","pijn onderbeen bij sporten","kuitpijn bij hardlopen"],
+   zoek:["hardloopblessure fysiotherapeut","shin splints behandeling","knieklachten hardlopen fysiotherapie"]}
+]},
+{catId:8, catNaam:"Armen", subs:[
+  {id:50, naam:"Schouder en bovenarm", vb:"Schouderpijn, impingement, frozen shoulder",
+   huidig:["schouderpijn","frozen shoulder","slijmbeurs schouder"],
+   vak:["subacromiaal pijnsyndroom","impingement","adhesieve capsulitis","rotator cuff-klachten"],
+   pat:["schouder vast","pijn bij optillen arm","schouder blokkeert","'s nachts wakker van schouderpijn","pijn bij haren kammen"],
+   zoek:["schouderpijn fysiotherapie behandeling","frozen shoulder oefeningen","impingement schouder fysiotherapeut","schouderpijn 's nachts wat doen"]},
+  {id:51, naam:"Elleboog en onderarm", vb:"Tenniselleboog, golferselleboog, overbelasting",
+   huidig:["tenniselleboog","golferselleboog","elleboogpijn"],
+   vak:["laterale epicondylitis","mediale epicondylitis"],
+   pat:["pijn buitenkant elleboog","pijn binnenkant elleboog","onderarm pijn bij tillen","pijn bij handdruk"],
+   zoek:["tenniselleboog behandeling fysiotherapie","golferselleboog oefeningen","elleboogpijn fysiotherapeut"]},
+  {id:52, naam:"Pols en hand", vb:"Handklachten, artrose, carpaal tunnel",
+   huidig:["handtherapie","polspijn","carpaal tunnel"],
+   vak:["carpaaltunnelsyndroom","De Quervain","artrose duimbasis"],
+   pat:["tintelende vingers","doof gevoel in de hand","pijn bij duim","'s nachts wakker van tintelende hand","krachtverlies hand"],
+   zoek:["carpaal tunnel syndroom fysiotherapie","handtherapeut bij mij in de buurt","polspijn behandeling","tintelende vingers 's nachts"]},
+  {id:53, naam:"Revalidatie na operatie", vb:"Schouderoperatie, handoperatie, peesletsel",
+   huidig:["revalidatie schouderoperatie","handoperatie fysio"],
+   vak:["postoperatieve revalidatie schouder/pols/hand","na peesreconstructie"],
+   pat:["herstel na schouderoperatie","herstel na handoperatie"],
+   zoek:["fysiotherapie na schouderoperatie","handtherapie na operatie","revalidatie peesletsel hand"]},
+  {id:54, naam:"Voorbereiding op operatie", vb:"Prehabilitatie voor schouder, elleboog, hand/pols",
+   huidig:["voorbereiding schouderoperatie","prehabilitatie schouder"],
+   vak:["prehabilitatie schouder/elleboog/pols"],
+   pat:["fit worden voor schouderoperatie"],
+   zoek:["prehabilitatie schouderoperatie","voorbereiding operatie hand fysiotherapie"]},
+  {id:55, naam:"Sport, bewegen en overbelasting", vb:"Schouderklachten bij sport, tenniselleboog, werpblessures",
+   huidig:["schouderpijn sporten","tenniselleboog","overbelasting arm"],
+   vak:["werpschouder","overbelastingsklachten bovenste extremiteit"],
+   pat:["pijn arm na tennis","werpblessure schouder","pijn bij smashen volleybal"],
+   zoek:["schouderpijn sporten fysiotherapie","tenniselleboog sport behandeling","werpblessure schouder fysiotherapeut"]}
+]},
+{catId:9, catNaam:"Behandelvormen en expertises", subs:[
+  {id:56, naam:"Manuele therapie", vb:"Wervelkolom, gewrichten, nek/rug",
+   huidig:["manueel therapeut","manuele therapie","mobilisatie"],
+   vak:["manuele therapie","gewrichtsmobilisatie","manipulatie"],
+   pat:["gewrichten laten kraken","nek/rug losmaken","vastzittend gewricht"],
+   zoek:["manueel therapeut bij mij in de buurt","manuele therapie nek","mobilisatie rug fysiotherapie"]},
+  {id:57, naam:"Sportfysiotherapie", vb:"Sportblessures, return to sport, krachtopbouw",
+   huidig:["sportfysio","sportblessure","terugkeer sport"],
+   vak:["sportfysiotherapie","return to sport","blessurepreventie"],
+   pat:["snel weer sporten na blessure","veilig hervatten sport"],
+   zoek:["sportfysiotherapeut bij mij in de buurt","return to sport begeleiding","sportblessure snel herstellen"]},
+  {id:58, naam:"Dry needling", vb:"Triggerpoints, spierknopen, myofasciale pijn",
+   huidig:["dry needling","triggerpoints","spierknopen"],
+   vak:["dry needling","myofasciaal pijnsyndroom"],
+   pat:["spierknopen wegprikken","naald in de spier","verkrampte spier behandelen","harde knoop in spier"],
+   zoek:["dry needling bij mij in de buurt","triggerpoint behandeling","spierknopen fysiotherapie"]},
+  {id:59, naam:"Echografie", vb:"Diagnostiek pees/spier/gewricht",
+   huidig:["echo fysiotherapie","echografie schouder"],
+   vak:["diagnostische echografie","echogeleide injectie"],
+   pat:["echo laten maken van schouder","foto van de pees"],
+   zoek:["echo fysiotherapie schouder","echografie pees fysiotherapeut","echo laten maken spier"]},
+  {id:60, naam:"Shockwave", vb:"Hielspoor, peesklachten, kalkschouder",
+   huidig:["shockwave","hielspoor behandeling","kalkschouder"],
+   vak:["extracorporale shockwave therapie (ESWT)","radiale shockwave"],
+   pat:["schokgolftherapie","stootjes tegen de pees"],
+   zoek:["shockwave therapie hielspoor","shockwave behandeling fysiotherapie","kalkschouder shockwave"]},
+  {id:61, naam:"Oedeem en lymfe", vb:"Lymfoedeem, vocht, zwelling, oncologie",
+   huidig:["oedeemtherapie","lymfedrainage","lymfoedeem"],
+   vak:["manuele lymfedrainage","oedeemtherapie","compressietherapie"],
+   pat:["gezwollen been na operatie","dikke arm na borstkanker","vocht vasthouden","zwaar gevoel in het been"],
+   zoek:["lymfedrainage fysiotherapie","lymfoedeem behandeling","oedeemtherapeut bij mij in de buurt","dikke arm na operatie behandeling"]},
+  {id:62, naam:"Kaakfysiotherapie", vb:"TMD, kaakpijn, klemmen, hoofdpijn",
+   huidig:["kaakfysio","kaakpijn","tandenknarsen"],
+   vak:["temporomandibulaire disfunctie (TMD)","bruxisme"],
+   pat:["klikkende kaak","hoofdpijn door kaak","kaak op slot","tandenknarsen 's nachts","kaak vast bij geeuwen"],
+   zoek:["kaakfysiotherapeut bij mij in de buurt","TMD behandeling","kaakpijn fysiotherapie","kaak op slot wat doen"]},
+  {id:63, naam:"Leefstijl en beweegprogrammas", vb:"GLI, afvallen, diabetes, conditie",
+   huidig:["leefstijlcoach","GLI","afvallen en bewegen"],
+   vak:["gecombineerde leefstijlinterventie (GLI)","leefstijlcoaching"],
+   pat:["afvallen met begeleiding","gezonder leven","bewegen en voeding samen aanpakken"],
+   zoek:["GLI leefstijlcoach fysiotherapeut","afvallen begeleiding fysiotherapie","beweegprogramma leefstijl"]},
+  {id:64, naam:"Groepsprogrammas", vb:"Valpreventie, GLA:D, COPD, ruggroep",
+   huidig:["fysiofitness","ruggroep","valpreventiecursus"],
+   vak:["groepstraining","GLA:D-groep","COPD-groep"],
+   pat:["samen sporten onder begeleiding","fitness bij de fysiotherapeut"],
+   zoek:["fysiofitness bij mij in de buurt","groepstraining fysiotherapie","valpreventiecursus groep"]},
+  {id:65, naam:"EPTE", vb:"Percutane elektrolyse bij peesklachten",
+   huidig:["EPTE","percutane elektrolyse","tendinopathie"],
+   vak:["percutane elektrolysetherapie (EPTE/PENS)","echogeleide naaldbehandeling pees"],
+   pat:["naaldbehandeling voor peesklachten","stroom door naald bij pees"],
+   zoek:["EPTE behandeling fysiotherapie","percutane elektrolyse pees","EPTE tenniselleboog"]},
+  {id:66, naam:"Bekkenfysiotherapie en MAPLe", vb:"Bekkenbodemklachten, urineverlies, prolaps, MAPLe",
+   huidig:["bekkenfysiotherapie","MAPLe","urineverlies","incontinentie"],
+   vak:["bekkenbodemtherapie","prolaps","MAPLe (mannen)"],
+   pat:["urineverlies bij hoesten","bekkenbodem trainen","verzakking","plasproblemen","moeite met ophouden urine"],
+   zoek:["bekkenfysiotherapeut bij mij in de buurt","urineverlies behandeling fysiotherapie","MAPLe bekkenbodem mannen"]}
+]}
+];
+
+const content = document.getElementById('content');
+const catNav = document.getElementById('catNav');
+let totalSub = 0, totalTerms = 0;
+
+DATA.forEach(cat => {
+  totalSub += cat.subs.length;
+  cat.subs.forEach(s => { totalTerms += s.vak.length + s.pat.length + s.zoek.length; });
+
+  const navLi = document.createElement('li');
+  navLi.innerHTML = `<a href="#cat-${cat.catId}"><span>${cat.catNaam}</span><span class="n">${cat.subs.length}</span></a>`;
+  catNav.appendChild(navLi);
+
+  const section = document.createElement('section');
+  section.className = 'cat-section';
+  section.id = `cat-${cat.catId}`;
+
+  const head = document.createElement('div');
+  head.className = 'cat-head';
+  head.innerHTML = `<span class="idx">${String(cat.catId).padStart(2,'0')}</span><h2>${cat.catNaam}</h2><span class="count">${cat.subs.length} subcategorieën</span>`;
+  section.appendChild(head);
+
+  const cardsWrap = document.createElement('div');
+  cardsWrap.className = 'subcards';
+
+  cat.subs.forEach(s => {
+    const card = document.createElement('div');
+    card.className = 'subcard';
+    card.dataset.search = [
+      cat.catNaam, s.naam, s.vb, ...s.huidig, ...s.vak, ...s.pat, ...s.zoek
+    ].join(' ').toLowerCase();
+
+    card.innerHTML = `
+      <div class="subcard-head">
+        <span class="sid">#${s.id}</span>
+        <h3>${s.naam}</h3>
+      </div>
+      <p class="vb">${s.vb}</p>
+      <div class="termrow huidig">
+        <span class="label">Huidig</span>
+        <div class="chips">${s.huidig.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      </div>
+      <div class="termrow vak">
+        <span class="label">Vaktaal</span>
+        <div class="chips">${s.vak.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      </div>
+      <div class="termrow pat">
+        <span class="label">Patiëntentaal</span>
+        <div class="chips">${s.pat.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      </div>
+      <div class="termrow zoek">
+        <span class="label">Veelgezocht</span>
+        <div class="chips">${s.zoek.map(t=>`<span class="chip">${t}</span>`).join('')}</div>
+      </div>
+    `;
+    cardsWrap.appendChild(card);
+  });
+
+  section.appendChild(cardsWrap);
+  content.appendChild(section);
+});
+
+document.getElementById('statCat').textContent = DATA.length;
+document.getElementById('statSub').textContent = totalSub;
+document.getElementById('statTerms').textContent = totalTerms;
+
+const filterInput = document.getElementById('filterInput');
+const filterCount = document.getElementById('filterCount');
+const noMatch = document.getElementById('noMatch');
+
+filterInput.addEventListener('input', () => {
+  const q = filterInput.value.trim().toLowerCase();
+  let visibleCards = 0;
+
+  document.querySelectorAll('.cat-section').forEach(section => {
+    let visibleInSection = 0;
+    section.querySelectorAll('.subcard').forEach(card => {
+      const match = !q || card.dataset.search.includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) { visibleInSection++; visibleCards++; }
+    });
+    section.classList.toggle('hidden', visibleInSection === 0);
+  });
+
+  noMatch.style.display = visibleCards === 0 ? 'block' : 'none';
+  filterCount.textContent = q ? `${visibleCards} van ${totalSub} subcategorieën` : '';
+});
+</script>
+</body>
+</html>
