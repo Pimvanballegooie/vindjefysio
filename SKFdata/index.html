@@ -54,16 +54,17 @@
   .dot.voorwaardelijk { background: var(--gold); }
   .dot.geadviseerd { background: #B9C2D0; }
 
-  .toggle-box { border-top: 1px solid var(--grey-border); border-bottom: 1px solid var(--grey-border); padding: 14px 0; }
+  .toggle-box { background: var(--white); border: 2px solid var(--purple); border-radius: 12px; padding: 14px 16px; box-shadow: 0 2px 10px rgba(106,61,154,0.12); }
+  .toggle-heading { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--purple); font-weight: 700; margin-bottom: 10px; }
   .toggle-row { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; }
-  .switch { position: relative; width: 38px; height: 21px; flex: none; }
+  .switch { position: relative; width: 42px; height: 24px; flex: none; }
   .switch input { opacity: 0; width: 0; height: 0; }
   .slider { position: absolute; inset: 0; background: #C9D1DE; border-radius: 999px; transition: 0.2s; }
-  .slider::before { content: ''; position: absolute; width: 15px; height: 15px; left: 3px; top: 3px; background: var(--white); border-radius: 50%; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+  .slider::before { content: ''; position: absolute; width: 18px; height: 18px; left: 3px; top: 3px; background: var(--white); border-radius: 50%; transition: 0.2s; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
   .switch input:checked + .slider { background: var(--purple); }
-  .switch input:checked + .slider::before { transform: translateX(17px); }
-  .toggle-label { font-size: 0.8rem; color: var(--navy); font-weight: 600; line-height: 1.4; }
-  .toggle-label small { display: block; font-weight: 400; color: var(--text-muted); font-size: 0.72rem; }
+  .switch input:checked + .slider::before { transform: translateX(18px); }
+  .toggle-label { font-size: 0.88rem; color: var(--navy); font-weight: 700; }
+  .toggle-help { font-size: 0.76rem; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
 
   .main { padding: 36px 40px 100px; }
   @media (max-width: 900px) { .main { padding: 24px 20px 80px; } }
@@ -106,14 +107,19 @@
   .note.warn { color: var(--clay); font-weight: 600; font-style: normal; }
   .instr-line { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; margin-top: 4px; padding: 5px 8px; border-radius: 8px; }
   .instr-line.verplicht { background: var(--green-light); }
-  .instr-line.voorwaardelijk { background: var(--gold-light); }
+  .instr-line.voorwaardelijk { background: var(--gold-light); cursor: pointer; }
+  .instr-line.voorwaardelijk:hover { background: #FBEEC6; }
   .instr-line.geadviseerd { background: var(--grey-bg); }
   .status-tag { font-size: 0.64rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 2px 8px; border-radius: 999px; flex: none; }
   .status-tag.verplicht { background: var(--green); color: white; }
   .status-tag.voorwaardelijk { background: var(--gold); color: white; }
   .status-tag.geadviseerd { background: #B9C2D0; color: var(--navy-dark); }
   .instr-label { font-size: 0.83rem; color: var(--text); flex: 1 1 auto; min-width: 160px; }
+  .instr-line.voorwaardelijk .instr-label::after { content: ' ℹ️ voorwaarde tonen'; font-size: 0.7rem; color: #7a5c05; font-weight: 600; }
   .instr-moment { font-size: 0.71rem; color: var(--text-muted); flex: none; }
+  .cond-detail { flex-basis: 100%; font-size: 0.78rem; color: #5c4400; background: rgba(255,255,255,0.6); border: 1px dashed var(--gold); border-radius: 8px; padding: 8px 10px; margin-top: 4px; display: none; }
+  .instr-line.voorwaardelijk.open .cond-detail { display: block; }
+  .instr-line.voorwaardelijk.open .instr-label::after { content: ' ℹ️ voorwaarde verbergen'; }
   .hidden-count { font-size: 0.78rem; color: var(--text-muted); font-style: italic; padding: 4px 0; }
   .verplicht-summary { font-size: 0.7rem; font-weight: 700; padding: 2px 9px; border-radius: 999px; }
   .verplicht-summary.heeft { background: var(--green-light); color: #206023; }
@@ -135,6 +141,15 @@
       <div class="filter-count" id="filterCount"></div>
     </div>
 
+    <div class="toggle-box">
+      <div class="toggle-heading">🔒 Weergavemodus</div>
+      <label class="toggle-row">
+        <span class="switch"><input type="checkbox" id="toggleAdvised"><span class="slider"></span></span>
+        <span class="toggle-label" id="toggleStateLabel">Alleen verplicht</span>
+      </label>
+      <p class="toggle-help">Staat <strong>uit</strong>: je ziet overal alleen de klinimetrie die je écht moet invullen. Zet 'm <strong>aan</strong> om per SKF-groep ook de geadviseerde (niet-verplichte) klinimetrie erbij te zien.</p>
+    </div>
+
     <div>
       <div class="nav-block-title">Overzicht</div>
       <ul class="cat-nav">
@@ -152,13 +167,6 @@
     <div>
       <div class="nav-block-title">Deel B — SKF-hoofdstukken</div>
       <ul class="cat-nav" id="catNavB"></ul>
-    </div>
-
-    <div class="toggle-box">
-      <label class="toggle-row">
-        <span class="switch"><input type="checkbox" id="toggleAdvised"><span class="slider"></span></span>
-        <span class="toggle-label">Toon ook geadviseerde klinimetrie<small>Standaard uit — dan zie je alleen wat écht verplicht is</small></span>
-      </label>
     </div>
 
     <div class="legend">
@@ -306,14 +314,15 @@ const DATA_A = [
 ];
 
 // ============ DATA B: SKF-document → onze subcategorieën ============
-// instrumenten: {l: label, m: moment, s: status} — status: 'verplicht' | 'voorwaardelijk' | 'geadviseerd'
+// instrumenten: {l: label, m: moment, s: status, c: voorwaarde (alleen bij status 'voorwaardelijk')}
+const MSK_COND = "Verplicht zodra u — op basis van uw eigen fysiotherapeutische expertise — inschat dat er sprake is van een afwijkend beloop (bijvoorbeeld een traject dat langer duurt dan 6 weken). U mag hiervoor desgewenst een screeningstool inzetten, maar dat is niet verplicht.";
 const DATA_B = [
 {hstId:'msk', hstNaam:"3.1 Musculoskeletaal", intro:"Basispatroon: screening, pijn (NPRS), functioneren (PSK/PSG + evt. specifieke PROM) en GPE-DV als eindmaat voor ervaren effect & tevredenheid.", groepen:[
   {slug:'msk-lagerug', naam:"Lage rug", instrumenten:[
     {l:"NPRS", m:"aanvang, 6 wk, einde", s:"verplicht"},
     {l:"SBST (screening)", m:"aanvang", s:"geadviseerd"},
     {l:"PSK/PSG", m:"aanvang, 6 wk, einde", s:"verplicht"},
-    {l:"QBPDS of (m)ODI", m:"aanvang, 6 wk, einde", s:"voorwaardelijk"},
+    {l:"QBPDS of (m)ODI", m:"aanvang, 6 wk, einde", s:"voorwaardelijk", c:MSK_COND},
     {l:"GPE-DV", m:"einde", s:"verplicht"}
   ], vanuit:[36,41]},
   {slug:'msk-thoracaal', naam:"Thoracaal", instrumenten:[
@@ -326,14 +335,14 @@ const DATA_B = [
     {l:"NPRS", m:"aanvang, 6 wk, einde", s:"verplicht"},
     {l:"MSK (screening)", m:"aanvang", s:"geadviseerd"},
     {l:"PSK/PSG", m:"aanvang, 6 wk, einde", s:"verplicht"},
-    {l:"NDI", m:"aanvang, 6 wk, einde", s:"voorwaardelijk"},
+    {l:"NDI", m:"aanvang, 6 wk, einde", s:"voorwaardelijk", c:MSK_COND},
     {l:"GPE-DV", m:"einde", s:"verplicht"}
   ], vanuit:[37,41]},
   {slug:'msk-knieartrose', naam:"Knieartrose", instrumenten:[
     {l:"NPRS", m:"aanvang, 6 wk, einde", s:"verplicht"},
     {l:"MSK", m:"aanvang", s:"geadviseerd"},
     {l:"PSK/PSG", m:"aanvang, 6 wk, einde", s:"verplicht"},
-    {l:"KOOS-ADL", m:"aanvang, 6 wk, einde", s:"voorwaardelijk"},
+    {l:"KOOS-ADL", m:"aanvang, 6 wk, einde", s:"voorwaardelijk", c:MSK_COND},
     {l:"GPE-DV", m:"einde", s:"verplicht"}
   ], vanuit:[44,46,34]},
   {slug:'msk-knie', naam:"Knie", instrumenten:[
@@ -346,7 +355,7 @@ const DATA_B = [
     {l:"NPRS", m:"aanvang, 6 wk, einde", s:"verplicht"},
     {l:"MSK", m:"aanvang", s:"geadviseerd"},
     {l:"PSK/PSG", m:"aanvang, 6 wk, einde", s:"verplicht"},
-    {l:"HOOS-ADL", m:"aanvang, 6 wk, einde", s:"voorwaardelijk"},
+    {l:"HOOS-ADL", m:"aanvang, 6 wk, einde", s:"voorwaardelijk", c:MSK_COND},
     {l:"GPE-DV", m:"einde", s:"verplicht"}
   ], vanuit:[43,46,34]},
   {slug:'msk-heup', naam:"Heup", instrumenten:[
@@ -359,21 +368,21 @@ const DATA_B = [
     {l:"NPRS", m:"aanvang, 6 wk, einde", s:"verplicht"},
     {l:"MSK", m:"aanvang", s:"geadviseerd"},
     {l:"PSK/PSG", m:"aanvang, 6 wk, einde", s:"verplicht"},
-    {l:"Quick DASH of SPADI", m:"aanvang, 6 wk, einde", s:"voorwaardelijk"},
+    {l:"Quick DASH of SPADI", m:"aanvang, 6 wk, einde", s:"voorwaardelijk", c:MSK_COND},
     {l:"GPE-DV", m:"einde", s:"verplicht"}
   ], vanuit:[50,55,17]},
   {slug:'msk-elleboog', naam:"Elleboog", instrumenten:[
     {l:"NPRS", m:"aanvang, 6 wk, einde", s:"verplicht"},
     {l:"MSK", m:"aanvang", s:"geadviseerd"},
     {l:"PSK/PSG", m:"aanvang, 6 wk, einde", s:"verplicht"},
-    {l:"Quick DASH", m:"aanvang, 6 wk, einde", s:"voorwaardelijk"},
+    {l:"Quick DASH", m:"aanvang, 6 wk, einde", s:"voorwaardelijk", c:MSK_COND},
     {l:"GPE-DV", m:"einde", s:"verplicht"}
   ], vanuit:[51,55]},
   {slug:'msk-pols', naam:"Pols", instrumenten:[
     {l:"NPRS", m:"aanvang, 6 wk, einde", s:"verplicht"},
     {l:"MSK", m:"aanvang", s:"geadviseerd"},
     {l:"PSK/PSG", m:"aanvang, 6 wk, einde", s:"verplicht"},
-    {l:"PRWHE-DLV", m:"aanvang, 6 wk, einde", s:"voorwaardelijk"},
+    {l:"PRWHE-DLV", m:"aanvang, 6 wk, einde", s:"voorwaardelijk", c:MSK_COND},
     {l:"GPE-DV", m:"einde", s:"verplicht"}
   ], vanuit:[52]},
   {slug:'msk-enkelvoet', naam:"Enkel/Voet", instrumenten:[
@@ -460,10 +469,10 @@ const DATA_B = [
     {l:"6MWT", m:"aanvang, einde, + iedere 3 mnd", s:"verplicht"},
     {l:"CCQ of CAT", m:"aanvang, einde, + iedere 3 mnd", s:"verplicht"},
     {l:"COPD-vragenlijst periodiek", m:"aanvang, einde, + iedere 3 mnd", s:"verplicht"},
-    {l:"Q-ceps kracht (Microfet of 1RM)", m:"aanvang, einde, + iedere 3 mnd", s:"voorwaardelijk"},
+    {l:"Q-ceps kracht (Microfet of 1RM)", m:"aanvang, einde, + iedere 3 mnd", s:"voorwaardelijk", c:"Verplicht wanneer kracht(opbouw) een behandeldoel is voor deze patiënt."},
     {l:"Bewegingssensor of stappenteller", m:"aanvang, einde, + iedere 3 mnd", s:"geadviseerd"},
     {l:"COPD-vragenlijst baseline", m:"aanvang, jaarlijks", s:"verplicht"},
-    {l:"(m)MRC", m:"aanvang", s:"voorwaardelijk"},
+    {l:"(m)MRC", m:"aanvang", s:"voorwaardelijk", c:"Verplicht wanneer verbetering van kortademigheid een behandeldoel is voor deze patiënt."},
     {l:"GPE-DV", m:"iedere 3 mnd en einde", s:"verplicht"}
   ], vanuit:[27]},
   {slug:'resp-claudicatio', naam:"Vaatlijden — claudicatio", instrumenten:[
@@ -676,7 +685,11 @@ DATA_B.forEach(h => {
       line.className = `instr-line ${i.s}`;
       if (i.s !== 'verplicht' && i.s !== 'voorwaardelijk') line.classList.add('advised-line');
       const statusLabel = i.s === 'verplicht' ? 'Verplicht' : (i.s === 'voorwaardelijk' ? 'Voorwaardelijk' : 'Geadviseerd');
-      line.innerHTML = `<span class="status-tag ${i.s}">${statusLabel}</span><span class="instr-label">${i.l}</span><span class="instr-moment">${i.m}</span>`;
+      const condHtml = i.s === 'voorwaardelijk' && i.c ? `<div class="cond-detail">📋 <strong>Voorwaarde:</strong> ${i.c}</div>` : '';
+      line.innerHTML = `<span class="status-tag ${i.s}">${statusLabel}</span><span class="instr-label">${i.l}</span><span class="instr-moment">${i.m}</span>${condHtml}`;
+      if (i.s === 'voorwaardelijk' && i.c) {
+        line.addEventListener('click', () => line.classList.toggle('open'));
+      }
       instrList.appendChild(line);
     });
 
@@ -697,9 +710,11 @@ DATA_B.forEach(h => {
 document.getElementById('statSkf').textContent = totalGroepen;
 
 // ============ Toggle: verplicht-only vs. + geadviseerd ============
+const toggleStateLabel = document.getElementById('toggleStateLabel');
 function applyToggleState() {
   document.querySelectorAll('.advised-line').forEach(el => el.classList.toggle('hidden', !showAdvised));
   document.querySelectorAll('.advised-note').forEach(el => el.classList.toggle('hidden', showAdvised));
+  toggleStateLabel.textContent = showAdvised ? 'Verplicht + geadviseerd' : 'Alleen verplicht';
 }
 document.getElementById('toggleAdvised').addEventListener('change', (e) => {
   showAdvised = e.target.checked;
