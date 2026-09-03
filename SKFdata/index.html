@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="robots" content="noindex, nofollow" />
+<title>SKF-dataverzameling per categorie (intern) – VindJeFysio Netwerk</title>
+<style>
+  @font-face { font-family: 'Inter'; src: url('../fonts/inter-v20-latin-300.woff2') format('woff2'); font-weight: 300; font-display: swap; }
+  @font-face { font-family: 'Inter'; src: url('../fonts/inter-v20-latin-regular.woff2') format('woff2'); font-weight: 400; font-display: swap; }
+  @font-face { font-family: 'Inter'; src: url('../fonts/inter-v20-latin-500.woff2') format('woff2'); font-weight: 500; font-display: swap; }
+  @font-face { font-family: 'Inter'; src: url('../fonts/inter-v20-latin-600.woff2') format('woff2'); font-weight: 600; font-display: swap; }
+  @font-face { font-family: 'Inter'; src: url('../fonts/inter-v20-latin-700.woff2') format('woff2'); font-weight: 700; font-display: swap; }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --navy: #1B3A5C; --navy-dark: #0F2340;
+    --teal: #2A9D8F; --teal-light: #E8F5F4;
+    --grey-bg: #F5F7FA; --grey-border: #DDE3EC;
+    --text: #1A1A2E; --text-muted: #6B7A99; --white: #FFFFFF;
+    --gold: #C9940A; --gold-light: #FEF9E7;
+    --clay: #A0562F; --clay-light: #F5E9DF;
+    --purple: #6A3D9A; --purple-light: #F1E9F8;
+    --green: #3D8B40; --green-light: #EAF5EA;
+  }
+  body { font-family: 'Inter', sans-serif; font-size: 15px; color: var(--text); background: var(--white); line-height: 1.6; }
+
+  .layout { display: grid; grid-template-columns: 280px 1fr; min-height: 100vh; max-width: 1360px; margin: 0 auto; }
+  @media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+  .sidebar { position: sticky; top: 0; align-self: start; height: 100vh; overflow-y: auto; padding: 28px 20px; border-right: 1px solid var(--grey-border); display: flex; flex-direction: column; gap: 18px; background: var(--grey-bg); }
+  @media (max-width: 900px) { .sidebar { position: static; height: auto; } }
+  .brand { font-weight: 700; color: var(--navy); font-size: 0.95rem; }
+  .brand small { display: block; font-weight: 500; color: var(--text-muted); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 2px; }
+  .tag-intern { display: inline-block; margin-top: 8px; font-size: 0.68rem; font-weight: 700; color: var(--gold); background: var(--gold-light); border: 1px solid var(--gold); border-radius: 999px; padding: 2px 9px; }
+
+  .filter-box input { width: 100%; padding: 9px 11px; border-radius: 8px; border: 1px solid var(--grey-border); background: var(--white); color: var(--text); font-size: 0.85rem; font-family: 'Inter', sans-serif; }
+  .filter-box input:focus { outline: 2px solid var(--teal); outline-offset: 1px; }
+  .filter-count { font-size: 0.72rem; color: var(--text-muted); margin-top: 6px; }
+
+  .nav-block-title { font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.07em; color: var(--text-muted); font-weight: 700; margin-bottom: 6px; }
+  .cat-nav { list-style: none; display: flex; flex-direction: column; gap: 1px; }
+  .cat-nav a { display: flex; justify-content: space-between; gap: 8px; padding: 6px 9px; border-radius: 8px; text-decoration: none; font-size: 0.81rem; color: var(--text-muted); }
+  .cat-nav a:hover { background: var(--teal-light); color: var(--navy); }
+  .cat-nav .n { color: #BCC5D3; font-size: 0.72rem; }
+
+  .legend { border-top: 1px solid var(--grey-border); padding-top: 14px; display: flex; flex-direction: column; gap: 7px; }
+  .legend-item { display: flex; align-items: baseline; gap: 8px; font-size: 0.76rem; color: var(--text-muted); }
+  .dot { width: 8px; height: 8px; border-radius: 2px; position: relative; top: 1px; flex: none; }
+  .dot.skf { background: var(--teal); }
+  .dot.gap { background: var(--clay); }
+  .dot.erf { background: var(--purple); }
+
+  .main { padding: 36px 40px 100px; }
+  @media (max-width: 900px) { .main { padding: 24px 20px 80px; } }
+  .page-head { max-width: 760px; margin-bottom: 30px; }
+  .page-head h1 { font-size: 1.7rem; font-weight: 700; color: var(--navy); margin-bottom: 12px; }
+  .page-head p { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 10px; }
+  .disclaimer { background: var(--gold-light); border: 1px solid var(--gold); border-radius: 10px; padding: 12px 16px; font-size: 0.82rem; color: #7a5c05; margin: 16px 0 22px; }
+  .stat-row { display: flex; gap: 22px; flex-wrap: wrap; margin-top: 6px; }
+  .stat { font-size: 0.78rem; color: var(--text-muted); }
+  .stat b { font-size: 1.1rem; color: var(--navy); font-weight: 700; display: block; }
+
+  .deel-head { margin: 56px 0 24px; padding-bottom: 12px; border-bottom: 3px solid var(--navy); }
+  .deel-head h2 { font-size: 1.35rem; font-weight: 700; color: var(--navy); }
+  .deel-head p { font-size: 0.87rem; color: var(--text-muted); margin-top: 6px; max-width: 720px; }
+
+  .cat-section, .hst-section { margin-bottom: 44px; scroll-margin-top: 20px; }
+  .cat-head, .hst-head { display: flex; align-items: baseline; gap: 12px; border-bottom: 2px solid var(--teal-light); padding-bottom: 10px; margin-bottom: 16px; scroll-margin-top: 20px; }
+  .cat-head .idx, .hst-head .idx { font-size: 0.85rem; color: var(--teal); font-weight: 700; }
+  .cat-head h3, .hst-head h3 { font-size: 1.15rem; font-weight: 700; color: var(--navy); }
+  .cat-head .count, .hst-head .count { margin-left: auto; font-size: 0.75rem; color: var(--text-muted); }
+  .hst-intro { font-size: 0.82rem; color: var(--text-muted); font-style: italic; margin: -6px 0 14px; }
+
+  .cards { display: flex; flex-direction: column; gap: 12px; }
+  .card { background: var(--white); border: 1px solid var(--grey-border); border-radius: 12px; padding: 16px 18px; scroll-margin-top: 20px; }
+  .card-head { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; margin-bottom: 8px; }
+  .card-head .sid { font-size: 0.7rem; color: var(--text-muted); }
+  .card-head h4 { font-size: 0.98rem; font-weight: 700; color: var(--navy); }
+
+  .row { display: flex; gap: 10px; margin-top: 8px; align-items: flex-start; }
+  .row .label { flex: none; width: 108px; font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; padding-top: 4px; color: var(--text-muted); }
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; flex: 1; }
+  .chip { font-size: 0.77rem; padding: 3px 10px; border-radius: 999px; background: var(--teal-light); color: var(--navy); white-space: nowrap; text-decoration: none; border: 1px solid transparent; }
+  .chip:hover { border-color: var(--teal); }
+  .chip.instrument { background: var(--grey-bg); color: var(--text); border: 1px solid var(--grey-border); white-space: normal; }
+  .chip.moment { background: var(--purple-light); color: var(--purple); font-size: 0.71rem; }
+  .chip.gap-tag { background: var(--clay-light); color: var(--clay); font-weight: 600; }
+  .chip.terug { background: var(--white); color: var(--navy); border: 1px solid var(--grey-border); }
+  .chip.terug:hover { border-color: var(--navy); }
+  .note { font-size: 0.82rem; color: var(--text-muted); font-style: italic; margin-top: 10px; }
+  .note.warn { color: var(--clay); font-weight: 600; font-style: normal; }
+  .instr-line { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; margin-top: 4px; }
+
+  .no-match { display: none; padding: 60px 0; text-align: center; color: var(--text-muted); font-size: 0.88rem; }
+  .hidden { display: none !important; }
+  code { background: var(--grey-bg); padding: 1px 6px; border-radius: 5px; font-size: 0.85em; }
+</style>
+</head>
+<body>
+
+<div class="layout">
+  <nav class="sidebar">
+    <div class="brand">SKF-dataverzameling per categorie<small>VindJeFysio Netwerk</small><span class="tag-intern">Intern — niet gelinkt</span></div>
+
+    <div class="filter-box">
+      <input id="filterInput" type="text" placeholder="Zoek op categorie, SKF-groep, instrument…" autocomplete="off">
+      <div class="filter-count" id="filterCount"></div>
+    </div>
+
+    <div>
+      <div class="nav-block-title">Overzicht</div>
+      <ul class="cat-nav">
+        <li><a href="#basis">Basisgegevens (alle patiënten)</a></li>
+        <li><a href="#deelA">Deel A — per categorie</a></li>
+        <li><a href="#deelB">Deel B — per SKF-hoofdstuk</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <div class="nav-block-title">Deel A — categorieën</div>
+      <ul class="cat-nav" id="catNavA"></ul>
+    </div>
+
+    <div>
+      <div class="nav-block-title">Deel B — SKF-hoofdstukken</div>
+      <ul class="cat-nav" id="catNavB"></ul>
+    </div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="dot skf"></span>SKF-groep (klik = springt naar Deel B)</div>
+      <div class="legend-item"><span class="dot gap"></span>Hiaat — geen SKF-verplichting</div>
+      <div class="legend-item"><span class="dot erf"></span>Erft van onderliggende klacht</div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <div class="page-head">
+      <h1>SKF-dataverzameling: welke verplichting hoort bij welke categorie?</h1>
+      <p>Deze pagina koppelt de dataverzamelingsverplichtingen uit het document <strong>"Dataverzameling", Stichting Keurmerk Fysiotherapie, versie 6.4 (07-2026)</strong> aan de categorieën en subcategorieën die we binnen het VindJeFysio-netwerk gebruiken (de gedeelde <code>categorieen</code>/<code>subcategorieen</code>-tabellen, zoals ook getoond op de homepage van vindjefysio.net).</p>
+      <p><strong>Deel A</strong> vertrekt vanuit onze eigen structuur: per categorie en subcategorie zie je welke SKF-diagnosegroep(en) van toepassing zijn. <strong>Deel B</strong> vertrekt vanuit het SKF-document zelf: per hoofdstuk en diagnosegroep het volledige verplichte instrumentarium, met een terugverwijzing naar onze subcategorieën. Er zit bewust overlap tussen beide delen.</p>
+      <div class="disclaimer">⚠️ Deze mapping is een interpretatie op basis van de namen/beschrijvingen van onze subcategorieën en het SKF-document — geen officieel SKF-document. Waar geen passende SKF-diagnosegroep bestaat, staat dat expliciet aangegeven als hiaat. Gebruik dit als werkoverzicht, niet als vervanging van het brondocument.</div>
+      <div class="stat-row">
+        <div class="stat"><b id="statCat">9</b>categorieën</div>
+        <div class="stat"><b id="statSub">66</b>subcategorieën</div>
+        <div class="stat"><b id="statSkf">27</b>SKF-diagnosegroepen</div>
+        <div class="stat"><b id="statGap">—</b>subcats zonder SKF-match</div>
+      </div>
+    </div>
+
+    <section class="cat-section" id="basis">
+      <div class="cat-head"><h3>Basisgegevens dossiervoering</h3></div>
+      <div class="cards">
+        <div class="card">
+          <div class="card-head"><h4>Geldt voor élke patiënt, in élke categorie</h4></div>
+          <div class="row"><span class="label">Bij aanvang</span><div class="chips"><span class="chip instrument">Hulpvraag</span><span class="chip instrument">Fysiotherapeutische diagnose</span><span class="chip instrument">Duur van de klacht</span></div></div>
+          <div class="row"><span class="label">Binnen 1e week</span><div class="chips"><span class="chip instrument">Hoofddoel</span><span class="chip instrument">Leeftijd</span><span class="chip instrument">Geslacht</span></div></div>
+          <div class="row"><span class="label">Iedere behandeling</span><div class="chips"><span class="chip instrument">Journaalrapportage</span></div></div>
+          <div class="row"><span class="label">Einde behandeling</span><div class="chips"><span class="chip instrument">Dossier afgesloten (automatisch via EPD)</span></div></div>
+          <p class="note">Norm: 50% minimum, 80% streefwaarde. Dit staat los van — en komt bovenop — de diagnosegroep-specifieke verplichtingen hieronder.</p>
+        </div>
+      </div>
+    </section>
+
+    <div class="deel-head" id="deelA">
+      <h2>Deel A — per netwerkcategorie</h2>
+      <p>Onze 9 hoofdcategorieën, elk met hun subcategorieën. Per subcategorie: welke SKF-diagnosegroep(en) van toepassing zijn (klik op een chip om naar het volledige instrumentarium in Deel B te springen), of — waar dat ontbreekt — een toelichting.</p>
+    </div>
+    <div id="contentA"></div>
+
+    <div class="deel-head" id="deelB">
+      <h2>Deel B — per SKF-hoofdstuk</h2>
+      <p>Dezelfde informatie, nu gegroepeerd zoals het SKF-document het zelf indeelt: per hoofdstuk en diagnosegroep het volledige verplichte instrumentarium (2026, versie 6.4), met een terugverwijzing naar de subcategorieën uit Deel A waar dit voor geldt.</p>
+    </div>
+    <div id="contentB"></div>
+
+    <div class="no-match" id="noMatch">Geen resultaten gevonden voor deze zoekterm.</div>
+  </main>
+</div>
+
+<script>
+// ============ DATA A: onze categorieën → SKF-koppeling ============
+const DATA_A = [
+{catId:1, catNaam:"Kansrijk opgroeien", subs:[
+  {id:1, naam:"Motorische ontwikkeling", skf:["kind-ontwikkelingsstoornis"]},
+  {id:2, naam:"Schrijven en fijne motoriek", skf:["kind-schrijfproblemen"]},
+  {id:3, naam:"Sport, groei en blessures", skf:["kind-msk18"]},
+  {id:4, naam:"Houding en wervelkolom", skf:["kind-msk18"], note:"SKF kent geen aparte houding/scoliose-groep (ook niet bij volwassenen) — valt onder de algemene MSK-groep voor kinderen."},
+  {id:5, naam:"Ademhaling", skf:[], note:"Geen SKF-diagnosegroep voor kinderademhaling — COPD en Hart zijn volwassenenmodellen. Alleen de algemene basisgegevens zijn hier verplicht."},
+  {id:6, naam:"Zuigeling en jong kind", skf:["kind-voorkeurshouding"]},
+  {id:7, naam:"Sensorische prikkelverwerking", skf:[], note:"Geen exacte SKF-groep. Inhoudelijk het dichtst bij Ontwikkelingsstoornis, maar niet als zodanig benoemd in het document."},
+  {id:8, naam:"Revalidatie en operatie", skf:["chir-vkb","chir-postok-hks","chir-postok-handpols"], erft:true, note:"SKF kent geen aparte kinder-chirurgiegroep; het instrumentarium is leeftijdsneutraal geformuleerd. Kies de groep die past bij de ingreep."},
+  {id:9, naam:"Complexe ontwikkeling en meervoudige beperking", skf:["kind-ontwikkelingsstoornis"]},
+  {id:10, naam:"Manuele therapie bij kinderen", skf:["kind-msk18"], erft:true, note:"Behandelvorm, geen diagnose — de verplichting volgt uit de onderliggende klacht (meestal de algemene MSK-groep voor kinderen)."}
+]},
+{catId:2, catNaam:"Gezond oud worden", subs:[
+  {id:11, naam:"Kwetsbaarheid en mobiliteit", skf:["overig-osteoporose"], note:"Formeel alleen verplicht bij een val-, fractuur- of osteoporose-diagnosecode; kwetsbaarheid zonder die diagnose heeft strikt genomen geen eigen SKF-groep."},
+  {id:12, naam:"Valpreventie en balans", skf:["overig-osteoporose"]},
+  {id:13, naam:"Dementie en bewegen", skf:[], note:"Geen SKF-diagnosegroep — dit is een hiaat in het SKF-schema."},
+  {id:14, naam:"Herstel na ziekenhuisopname", skf:[], note:"Geen eigen groep. Afhankelijk van de reden van opname kan Osteoporose (na val/breuk) of een Chirurgie-groep (na operatie) van toepassing zijn."},
+  {id:15, naam:"Voorbereiding op operatie", skf:["chir-vkb","chir-postok-hks","chir-postok-handpols","chir-thp","chir-tkp"], erft:true, note:"Erft de SKF-groep van de geplande ingreep; de baseline-meting valt samen met het 'bij aanvang'-moment in die tabellen."},
+  {id:16, naam:"Revalidatie na operatie", skf:["chir-postok-hks","chir-thp","chir-tkp","chir-postok-handpols"], erft:true},
+  {id:17, naam:"Sport, bewegen en overbelasting", skf:["msk-knie","msk-heup","msk-schouder"], erft:true, note:"Afhankelijk van het getroffen lichaamsdeel."},
+  {id:18, naam:"Ouderen met levenslange beperking", skf:[], note:"Het SKF-instrumentarium voor ontwikkelingsstoornissen is leeftijdsgebonden opgesteld (Kind-hoofdstuk) — voor volwassenen/ouderen met een levenslange beperking ontbreekt een passende groep."}
+]},
+{catId:3, catNaam:"Neurologie", subs:[
+  {id:19, naam:"CVA en NAH", skf:["neuro-cva"]},
+  {id:20, naam:"Parkinson", skf:["neuro-parkinson"]},
+  {id:21, naam:"MS", skf:[], note:"Geen SKF-diagnosegroep (ook in de 2025-versie niet)."},
+  {id:22, naam:"Neuromusculaire aandoeningen", skf:[], note:"Geen SKF-diagnosegroep."},
+  {id:23, naam:"Duizeligheid en evenwicht", skf:["overig-duizeligheid"], note:"Nieuw in versie 6.4 (2026) — bestond in de 2025-versie nog niet."}
+]},
+{catId:4, catNaam:"Mentale gezondheid", subs:[
+  {id:24, naam:"Psychosomatische klachten", skf:["msk-psychosomatisch"]},
+  {id:25, naam:"Ademhaling en hyperventilatie", skf:[], note:"Geen exacte match — de respiratoire SKF-groepen (COPD, Hart) zijn longziekte- resp. hartspecifiek, niet functionele ademhaling."},
+  {id:26, naam:"Functionele neurologische stoornis", skf:[], note:"Geen SKF-diagnosegroep."}
+]},
+{catId:5, catNaam:"Chronische zorg", subs:[
+  {id:27, naam:"Longklachten", skf:["resp-copd"], note:"Alleen gedekt bij een COPD-diagnosecode; astma zonder COPD-code is formeel niet gedekt."},
+  {id:28, naam:"Etalagebenen", skf:["resp-claudicatio"]},
+  {id:29, naam:"Hartrevalidatie", skf:["resp-hart"], note:"Nieuw in versie 6.4 (2026)."},
+  {id:30, naam:"Oncologische revalidatie", skf:["overig-oncologie"]},
+  {id:31, naam:"Chronische pijn", skf:["msk-psychosomatisch","msk-overig"], note:"Geen eigen groep; afhankelijk van de klachtlocatie het dichtst bij Psychosomatisch of Overig."},
+  {id:32, naam:"Chronische vermoeidheid", skf:[], note:"Geen SKF-diagnosegroep (ook post-COVID-vermoeidheid niet)."},
+  {id:33, naam:"Diabetes en bewegen", skf:[], note:"Geen SKF-diagnosegroep."},
+  {id:34, naam:"Reuma, artrose en botgezondheid", skf:["msk-knieartrose","msk-heupartrose","overig-osteoporose"]},
+  {id:35, naam:"Voorbereiding op operatie", skf:["chir-vkb","chir-postok-hks","chir-postok-handpols","chir-thp","chir-tkp"], erft:true}
+]},
+{catId:6, catNaam:"Rug, nek en bekken", subs:[
+  {id:36, naam:"Lage rugklachten", skf:["msk-lagerug"], note:"Enige MSK-groep met een verplicht screeningsinstrument (SBST)."},
+  {id:37, naam:"Nekklachten", skf:["msk-nek"]},
+  {id:38, naam:"Bekkenklachten", skf:["msk-overig"], note:"Geen exacte SKF-rij voor SI-gewricht/bekkeninstabiliteit."},
+  {id:39, naam:"Houding en scoliose", skf:["msk-thoracaal","msk-overig"], note:"Geen aparte houding/scoliose-rij in het SKF-document."},
+  {id:40, naam:"Revalidatie na operatie", skf:[], note:"Hiaat: SKF kent geen chirurgiegroep voor wervelkolomoperaties (spondylodese, discectomie e.d.) — alleen heup, knie, schouder, hand en pols.", warn:true},
+  {id:41, naam:"Sport, bewegen en overbelasting", skf:["msk-lagerug","msk-nek"], erft:true},
+  {id:42, naam:"Voorbereiding op operatie", skf:[], note:"Zelfde hiaat als bij Revalidatie na operatie: geen SKF-chirurgiegroep voor de wervelkolom.", warn:true}
+]},
+{catId:7, catNaam:"Benen", subs:[
+  {id:43, naam:"Heup, lies en bovenbeen", skf:["msk-heup","msk-heupartrose"]},
+  {id:44, naam:"Knie en onderbeen", skf:["msk-knie","msk-knieartrose","chir-vkb","chir-tkp"]},
+  {id:45, naam:"Enkel en voet", skf:["msk-enkelvoet"]},
+  {id:46, naam:"Artroseprogramma's", skf:["msk-knieartrose","msk-heupartrose","overig-osteoporose"]},
+  {id:47, naam:"Revalidatie na operatie", skf:["chir-vkb","chir-thp","chir-tkp","chir-postok-hks"], erft:true},
+  {id:48, naam:"Voorbereiding op operatie", skf:["chir-vkb","chir-thp","chir-tkp","chir-postok-hks"], erft:true},
+  {id:49, naam:"Sport, bewegen en overbelasting", skf:["msk-knie","msk-enkelvoet"], erft:true}
+]},
+{catId:8, catNaam:"Armen", subs:[
+  {id:50, naam:"Schouder en bovenarm", skf:["msk-schouder","chir-postok-hks"]},
+  {id:51, naam:"Elleboog en onderarm", skf:["msk-elleboog"]},
+  {id:52, naam:"Pols en hand", skf:["msk-pols","chir-postok-handpols"]},
+  {id:53, naam:"Revalidatie na operatie", skf:["chir-postok-hks","chir-postok-handpols"], erft:true},
+  {id:54, naam:"Voorbereiding op operatie", skf:["chir-postok-hks","chir-postok-handpols"], erft:true},
+  {id:55, naam:"Sport, bewegen en overbelasting", skf:["msk-schouder","msk-elleboog"], erft:true}
+]},
+{catId:9, catNaam:"Behandelvormen en expertises", subs:[
+  {id:56, naam:"Manuele therapie", skf:[], erft:true, note:"Behandelvorm, geen diagnose — de verplichting volgt uit de behandelde klacht (vaak Nek of Lage rug)."},
+  {id:57, naam:"Sportfysiotherapie", skf:[], erft:true, note:"Volgt de behandelde klacht (vaak Knie, Enkel/Voet of Schouder in combinatie met 'sport, overbelasting')."},
+  {id:58, naam:"Dry needling", skf:[], erft:true, note:"Techniek, geen diagnose — volgt de onderliggende klacht (vaak Schouder, Elleboog of Overig bij triggerpoints)."},
+  {id:59, naam:"Echografie", skf:[], erft:true, note:"Diagnostisch hulpmiddel, geen eigen SKF-uitkomstmaat — volgt de onderliggende klacht."},
+  {id:60, naam:"Shockwave", skf:[], erft:true, note:"Volgt de onderliggende klacht (vaak Enkel/Voet bij hielspoor, Schouder bij kalkschouder, Elleboog)."},
+  {id:61, naam:"Oedeem en lymfe", skf:["overig-lymfoedeem"]},
+  {id:62, naam:"Kaakfysiotherapie", skf:[], note:"Geen SKF-diagnosegroep — kaak/TMD wordt niet genoemd in het SKF-document."},
+  {id:63, naam:"Leefstijl en beweegprogramma's", skf:[], note:"Geen SKF-diagnosegroep."},
+  {id:64, naam:"Groepsprogramma's", skf:[], erft:true, note:"Volgt het onderliggende programma (bijv. de COPD-groep, GLA:D via de artrose-rijen, valpreventie via Osteoporose)."},
+  {id:65, naam:"EPTE", skf:[], erft:true, note:"Techniek, geen diagnose — volgt de onderliggende klacht (vaak peesklachten bij Elleboog, Schouder of Enkel/Voet)."},
+  {id:66, naam:"Bekkenfysiotherapie en MAPLe", skf:[], note:"Geen SKF-diagnosegroep — bekkenbodemklachten/incontinentie worden niet genoemd (dit is iets anders dan 'Bekkenklachten', dat over het SI-gewricht gaat)."}
+]}
+];
+
+// ============ DATA B: SKF-document → onze subcategorieën ============
+const DATA_B = [
+{hstId:'msk', hstNaam:"3.1 Musculoskeletaal", intro:"Basispatroon: screening, pijn (NPRS), functioneren (PSK/PSG + evt. specifieke PROM) en GPE-DV als eindmaat voor ervaren effect & tevredenheid.", groepen:[
+  {slug:'msk-lagerug', naam:"Lage rug", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["SBST (screening)","aanvang"],["PSK/PSG & QBPDS of (m)ODI","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[36,41]},
+  {slug:'msk-thoracaal', naam:"Thoracaal", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK (screening)","aanvang"],["PSK/PSG","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[39]},
+  {slug:'msk-nek', naam:"Nek", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK (screening)","aanvang"],["PSK/PSG & NDI","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[37,41]},
+  {slug:'msk-knieartrose', naam:"Knieartrose", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG & KOOS-ADL","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[44,46,34]},
+  {slug:'msk-knie', naam:"Knie", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[44,49,17]},
+  {slug:'msk-heupartrose', naam:"Heupartrose", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG & HOOS-ADL","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[43,46,34]},
+  {slug:'msk-heup', naam:"Heup", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[43,17]},
+  {slug:'msk-schouder', naam:"Schouder", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG & Quick DASH of SPADI","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[50,55,17]},
+  {slug:'msk-elleboog', naam:"Elleboog", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG & Quick DASH","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[51,55]},
+  {slug:'msk-pols', naam:"Pols", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG & PRWHE-DLV","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[52]},
+  {slug:'msk-enkelvoet', naam:"Enkel/Voet", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[45,49]},
+  {slug:'msk-overig', naam:"Overig", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[38,39,31]},
+  {slug:'msk-psychosomatisch', naam:"Psychosomatisch", instrumenten:[["NPRS","aanvang, 6 wk, einde"],["MSK","aanvang"],["PSK/PSG & IPQ-K","aanvang, 6 wk, einde"],["GPE-DV","einde"]], vanuit:[24,31]}
+]},
+{hstId:'chir', hstNaam:"3.2 Chirurgie", intro:"", groepen:[
+  {slug:'chir-vkb', naam:"Voorstekruisband (VKB)", instrumenten:[["PSK/PSG, NPRS, IKDC, Tegner, Lysholm","aanvang, einde, + iedere 3 mnd"],["GPE-DV","einde"]], vanuit:[44,47,48,8]},
+  {slug:'chir-postok-hks', naam:"Post-OK heup, knie en schouder", instrumenten:[["PSK/PSG, NPRS","aanvang, einde, + iedere 3 mnd"],["GPE-DV","einde"]], vanuit:[50,53,54,47,48,16,15,35,8]},
+  {slug:'chir-postok-handpols', naam:"Post-OK hand/pols", instrumenten:[["PSK/PSG, NPRS, PRWHE-DLV","aanvang, einde, + iedere 3 mnd"],["GPE-DV","einde"]], vanuit:[52,53,54,8]},
+  {slug:'chir-thp', naam:"Totale Heup Prothese (THP)", instrumenten:[["PSK/PSG, NPRS, HOOS-ADL, TUG, 6MWT","aanvang, einde, + iedere 3 mnd"],["GPE-DV","einde"]], vanuit:[47,48,16,15,35]},
+  {slug:'chir-tkp', naam:"Totale Knie Prothese (TKP)", instrumenten:[["PSK/PSG, NPRS, KOOS-ADL, TUG, 6MWT","aanvang, einde, + iedere 3 mnd"],["GPE-DV","einde"]], vanuit:[44,47,48,16,35]}
+]},
+{hstId:'neuro', hstNaam:"3.3 Centraal Neurologisch", intro:"", groepen:[
+  {slug:'neuro-cva', naam:"CVA", instrumenten:[["PSK/PSG, 6MWT, BBS, FAC, TCT, FAT, BI, 10MLT, MI","aanvang, iedere 3 mnd"],["GPE-DV","op 8 wk en einde"]], vanuit:[19]},
+  {slug:'neuro-parkinson', naam:"Parkinson", instrumenten:[["Parkinson intake vragenlijst","aanvang, jaarlijks"],["PSK/PSG, 6MWT, Mini-BesTest, TUG","aanvang, iedere 3 mnd"],["GPE-DV","iedere 3 mnd en einde"]], vanuit:[20]}
+]},
+{hstId:'resp', hstNaam:"3.4 Respiratoir en Cardiovasculair", intro:"", groepen:[
+  {slug:'resp-copd', naam:"COPD", instrumenten:[["6MWT, CCQ of CAT, COPD-vragenlijst periodiek, Q-ceps/1RM","aanvang, einde, + iedere 3 mnd"],["COPD-vragenlijst baseline","aanvang, jaarlijks"],["(m)MRC","aanvang"],["GPE-DV","iedere 3 mnd en einde"]], vanuit:[27]},
+  {slug:'resp-claudicatio', naam:"Vaatlijden — claudicatio", instrumenten:[["Claudicatio baseline","aanvang, jaarlijks"],["PSK/PSG, VascuQol-6, Claudicatio periodiek","aanvang, iedere 3 mnd, einde"],["GPE-DV","iedere 3 mnd en einde"]], vanuit:[28]},
+  {slug:'resp-hart', naam:"Hart (hartrevalidatie)", instrumenten:[["Hartrevalidatie baseline vragenlijst","aanvang"],["PSK/PSG, 6MWT, periodieke vragenlijst, krachtmeting, PROMIS-10","aanvang, 8 wk, einde"],["GPE-DV","8 wk en einde"]], vanuit:[29]}
+]},
+{hstId:'overig', hstNaam:"3.5 Overig", intro:"", groepen:[
+  {slug:'overig-oncologie', naam:"Oncologie", instrumenten:[["PSK/PSG, NPRS","aanvang, einde, + iedere 3 mnd"],["GPE-DV","iedere 3 mnd en einde"]], vanuit:[30]},
+  {slug:'overig-lymfoedeem', naam:"Lymfoedeem", instrumenten:[["PSK/PSG, NPRS","aanvang, einde, + iedere 3 mnd"],["GPE-DV","iedere 3 mnd en einde"]], vanuit:[61]},
+  {slug:'overig-osteoporose', naam:"Osteoporose, vallen en breken", instrumenten:[["Osteoporose baseline vragenlijst","aanvang"],["PSK/PSG, 6MWT, periodieke vragenlijst, krachtmeting, PROMIS-10, Short FES-I, SPPB, BI","aanvang, 8 wk, einde"],["GPE-DV","8 wk en einde"]], vanuit:[11,12,34,46]},
+  {slug:'overig-duizeligheid', naam:"Duizeligheid", instrumenten:[["PSK/PSG, DHI, MFV","aanvang, 7 wk, einde"],["GPE-DV","einde"]], vanuit:[23]}
+]},
+{hstId:'kind', hstNaam:"3.6 Kind", intro:"", groepen:[
+  {slug:'kind-msk18', naam:"Musculoskeletaal onder 18 jaar", instrumenten:[["NPRS, PSK/PSG","aanvang, einde"],["GPE-DV","einde"]], vanuit:[3,4,10]},
+  {slug:'kind-ontwikkelingsstoornis', naam:"Ontwikkelingsstoornis", instrumenten:[["PSK/PSG","aanvang, einde"],["AIMS, Bayley-3-NL of MABC 2 (leeftijdsafhankelijk)","aanvang, einde"]], vanuit:[1,9]},
+  {slug:'kind-schrijfproblemen', naam:"Schrijfproblemen", instrumenten:[["kinderPROM, SOS II NL, MABC 2, BEERY VMI","aanvang, einde"]], vanuit:[2]},
+  {slug:'kind-loopproblemen', naam:"Loopproblemen", instrumenten:[["PSK/PSG, NPRS, kinderPROM","aanvang, einde"]], vanuit:[], vanuitNote:"Geen exacte hub-subcategorie — valt deels onder Motorische ontwikkeling en Sport, groei en blessures (Kansrijk opgroeien)."},
+  {slug:'kind-voorkeurshouding', naam:"Voorkeurshouding", instrumenten:[["Plagiocephalometrie of Skully Care, kinderPROM, AIMS","aanvang, einde"]], vanuit:[6]}
+]}
+];
+
+// ============ Lookup: subcat id -> {catNaam, naam} ============
+const SUB_LOOKUP = {};
+DATA_A.forEach(cat => cat.subs.forEach(s => { SUB_LOOKUP[s.id] = { catNaam: cat.catNaam, naam: s.naam }; }));
+const SKF_LOOKUP = {};
+DATA_B.forEach(h => h.groepen.forEach(g => { SKF_LOOKUP[g.slug] = { hstNaam: h.hstNaam, naam: g.naam }; }));
+
+// ============ Render Deel A ============
+const contentA = document.getElementById('contentA');
+const catNavA = document.getElementById('catNavA');
+let totalSub = 0, totalGap = 0;
+
+DATA_A.forEach(cat => {
+  totalSub += cat.subs.length;
+  const navLi = document.createElement('li');
+  navLi.innerHTML = `<a href="#cat-${cat.catId}"><span>${cat.catNaam}</span><span class="n">${cat.subs.length}</span></a>`;
+  catNavA.appendChild(navLi);
+
+  const section = document.createElement('section');
+  section.className = 'cat-section';
+  section.id = `cat-${cat.catId}`;
+
+  const head = document.createElement('div');
+  head.className = 'cat-head';
+  head.innerHTML = `<span class="idx">${String(cat.catId).padStart(2,'0')}</span><h3>${cat.catNaam}</h3><span class="count">${cat.subs.length} subcategorieën</span>`;
+  section.appendChild(head);
+
+  const cardsWrap = document.createElement('div');
+  cardsWrap.className = 'cards';
+
+  cat.subs.forEach(s => {
+    if (s.skf.length === 0) totalGap++;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = `sub-${s.id}`;
+
+    const skfChips = s.skf.map(slug => {
+      const t = SKF_LOOKUP[slug];
+      return t ? `<a class="chip skf" href="#${slug}">${t.naam}</a>` : '';
+    }).join('');
+
+    const gapTag = s.skf.length === 0 ? `<span class="chip gap-tag">Geen SKF-verplichting</span>` : '';
+    const erftTag = s.erft ? `<span class="chip gap-tag" style="background:var(--purple-light);color:var(--purple)">Erft van onderliggende klacht</span>` : '';
+
+    card.dataset.search = [cat.catNaam, s.naam, s.note||'', ...s.skf.map(sl => (SKF_LOOKUP[sl]||{}).naam||'')].join(' ').toLowerCase();
+
+    card.innerHTML = `
+      <div class="card-head"><span class="sid">#${s.id}</span><h4>${s.naam}</h4></div>
+      <div class="row"><span class="label">SKF-koppeling</span><div class="chips">${skfChips}${gapTag}${erftTag}</div></div>
+      ${s.note ? `<p class="note ${s.warn?'warn':''}">${s.warn?'⚠️ ':''}${s.note}</p>` : ''}
+    `;
+    cardsWrap.appendChild(card);
+  });
+
+  section.appendChild(cardsWrap);
+  contentA.appendChild(section);
+});
+
+document.getElementById('statCat').textContent = DATA_A.length;
+document.getElementById('statSub').textContent = totalSub;
+document.getElementById('statGap').textContent = totalGap;
+
+// ============ Render Deel B ============
+const contentB = document.getElementById('contentB');
+const catNavB = document.getElementById('catNavB');
+let totalGroepen = 0;
+
+DATA_B.forEach(h => {
+  totalGroepen += h.groepen.length;
+  const navLi = document.createElement('li');
+  navLi.innerHTML = `<a href="#hst-${h.hstId}"><span>${h.hstNaam}</span><span class="n">${h.groepen.length}</span></a>`;
+  catNavB.appendChild(navLi);
+
+  const section = document.createElement('section');
+  section.className = 'hst-section';
+  section.id = `hst-${h.hstId}`;
+
+  const head = document.createElement('div');
+  head.className = 'hst-head';
+  head.innerHTML = `<h3>${h.hstNaam}</h3><span class="count">${h.groepen.length} diagnosegroepen</span>`;
+  section.appendChild(head);
+
+  if (h.intro) {
+    const intro = document.createElement('p');
+    intro.className = 'hst-intro';
+    intro.textContent = h.intro;
+    section.appendChild(intro);
+  }
+
+  const cardsWrap = document.createElement('div');
+  cardsWrap.className = 'cards';
+
+  h.groepen.forEach(g => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = g.slug;
+
+    const instrRows = g.instrumenten.map(([instr, moment]) =>
+      `<div class="instr-line"><span class="chip instrument">${instr}</span><span class="chip moment">${moment}</span></div>`
+    ).join('');
+
+    const terugChips = (g.vanuit||[]).map(id => {
+      const t = SUB_LOOKUP[id];
+      return t ? `<a class="chip terug" href="#sub-${id}">${t.naam} (${t.catNaam})</a>` : '';
+    }).join('');
+
+    card.dataset.search = [h.hstNaam, g.naam, g.instrumenten.map(i=>i[0]).join(' '), (g.vanuit||[]).map(id=>(SUB_LOOKUP[id]||{}).naam||'').join(' ')].join(' ').toLowerCase();
+
+    card.innerHTML = `
+      <div class="card-head"><h4>${g.naam}</h4></div>
+      <div class="row"><span class="label">Instrumenten</span><div class="chips" style="flex-direction:column;align-items:flex-start;gap:6px">${instrRows}</div></div>
+      <div class="row"><span class="label">Van toepassing bij</span><div class="chips">${terugChips || `<span class="note">${g.vanuitNote||'—'}</span>`}</div></div>
+    `;
+    cardsWrap.appendChild(card);
+  });
+
+  section.appendChild(cardsWrap);
+  contentB.appendChild(section);
+});
+
+document.getElementById('statSkf').textContent = totalGroepen;
+
+// ============ Filter ============
+const filterInput = document.getElementById('filterInput');
+const filterCount = document.getElementById('filterCount');
+const noMatch = document.getElementById('noMatch');
+
+filterInput.addEventListener('input', () => {
+  const q = filterInput.value.trim().toLowerCase();
+  let visible = 0, total = 0;
+
+  document.querySelectorAll('.cat-section, .hst-section').forEach(section => {
+    let visibleInSection = 0;
+    section.querySelectorAll('.card').forEach(card => {
+      total++;
+      const match = !q || (card.dataset.search||'').includes(q);
+      card.classList.toggle('hidden', !match);
+      if (match) { visibleInSection++; visible++; }
+    });
+    section.classList.toggle('hidden', visibleInSection === 0);
+  });
+
+  noMatch.style.display = visible === 0 ? 'block' : 'none';
+  filterCount.textContent = q ? `${visible} van ${total} resultaten` : '';
+});
+</script>
+</body>
+</html>
