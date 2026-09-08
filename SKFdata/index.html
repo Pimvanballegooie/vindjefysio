@@ -894,6 +894,19 @@ filterInput.addEventListener('input', () => {
   noMatch.style.display = visible === 0 ? 'block' : 'none';
   filterCount.textContent = q ? `${visible} van ${total} resultaten` : '';
 });
+
+// Interne kruislinks (bijv. Deel C -> Deel B) moeten ook werken als de zoekfilter
+// het doel op dat moment verbergt — leeg dan eerst de filter zodat de sprong lukt.
+document.addEventListener('click', (e) => {
+  const link = e.target.closest('a[href^="#"]');
+  if (!link) return;
+  const targetId = link.getAttribute('href').slice(1);
+  const target = document.getElementById(targetId);
+  if (target && target.classList.contains('hidden') && filterInput.value.trim()) {
+    filterInput.value = '';
+    filterInput.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+});
 </script>
 </body>
 </html>
