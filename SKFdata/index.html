@@ -249,6 +249,14 @@
 </div>
 
 <script>
+// ============ Zoekhulp: accent-ongevoelig, kleine letters ============
+// "reumatoide" moet ook "reumatoïde" vinden; wordt gebruikt bij het opbouwen
+// van dataset.search én bij het filteren zelf, zodat beide kanten genormaliseerd zijn.
+const DIACRITIC_MARKS_RE = new RegExp('[' + String.fromCharCode(0x0300) + '-' + String.fromCharCode(0x036f) + ']', 'g');
+function normalizeSearch(s) {
+  return (s || '').toString().toLowerCase().normalize('NFD').replace(DIACRITIC_MARKS_RE, '');
+}
+
 // ============ DATA A: onze categorieën → SKF-koppeling ============
 const DATA_A = [
 {catId:1, catNaam:"Kansrijk opgroeien", subs:[
@@ -666,7 +674,7 @@ DATA_A.forEach(cat => {
     const gapTag = s.skf.length === 0 ? `<span class="chip gap-tag">Geen SKF-verplichting</span>` : '';
     const erftTag = s.erft ? `<span class="chip gap-tag" style="background:var(--purple-light);color:var(--purple)">Erft van onderliggende klacht</span>` : '';
 
-    card.dataset.search = [cat.catNaam, s.naam, s.note||'', ...s.skf.map(sl => (SKF_LOOKUP[sl]||{}).naam||'')].join(' ').toLowerCase();
+    card.dataset.search = normalizeSearch([cat.catNaam, s.naam, s.note||'', ...s.skf.map(sl => (SKF_LOOKUP[sl]||{}).naam||'')].join(' '));
 
     card.innerHTML = `
       <div class="card-head"><span class="sid">#${s.id}</span><h4>${s.naam}</h4></div>
@@ -735,7 +743,7 @@ DATA_B.forEach(h => {
       ? dcsphGroepen.map(dg => `<a class="chip terug" href="#${dg.id}">${[dg.sg,dg.ssg].filter(Boolean).join(' — ')||dg.hg} (${dg.rows.length})</a>`).join('')
       : `<span class="note">Geen DCSPH-codes gekoppeld — controleer Deel C.</span>`;
 
-    card.dataset.search = [h.hstNaam, g.naam, g.instrumenten.map(i=>i.l).join(' '), (g.vanuit||[]).map(id=>(SUB_LOOKUP[id]||{}).naam||'').join(' '), dcsphGroepen.map(dg=>[dg.sg,dg.ssg].filter(Boolean).join(' ')).join(' ')].join(' ').toLowerCase();
+    card.dataset.search = normalizeSearch([h.hstNaam, g.naam, g.instrumenten.map(i=>i.l).join(' '), (g.vanuit||[]).map(id=>(SUB_LOOKUP[id]||{}).naam||'').join(' '), dcsphGroepen.map(dg=>[dg.sg,dg.ssg].filter(Boolean).join(' ')).join(' ')].join(' '));
     card.dataset.geadviseerdCount = geadviseerdCount;
 
     card.innerHTML = `
@@ -841,7 +849,7 @@ DCSPH_HOOFDGROEP_ORDER.forEach(hg => {
     const codeRows = g.rows.map(r => `<tr><td class="code-cell">${r[0]}</td><td>${r[1]||''}</td><td>${r[2]||''}</td></tr>`).join('');
     const bigList = g.rows.length > 6;
 
-    card.dataset.search = [hg, g.sg||'', g.ssg||'', t?t.naam:'', ...g.rows.map(r=>`${r[0]} ${r[1]||''} ${r[2]||''}`)].join(' ').toLowerCase();
+    card.dataset.search = normalizeSearch([hg, g.sg||'', g.ssg||'', t?t.naam:'', ...g.rows.map(r=>`${r[0]} ${r[1]||''} ${r[2]||''}`)].join(' '));
 
     card.innerHTML = `
       <div class="card-head"><h4>${naamLabel}</h4><span class="verplicht-summary heeft" style="background:var(--grey-bg);color:var(--text-muted)">${g.rows.length} code${g.rows.length!==1?'s':''}</span></div>
@@ -879,7 +887,10 @@ const noMatch = document.getElementById('noMatch');
 let scrollToResultTimer = null;
 
 filterInput.addEventListener('input', () => {
-  const q = filterInput.value.trim().toLowerCase();
+  // Accent-ongevoelig en op losse woorden (elk woord moet ergens voorkomen,
+  // niet per se aaneengesloten of in dezelfde volgorde) — "knie artrose" vindt
+  // dus ook "Knieartrose", en "reumatoide" vindt ook "reumatoïde".
+  const qWords = normalizeSearch(filterInput.value.trim()).split(/\s+/).filter(Boolean);
   let visible = 0, total = 0;
   let firstMatch = null;
 
@@ -887,7 +898,8 @@ filterInput.addEventListener('input', () => {
     let visibleInSection = 0;
     section.querySelectorAll('.card').forEach(card => {
       total++;
-      const match = !q || (card.dataset.search||'').includes(q);
+      const haystack = card.dataset.search || '';
+      const match = qWords.length === 0 || qWords.every(w => haystack.includes(w));
       card.classList.toggle('hidden', !match);
       if (match) {
         visibleInSection++; visible++;
@@ -898,12 +910,12 @@ filterInput.addEventListener('input', () => {
   });
 
   noMatch.style.display = visible === 0 ? 'block' : 'none';
-  filterCount.textContent = q ? `${visible} van ${total} resultaten` : '';
+  filterCount.textContent = qWords.length ? `${visible} van ${total} resultaten` : '';
 
   // Spring naar de eerste treffer zodra je stopt met typen, zodat een match
   // verderop op de pagina niet lijkt op "niks gevonden".
   clearTimeout(scrollToResultTimer);
-  if (q && firstMatch) {
+  if (qWords.length && firstMatch) {
     scrollToResultTimer = setTimeout(() => {
       const beforeY = window.scrollY;
       firstMatch.scrollIntoView({ behavior: 'smooth', block: 'start' });
